@@ -2,7 +2,7 @@ package caches
 
 import (
 	"github.com/go-kratos/kratos/v2/log"
-	datarepos "github.com/go-micro-saas/service-layout/app/testing-service/internal/data/repo"
+	datarepos "github.com/go-micro-saas/account-service/app/testing-service/internal/data/repo"
 )
 
 type testingCache struct {

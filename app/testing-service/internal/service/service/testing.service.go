@@ -3,10 +3,10 @@ package service
 import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
-	resourcev1 "github.com/go-micro-saas/service-layout/api/testing-service/v1/resources"
-	servicev1 "github.com/go-micro-saas/service-layout/api/testing-service/v1/services"
-	bizrepos "github.com/go-micro-saas/service-layout/app/testing-service/internal/biz/repo"
-	"github.com/go-micro-saas/service-layout/app/testing-service/internal/service/dto"
+	resourcev1 "github.com/go-micro-saas/account-service/api/testing-service/v1/resources"
+	servicev1 "github.com/go-micro-saas/account-service/api/testing-service/v1/services"
+	bizrepos "github.com/go-micro-saas/account-service/app/testing-service/internal/biz/repo"
+	"github.com/go-micro-saas/account-service/app/testing-service/internal/service/dto"
 )
 
 type testingV1Service struct {

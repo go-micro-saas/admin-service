@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	serviceexporter "github.com/go-micro-saas/service-layout/app/testing-service/cmd/testing-service/export"
+	serviceexporter "github.com/go-micro-saas/account-service/app/testing-service/cmd/testing-service/export"
 	configutil "github.com/ikaiguang/go-srv-kit/service/config"
 	middlewareutil "github.com/ikaiguang/go-srv-kit/service/middleware"
 	serverutil "github.com/ikaiguang/go-srv-kit/service/server"

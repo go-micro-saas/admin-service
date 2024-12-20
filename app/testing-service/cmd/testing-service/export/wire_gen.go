@@ -9,12 +9,12 @@ package serviceexporter
 import (
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
-	"github.com/go-micro-saas/service-layout/api/testing-service/v1/services"
-	"github.com/go-micro-saas/service-layout/app/testing-service/internal/biz/biz"
-	"github.com/go-micro-saas/service-layout/app/testing-service/internal/biz/repo"
-	"github.com/go-micro-saas/service-layout/app/testing-service/internal/data/data"
-	"github.com/go-micro-saas/service-layout/app/testing-service/internal/data/repo"
-	"github.com/go-micro-saas/service-layout/app/testing-service/internal/service/service"
+	"github.com/go-micro-saas/account-service/api/testing-service/v1/services"
+	"github.com/go-micro-saas/account-service/app/testing-service/internal/biz/biz"
+	"github.com/go-micro-saas/account-service/app/testing-service/internal/biz/repo"
+	"github.com/go-micro-saas/account-service/app/testing-service/internal/data/data"
+	"github.com/go-micro-saas/account-service/app/testing-service/internal/data/repo"
+	"github.com/go-micro-saas/account-service/app/testing-service/internal/service/service"
 	"github.com/ikaiguang/go-srv-kit/service/cleanup"
 	"github.com/ikaiguang/go-srv-kit/service/setup"
 )

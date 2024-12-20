@@ -3,8 +3,8 @@ package data
 import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-micro-saas/service-layout/app/testing-service/internal/data/po"
-	datarepos "github.com/go-micro-saas/service-layout/app/testing-service/internal/data/repo"
+	"github.com/go-micro-saas/account-service/app/testing-service/internal/data/po"
+	datarepos "github.com/go-micro-saas/account-service/app/testing-service/internal/data/repo"
 	gormpkg "github.com/ikaiguang/go-srv-kit/data/gorm"
 	idpkg "github.com/ikaiguang/go-srv-kit/kit/id"
 	errorpkg "github.com/ikaiguang/go-srv-kit/kratos/error"

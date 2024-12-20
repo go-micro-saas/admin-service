@@ -2,7 +2,7 @@ package dbv1_0_0
 
 import (
 	"context"
-	dbv1_0_0_testing "github.com/go-micro-saas/service-layout/app/testing-service/cmd/database-migration/v1.0.0/testing"
+	dbv1_0_0_testing "github.com/go-micro-saas/account-service/app/testing-service/cmd/database-migration/v1.0.0/testing"
 	migrationpkg "github.com/ikaiguang/go-srv-kit/data/migration"
 	"gorm.io/gorm"
 )

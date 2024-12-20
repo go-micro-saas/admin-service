@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"github.com/go-micro-saas/service-layout/app/testing-service/cmd/database-migration/migrate"
+	"github.com/go-micro-saas/account-service/app/testing-service/cmd/database-migration/migrate"
 	dbutil "github.com/ikaiguang/go-srv-kit/service/database"
 	setuputil "github.com/ikaiguang/go-srv-kit/service/setup"
 	stdlog "log"

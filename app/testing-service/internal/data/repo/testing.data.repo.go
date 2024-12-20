@@ -2,7 +2,7 @@ package datarepos
 
 import (
 	"context"
-	"github.com/go-micro-saas/service-layout/app/testing-service/internal/data/po"
+	"github.com/go-micro-saas/account-service/app/testing-service/internal/data/po"
 )
 
 type TestingDataRepo interface {
