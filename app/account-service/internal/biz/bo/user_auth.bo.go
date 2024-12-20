@@ -3,7 +3,8 @@ package bo
 import authpkg "github.com/ikaiguang/go-srv-kit/kratos/auth"
 
 type LoginParam struct {
-	Password string
+	SkipValidatePassword bool
+	PlaintextPassword    string // md5(plaintext)
 }
 
 type SignTokenReq struct {

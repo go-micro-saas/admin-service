@@ -20,3 +20,19 @@ type UserRegEmail struct {
 	UserId      uint64    `gorm:"column:user_id" json:"user_id"`           // uid
 	UserEmail   string    `gorm:"column:user_email" json:"user_email"`     // 邮箱
 }
+
+// NewUserRegEmail default UserRegEmail
+func NewUserRegEmail(email string) *UserRegEmail {
+	var (
+		now = time.Now()
+	)
+	dataModel := &UserRegEmail{
+		Id:          0,
+		CreatedTime: now,
+		UpdatedTime: now,
+		DeletedTime: 0,
+		UserId:      0,
+		UserEmail:   email,
+	}
+	return dataModel
+}

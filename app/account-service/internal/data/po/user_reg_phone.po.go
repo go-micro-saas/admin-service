@@ -20,3 +20,18 @@ type UserRegPhone struct {
 	UserId      uint64    `gorm:"column:user_id" json:"user_id"`           // uid
 	UserPhone   string    `gorm:"column:user_phone" json:"user_phone"`     // 手机
 }
+
+func NewUserRegPhone(phone string) *UserRegPhone {
+	var (
+		now = time.Now()
+	)
+	dataModel := &UserRegPhone{
+		Id:          0,
+		CreatedTime: now,
+		UpdatedTime: now,
+		DeletedTime: 0,
+		UserId:      0,
+		UserPhone:   phone,
+	}
+	return dataModel
+}

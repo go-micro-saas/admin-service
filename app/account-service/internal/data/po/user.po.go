@@ -39,3 +39,39 @@ func (s *User) IsValidStatus() bool {
 		return false
 	}
 }
+
+func NewUser() *User {
+	var (
+		now = time.Now()
+	)
+	userModel := &User{
+		Id:            0,
+		CreatedTime:   now,
+		UpdatedTime:   now,
+		DeletedTime:   0,
+		UserId:        0,
+		UserPhone:     "",
+		UserEmail:     "",
+		UserNickname:  "",
+		UserAvatar:    "",
+		UserGender:    enumv1.UserGenderEnum_UNSPECIFIED,
+		RegisterType:  enumv1.UserRegisterTypeEnum_PHONE,
+		UserStatus:    enumv1.UserStatusEnum_ENABLE,
+		DisableTime:   0,
+		BlacklistTime: 0,
+		PasswordHash:  "",
+	}
+	return userModel
+}
+
+func NewUserByPhone(phone string) *User {
+	userModel := NewUser()
+	userModel.UserPhone = phone
+	return userModel
+}
+
+func NewUserByEmail(email string) *User {
+	userModel := NewUser()
+	userModel.UserEmail = email
+	return userModel
+}

@@ -89,3 +89,18 @@ func (s *userAuth) Ping(ctx context.Context, in *resourcev1.PingReq) (out *resou
 	}
 	return out, err
 }
+
+// SignupByEmail 身份验证-Email注册
+func (s *userAuth) SignupByEmail(ctx context.Context, req *resourcev1.SignupByEmailReq) (*resourcev1.LoginResp, error) {
+	return s.UnimplementedSrvUserAuthV1Server.SignupByEmail(ctx, req)
+}
+
+// SignupByPhone 身份验证-手机注册
+func (s *userAuth) SignupByPhone(ctx context.Context, req *resourcev1.SignupByPhoneReq) (*resourcev1.LoginResp, error) {
+	return s.UnimplementedSrvUserAuthV1Server.SignupByPhone(ctx, req)
+}
+
+// LoginOrSignupByPhone 身份验证-手机登陆(自动注册)
+func (s *userAuth) LoginOrSignupByPhone(ctx context.Context, req *resourcev1.LoginOrSignupByPhoneReq) (*resourcev1.LoginResp, error) {
+	return s.UnimplementedSrvUserAuthV1Server.LoginOrSignupByPhone(ctx, req)
+}

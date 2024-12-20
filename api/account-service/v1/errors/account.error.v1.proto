@@ -25,4 +25,6 @@ enum ERROR {
   S103_USER_ACCOUNT_EXPIRE      = 103000008 [(errors.code) = 400];  // 账户已过期
   S103_USER_STATUS_NOT_ALLOW    = 103000009 [(errors.code) = 400];  // 无效的登录状态
   S103_USER_ACTIVE_TIME_INVALID = 103000010 [(errors.code) = 400];  // 不在有效的激活期间
+  S103_INVALID_PHONE            = 103000011 [(errors.code) = 400];  // 无效的手机号
+  S103_INVALID_EMAIL            = 103000012 [(errors.code) = 400];  // 无效的邮箱
 }

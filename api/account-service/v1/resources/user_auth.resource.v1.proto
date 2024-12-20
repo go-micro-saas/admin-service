@@ -9,7 +9,7 @@ option java_package         = "saas.api.account.resourcev1";
 option java_outer_classname = "SaasApiAccountResourceV1";
 
 import "api/account-service/v1/enums/account.enum.v1.proto";
-// import "google/protobuf/empty.proto";
+import "validate/validate.proto";
 
 // PingReq ...
 message PingReq {
@@ -39,43 +39,39 @@ message UserInfo {
 
 // LoginOrSignupByPhoneReq 手机登陆(自动注册)
 message LoginOrSignupByPhoneReq {
-  // user_phone 手机号码
-  string user_phone = 1;
-  // code 验证码
-  string code = 5;
+  string user_phone = 1 [(validate.rules).string = { pattern: "^1[1-9]\\d{9}$" }];
+  string code       = 5 [(validate.rules).string = { max_len: 1024 }];
 }
 
 message SignupByPhoneReq {
-  string user_name = 1;
-  string password  = 2;
-  string code      = 3;
+  string phone            = 1 [(validate.rules).string = { pattern: "^1[1-9]\\d{9}$" }];
+  string password         = 2 [(validate.rules).string = { pattern: "^.{6,}$" }];
+  string password_confirm = 3 [(validate.rules).string = { pattern: "^.{6,}$" }];
+  string code             = 4 [(validate.rules).string = { max_len: 1024 }];
 }
 
 message SignupByEmailReq {
-  string email            = 1;
-  string password         = 2;
-  string password_confirm = 3;
-  string code             = 4;
+  string email            = 1 [(validate.rules).string = { email: true }];
+  string password         = 2 [(validate.rules).string = { pattern: "^.{6,}$" }];
+  string password_confirm = 3 [(validate.rules).string = { pattern: "^.{6,}$" }];
+  string code             = 4 [(validate.rules).string = { max_len: 1024 }];
 }
 
-// LoginByPhoneReq 用户登录
 message LoginByPhoneReq {
-  string phone    = 1;
-  string password = 2;
-  string code     = 3;
+  string phone    = 1 [(validate.rules).string = { pattern: "^1[1-9]\\d{9}$" }];
+  string password = 2 [(validate.rules).string = { pattern: "^.{6,}$" }];
+  string code     = 3 [(validate.rules).string = { max_len: 1024 }];
 }
 
-// LoginByEmailReq 用户登录
 message LoginByEmailReq {
-  string email    = 1;
-  string password = 2;
-  string code     = 3;
+  string email    = 1 [(validate.rules).string = { email: true }];
+  string password = 2 [(validate.rules).string = { pattern: "^.{6,}$" }];
+  string code     = 3 [(validate.rules).string = { max_len: 1024 }];
 }
 
-// OpenApiLoginReq ...
-message OpenApiLoginReq {
-  string access_id     = 1;
-  string access_secret = 2;
+message LoginByOpenApiReq {
+  string access_id     = 1 [(validate.rules).string = { pattern: "^.{1,255}$" }];
+  string access_secret = 2 [(validate.rules).string = { pattern: "^.{1,255}$" }];
 }
 
 message LoginResp {
@@ -97,13 +93,13 @@ message LoginRespData {
 }
 
 message RefreshTokenReq {
-  string refresh_token = 1;
+  string refresh_token = 1 [(validate.rules).string = { min_len: 1, max_len: 1024 }];
 }
 
 message ChangePasswordReq {
-  string old_password         = 1;
-  string new_password         = 2;
-  string new_password_confirm = 3;
+  string old_password         = 1 [(validate.rules).string = { pattern: "^.{6,}$" }];
+  string new_password         = 2 [(validate.rules).string = { pattern: "^.{6,}$" }];
+  string new_password_confirm = 3 [(validate.rules).string = { pattern: "^.{6,}$" }];
 }
 message ChangePasswordResp {
   int32 code                   = 1;
@@ -117,7 +113,7 @@ message ChangePasswordRespData {
 }
 
 message ChangeAvatarReq {
-  string user_avatar = 2;
+  string user_avatar = 2 [(validate.rules).string = { min_len: 1, max_len: 1024 }];
 }
 message ChangeAvatarResp {
   int32 code                   = 1;
@@ -131,7 +127,8 @@ message ChangeAvatarRespData {
 }
 
 message ChangePhoneReq {
-  string user_phone = 2;
+  string user_phone = 1 [(validate.rules).string = { pattern: "^1[1-9]\\d{9}$" }];
+  string code       = 2 [(validate.rules).string = { max_len: 1024 }];
 }
 message ChangePhoneResp {
   int32 code                   = 1;
@@ -145,7 +142,8 @@ message ChangePhoneRespData {
 }
 
 message ChangeEmailReq {
-  string user_email = 2;
+  string user_email = 1 [(validate.rules).string = { email: true }];
+  string code       = 2 [(validate.rules).string = { max_len: 1024 }];
 }
 message ChangeEmailResp {
   int32 code                   = 1;
@@ -159,7 +157,7 @@ message ChangeEmailRespData {
 }
 
 message ChangeNicknameReq {
-  string user_nickname = 2;
+  string user_nickname = 2 [(validate.rules).string = { min_len: 1, max_len: 1024 }];
 }
 message ChangeNicknameResp {
   int32 code                   = 1;
@@ -173,7 +171,7 @@ message ChangeNicknameRespData {
 }
 
 message ChangeGenderReq {
-  enumv1.UserGenderEnum.UserGender user_gender = 6;
+  enumv1.UserGenderEnum.UserGender user_gender = 6 [(validate.rules).enum = { not_in: [ 0 ] }];
 }
 message ChangeGenderResp {
   int32 code                   = 1;

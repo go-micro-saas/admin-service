@@ -20,6 +20,8 @@ var ERROR_http_code = map[string]int{
 	"S103_USER_ACCOUNT_EXPIRE":      400,
 	"S103_USER_STATUS_NOT_ALLOW":    400,
 	"S103_USER_ACTIVE_TIME_INVALID": 400,
+	"S103_INVALID_PHONE":            400,
+	"S103_INVALID_EMAIL":            400,
 }
 
 func (x ERROR) HTTPCode() int {
@@ -103,5 +105,19 @@ func DefaultErrorS103UserStatusNotAllow() *errors.Error {
 func DefaultErrorS103UserActiveTimeInvalid() *errors.Error {
 	e := errors.New(400, ERROR_S103_USER_ACTIVE_TIME_INVALID.String(), "不在有效的激活期间")
 	e.Metadata = map[string]string{"reason": strconv.Itoa(int(ERROR_S103_USER_ACTIVE_TIME_INVALID.Number()))}
+	return e
+}
+
+// 无效的手机号
+func DefaultErrorS103InvalidPhone() *errors.Error {
+	e := errors.New(400, ERROR_S103_INVALID_PHONE.String(), "无效的手机号")
+	e.Metadata = map[string]string{"reason": strconv.Itoa(int(ERROR_S103_INVALID_PHONE.Number()))}
+	return e
+}
+
+// 无效的邮箱
+func DefaultErrorS103InvalidEmail() *errors.Error {
+	e := errors.New(400, ERROR_S103_INVALID_EMAIL.String(), "无效的邮箱")
+	e.Metadata = map[string]string{"reason": strconv.Itoa(int(ERROR_S103_INVALID_EMAIL.Number()))}
 	return e
 }

@@ -63,7 +63,7 @@ service SrvUserAuthV1 {
     };
   }
   // 身份验证-开发平台登录
-  rpc OpenApiLogin(resourcev1.OpenApiLoginReq) returns (resourcev1.LoginResp) {
+  rpc LoginByOpenApi(resourcev1.LoginByOpenApiReq) returns (resourcev1.LoginResp) {
     option (google.api.http) = {
       post: "/api/v1/open-api/auth/login"
       body: "*"

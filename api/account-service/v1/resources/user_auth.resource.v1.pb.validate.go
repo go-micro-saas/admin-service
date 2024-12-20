@@ -503,9 +503,27 @@ func (m *LoginOrSignupByPhoneReq) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for UserPhone
+	if !_LoginOrSignupByPhoneReq_UserPhone_Pattern.MatchString(m.GetUserPhone()) {
+		err := LoginOrSignupByPhoneReqValidationError{
+			field:  "UserPhone",
+			reason: "value does not match regex pattern \"^1[1-9]\\\\d{9}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for Code
+	if utf8.RuneCountInString(m.GetCode()) > 1024 {
+		err := LoginOrSignupByPhoneReqValidationError{
+			field:  "Code",
+			reason: "value length must be at most 1024 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return LoginOrSignupByPhoneReqMultiError(errors)
@@ -587,6 +605,8 @@ var _ interface {
 	ErrorName() string
 } = LoginOrSignupByPhoneReqValidationError{}
 
+var _LoginOrSignupByPhoneReq_UserPhone_Pattern = regexp.MustCompile("^1[1-9]\\d{9}$")
+
 // Validate checks the field values on SignupByPhoneReq with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
@@ -609,11 +629,49 @@ func (m *SignupByPhoneReq) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for UserName
+	if !_SignupByPhoneReq_Phone_Pattern.MatchString(m.GetPhone()) {
+		err := SignupByPhoneReqValidationError{
+			field:  "Phone",
+			reason: "value does not match regex pattern \"^1[1-9]\\\\d{9}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for Password
+	if !_SignupByPhoneReq_Password_Pattern.MatchString(m.GetPassword()) {
+		err := SignupByPhoneReqValidationError{
+			field:  "Password",
+			reason: "value does not match regex pattern \"^.{6,}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for Code
+	if !_SignupByPhoneReq_PasswordConfirm_Pattern.MatchString(m.GetPasswordConfirm()) {
+		err := SignupByPhoneReqValidationError{
+			field:  "PasswordConfirm",
+			reason: "value does not match regex pattern \"^.{6,}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetCode()) > 1024 {
+		err := SignupByPhoneReqValidationError{
+			field:  "Code",
+			reason: "value length must be at most 1024 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return SignupByPhoneReqMultiError(errors)
@@ -693,6 +751,12 @@ var _ interface {
 	ErrorName() string
 } = SignupByPhoneReqValidationError{}
 
+var _SignupByPhoneReq_Phone_Pattern = regexp.MustCompile("^1[1-9]\\d{9}$")
+
+var _SignupByPhoneReq_Password_Pattern = regexp.MustCompile("^.{6,}$")
+
+var _SignupByPhoneReq_PasswordConfirm_Pattern = regexp.MustCompile("^.{6,}$")
+
 // Validate checks the field values on SignupByEmailReq with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
@@ -715,19 +779,106 @@ func (m *SignupByEmailReq) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Email
+	if err := m._validateEmail(m.GetEmail()); err != nil {
+		err = SignupByEmailReqValidationError{
+			field:  "Email",
+			reason: "value must be a valid email address",
+			cause:  err,
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for Password
+	if !_SignupByEmailReq_Password_Pattern.MatchString(m.GetPassword()) {
+		err := SignupByEmailReqValidationError{
+			field:  "Password",
+			reason: "value does not match regex pattern \"^.{6,}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for PasswordConfirm
+	if !_SignupByEmailReq_PasswordConfirm_Pattern.MatchString(m.GetPasswordConfirm()) {
+		err := SignupByEmailReqValidationError{
+			field:  "PasswordConfirm",
+			reason: "value does not match regex pattern \"^.{6,}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for Code
+	if utf8.RuneCountInString(m.GetCode()) > 1024 {
+		err := SignupByEmailReqValidationError{
+			field:  "Code",
+			reason: "value length must be at most 1024 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return SignupByEmailReqMultiError(errors)
 	}
 
 	return nil
+}
+
+func (m *SignupByEmailReq) _validateHostname(host string) error {
+	s := strings.ToLower(strings.TrimSuffix(host, "."))
+
+	if len(host) > 253 {
+		return errors.New("hostname cannot exceed 253 characters")
+	}
+
+	for _, part := range strings.Split(s, ".") {
+		if l := len(part); l == 0 || l > 63 {
+			return errors.New("hostname part must be non-empty and cannot exceed 63 characters")
+		}
+
+		if part[0] == '-' {
+			return errors.New("hostname parts cannot begin with hyphens")
+		}
+
+		if part[len(part)-1] == '-' {
+			return errors.New("hostname parts cannot end with hyphens")
+		}
+
+		for _, r := range part {
+			if (r < 'a' || r > 'z') && (r < '0' || r > '9') && r != '-' {
+				return fmt.Errorf("hostname parts can only contain alphanumeric characters or hyphens, got %q", string(r))
+			}
+		}
+	}
+
+	return nil
+}
+
+func (m *SignupByEmailReq) _validateEmail(addr string) error {
+	a, err := mail.ParseAddress(addr)
+	if err != nil {
+		return err
+	}
+	addr = a.Address
+
+	if len(addr) > 254 {
+		return errors.New("email addresses cannot exceed 254 characters")
+	}
+
+	parts := strings.SplitN(addr, "@", 2)
+
+	if len(parts[0]) > 64 {
+		return errors.New("email address local phrase cannot exceed 64 characters")
+	}
+
+	return m._validateHostname(parts[1])
 }
 
 // SignupByEmailReqMultiError is an error wrapping multiple validation errors
@@ -801,6 +952,10 @@ var _ interface {
 	ErrorName() string
 } = SignupByEmailReqValidationError{}
 
+var _SignupByEmailReq_Password_Pattern = regexp.MustCompile("^.{6,}$")
+
+var _SignupByEmailReq_PasswordConfirm_Pattern = regexp.MustCompile("^.{6,}$")
+
 // Validate checks the field values on LoginByPhoneReq with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
@@ -823,11 +978,38 @@ func (m *LoginByPhoneReq) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Phone
+	if !_LoginByPhoneReq_Phone_Pattern.MatchString(m.GetPhone()) {
+		err := LoginByPhoneReqValidationError{
+			field:  "Phone",
+			reason: "value does not match regex pattern \"^1[1-9]\\\\d{9}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for Password
+	if !_LoginByPhoneReq_Password_Pattern.MatchString(m.GetPassword()) {
+		err := LoginByPhoneReqValidationError{
+			field:  "Password",
+			reason: "value does not match regex pattern \"^.{6,}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for Code
+	if utf8.RuneCountInString(m.GetCode()) > 1024 {
+		err := LoginByPhoneReqValidationError{
+			field:  "Code",
+			reason: "value length must be at most 1024 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return LoginByPhoneReqMultiError(errors)
@@ -907,6 +1089,10 @@ var _ interface {
 	ErrorName() string
 } = LoginByPhoneReqValidationError{}
 
+var _LoginByPhoneReq_Phone_Pattern = regexp.MustCompile("^1[1-9]\\d{9}$")
+
+var _LoginByPhoneReq_Password_Pattern = regexp.MustCompile("^.{6,}$")
+
 // Validate checks the field values on LoginByEmailReq with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
@@ -929,17 +1115,95 @@ func (m *LoginByEmailReq) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Email
+	if err := m._validateEmail(m.GetEmail()); err != nil {
+		err = LoginByEmailReqValidationError{
+			field:  "Email",
+			reason: "value must be a valid email address",
+			cause:  err,
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for Password
+	if !_LoginByEmailReq_Password_Pattern.MatchString(m.GetPassword()) {
+		err := LoginByEmailReqValidationError{
+			field:  "Password",
+			reason: "value does not match regex pattern \"^.{6,}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for Code
+	if utf8.RuneCountInString(m.GetCode()) > 1024 {
+		err := LoginByEmailReqValidationError{
+			field:  "Code",
+			reason: "value length must be at most 1024 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return LoginByEmailReqMultiError(errors)
 	}
 
 	return nil
+}
+
+func (m *LoginByEmailReq) _validateHostname(host string) error {
+	s := strings.ToLower(strings.TrimSuffix(host, "."))
+
+	if len(host) > 253 {
+		return errors.New("hostname cannot exceed 253 characters")
+	}
+
+	for _, part := range strings.Split(s, ".") {
+		if l := len(part); l == 0 || l > 63 {
+			return errors.New("hostname part must be non-empty and cannot exceed 63 characters")
+		}
+
+		if part[0] == '-' {
+			return errors.New("hostname parts cannot begin with hyphens")
+		}
+
+		if part[len(part)-1] == '-' {
+			return errors.New("hostname parts cannot end with hyphens")
+		}
+
+		for _, r := range part {
+			if (r < 'a' || r > 'z') && (r < '0' || r > '9') && r != '-' {
+				return fmt.Errorf("hostname parts can only contain alphanumeric characters or hyphens, got %q", string(r))
+			}
+		}
+	}
+
+	return nil
+}
+
+func (m *LoginByEmailReq) _validateEmail(addr string) error {
+	a, err := mail.ParseAddress(addr)
+	if err != nil {
+		return err
+	}
+	addr = a.Address
+
+	if len(addr) > 254 {
+		return errors.New("email addresses cannot exceed 254 characters")
+	}
+
+	parts := strings.SplitN(addr, "@", 2)
+
+	if len(parts[0]) > 64 {
+		return errors.New("email address local phrase cannot exceed 64 characters")
+	}
+
+	return m._validateHostname(parts[1])
 }
 
 // LoginByEmailReqMultiError is an error wrapping multiple validation errors
@@ -1013,46 +1277,66 @@ var _ interface {
 	ErrorName() string
 } = LoginByEmailReqValidationError{}
 
-// Validate checks the field values on OpenApiLoginReq with the rules defined
+var _LoginByEmailReq_Password_Pattern = regexp.MustCompile("^.{6,}$")
+
+// Validate checks the field values on LoginByOpenApiReq with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
-func (m *OpenApiLoginReq) Validate() error {
+func (m *LoginByOpenApiReq) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on OpenApiLoginReq with the rules
+// ValidateAll checks the field values on LoginByOpenApiReq with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// OpenApiLoginReqMultiError, or nil if none found.
-func (m *OpenApiLoginReq) ValidateAll() error {
+// LoginByOpenApiReqMultiError, or nil if none found.
+func (m *LoginByOpenApiReq) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *OpenApiLoginReq) validate(all bool) error {
+func (m *LoginByOpenApiReq) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
-	// no validation rules for AccessId
+	if !_LoginByOpenApiReq_AccessId_Pattern.MatchString(m.GetAccessId()) {
+		err := LoginByOpenApiReqValidationError{
+			field:  "AccessId",
+			reason: "value does not match regex pattern \"^.{1,255}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for AccessSecret
+	if !_LoginByOpenApiReq_AccessSecret_Pattern.MatchString(m.GetAccessSecret()) {
+		err := LoginByOpenApiReqValidationError{
+			field:  "AccessSecret",
+			reason: "value does not match regex pattern \"^.{1,255}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
-		return OpenApiLoginReqMultiError(errors)
+		return LoginByOpenApiReqMultiError(errors)
 	}
 
 	return nil
 }
 
-// OpenApiLoginReqMultiError is an error wrapping multiple validation errors
-// returned by OpenApiLoginReq.ValidateAll() if the designated constraints
+// LoginByOpenApiReqMultiError is an error wrapping multiple validation errors
+// returned by LoginByOpenApiReq.ValidateAll() if the designated constraints
 // aren't met.
-type OpenApiLoginReqMultiError []error
+type LoginByOpenApiReqMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m OpenApiLoginReqMultiError) Error() string {
+func (m LoginByOpenApiReqMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -1061,11 +1345,11 @@ func (m OpenApiLoginReqMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m OpenApiLoginReqMultiError) AllErrors() []error { return m }
+func (m LoginByOpenApiReqMultiError) AllErrors() []error { return m }
 
-// OpenApiLoginReqValidationError is the validation error returned by
-// OpenApiLoginReq.Validate if the designated constraints aren't met.
-type OpenApiLoginReqValidationError struct {
+// LoginByOpenApiReqValidationError is the validation error returned by
+// LoginByOpenApiReq.Validate if the designated constraints aren't met.
+type LoginByOpenApiReqValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1073,22 +1357,24 @@ type OpenApiLoginReqValidationError struct {
 }
 
 // Field function returns field value.
-func (e OpenApiLoginReqValidationError) Field() string { return e.field }
+func (e LoginByOpenApiReqValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e OpenApiLoginReqValidationError) Reason() string { return e.reason }
+func (e LoginByOpenApiReqValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e OpenApiLoginReqValidationError) Cause() error { return e.cause }
+func (e LoginByOpenApiReqValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e OpenApiLoginReqValidationError) Key() bool { return e.key }
+func (e LoginByOpenApiReqValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e OpenApiLoginReqValidationError) ErrorName() string { return "OpenApiLoginReqValidationError" }
+func (e LoginByOpenApiReqValidationError) ErrorName() string {
+	return "LoginByOpenApiReqValidationError"
+}
 
 // Error satisfies the builtin error interface
-func (e OpenApiLoginReqValidationError) Error() string {
+func (e LoginByOpenApiReqValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1100,14 +1386,14 @@ func (e OpenApiLoginReqValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sOpenApiLoginReq.%s: %s%s",
+		"invalid %sLoginByOpenApiReq.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = OpenApiLoginReqValidationError{}
+var _ error = LoginByOpenApiReqValidationError{}
 
 var _ interface {
 	Field() string
@@ -1115,7 +1401,11 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = OpenApiLoginReqValidationError{}
+} = LoginByOpenApiReqValidationError{}
+
+var _LoginByOpenApiReq_AccessId_Pattern = regexp.MustCompile("^.{1,255}$")
+
+var _LoginByOpenApiReq_AccessSecret_Pattern = regexp.MustCompile("^.{1,255}$")
 
 // Validate checks the field values on LoginResp with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
@@ -1412,7 +1702,16 @@ func (m *RefreshTokenReq) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for RefreshToken
+	if l := utf8.RuneCountInString(m.GetRefreshToken()); l < 1 || l > 1024 {
+		err := RefreshTokenReqValidationError{
+			field:  "RefreshToken",
+			reason: "value length must be between 1 and 1024 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return RefreshTokenReqMultiError(errors)
@@ -1514,11 +1813,38 @@ func (m *ChangePasswordReq) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for OldPassword
+	if !_ChangePasswordReq_OldPassword_Pattern.MatchString(m.GetOldPassword()) {
+		err := ChangePasswordReqValidationError{
+			field:  "OldPassword",
+			reason: "value does not match regex pattern \"^.{6,}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for NewPassword
+	if !_ChangePasswordReq_NewPassword_Pattern.MatchString(m.GetNewPassword()) {
+		err := ChangePasswordReqValidationError{
+			field:  "NewPassword",
+			reason: "value does not match regex pattern \"^.{6,}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for NewPasswordConfirm
+	if !_ChangePasswordReq_NewPasswordConfirm_Pattern.MatchString(m.GetNewPasswordConfirm()) {
+		err := ChangePasswordReqValidationError{
+			field:  "NewPasswordConfirm",
+			reason: "value does not match regex pattern \"^.{6,}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return ChangePasswordReqMultiError(errors)
@@ -1599,6 +1925,12 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ChangePasswordReqValidationError{}
+
+var _ChangePasswordReq_OldPassword_Pattern = regexp.MustCompile("^.{6,}$")
+
+var _ChangePasswordReq_NewPassword_Pattern = regexp.MustCompile("^.{6,}$")
+
+var _ChangePasswordReq_NewPasswordConfirm_Pattern = regexp.MustCompile("^.{6,}$")
 
 // Validate checks the field values on ChangePasswordResp with the rules
 // defined in the proto definition for this message. If any rules are
@@ -1863,7 +2195,16 @@ func (m *ChangeAvatarReq) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for UserAvatar
+	if l := utf8.RuneCountInString(m.GetUserAvatar()); l < 1 || l > 1024 {
+		err := ChangeAvatarReqValidationError{
+			field:  "UserAvatar",
+			reason: "value length must be between 1 and 1024 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return ChangeAvatarReqMultiError(errors)
@@ -2204,7 +2545,27 @@ func (m *ChangePhoneReq) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for UserPhone
+	if !_ChangePhoneReq_UserPhone_Pattern.MatchString(m.GetUserPhone()) {
+		err := ChangePhoneReqValidationError{
+			field:  "UserPhone",
+			reason: "value does not match regex pattern \"^1[1-9]\\\\d{9}$\"",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetCode()) > 1024 {
+		err := ChangePhoneReqValidationError{
+			field:  "Code",
+			reason: "value length must be at most 1024 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return ChangePhoneReqMultiError(errors)
@@ -2283,6 +2644,8 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ChangePhoneReqValidationError{}
+
+var _ChangePhoneReq_UserPhone_Pattern = regexp.MustCompile("^1[1-9]\\d{9}$")
 
 // Validate checks the field values on ChangePhoneResp with the rules defined
 // in the proto definition for this message. If any rules are violated, the
@@ -2545,13 +2908,84 @@ func (m *ChangeEmailReq) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for UserEmail
+	if err := m._validateEmail(m.GetUserEmail()); err != nil {
+		err = ChangeEmailReqValidationError{
+			field:  "UserEmail",
+			reason: "value must be a valid email address",
+			cause:  err,
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetCode()) > 1024 {
+		err := ChangeEmailReqValidationError{
+			field:  "Code",
+			reason: "value length must be at most 1024 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return ChangeEmailReqMultiError(errors)
 	}
 
 	return nil
+}
+
+func (m *ChangeEmailReq) _validateHostname(host string) error {
+	s := strings.ToLower(strings.TrimSuffix(host, "."))
+
+	if len(host) > 253 {
+		return errors.New("hostname cannot exceed 253 characters")
+	}
+
+	for _, part := range strings.Split(s, ".") {
+		if l := len(part); l == 0 || l > 63 {
+			return errors.New("hostname part must be non-empty and cannot exceed 63 characters")
+		}
+
+		if part[0] == '-' {
+			return errors.New("hostname parts cannot begin with hyphens")
+		}
+
+		if part[len(part)-1] == '-' {
+			return errors.New("hostname parts cannot end with hyphens")
+		}
+
+		for _, r := range part {
+			if (r < 'a' || r > 'z') && (r < '0' || r > '9') && r != '-' {
+				return fmt.Errorf("hostname parts can only contain alphanumeric characters or hyphens, got %q", string(r))
+			}
+		}
+	}
+
+	return nil
+}
+
+func (m *ChangeEmailReq) _validateEmail(addr string) error {
+	a, err := mail.ParseAddress(addr)
+	if err != nil {
+		return err
+	}
+	addr = a.Address
+
+	if len(addr) > 254 {
+		return errors.New("email addresses cannot exceed 254 characters")
+	}
+
+	parts := strings.SplitN(addr, "@", 2)
+
+	if len(parts[0]) > 64 {
+		return errors.New("email address local phrase cannot exceed 64 characters")
+	}
+
+	return m._validateHostname(parts[1])
 }
 
 // ChangeEmailReqMultiError is an error wrapping multiple validation errors
@@ -2886,7 +3320,16 @@ func (m *ChangeNicknameReq) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for UserNickname
+	if l := utf8.RuneCountInString(m.GetUserNickname()); l < 1 || l > 1024 {
+		err := ChangeNicknameReqValidationError{
+			field:  "UserNickname",
+			reason: "value length must be between 1 and 1024 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return ChangeNicknameReqMultiError(errors)
@@ -3231,7 +3674,16 @@ func (m *ChangeGenderReq) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for UserGender
+	if _, ok := _ChangeGenderReq_UserGender_NotInLookup[m.GetUserGender()]; ok {
+		err := ChangeGenderReqValidationError{
+			field:  "UserGender",
+			reason: "value must not be in list [UNSPECIFIED]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return ChangeGenderReqMultiError(errors)
@@ -3310,6 +3762,10 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ChangeGenderReqValidationError{}
+
+var _ChangeGenderReq_UserGender_NotInLookup = map[enumv1.UserGenderEnum_UserGender]struct{}{
+	0: {},
+}
 
 // Validate checks the field values on ChangeGenderResp with the rules defined
 // in the proto definition for this message. If any rules are violated, the

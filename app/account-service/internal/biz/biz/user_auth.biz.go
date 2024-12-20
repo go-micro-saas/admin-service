@@ -10,6 +10,7 @@ import (
 	"github.com/go-micro-saas/account-service/app/account-service/internal/data/po"
 	datarepos "github.com/go-micro-saas/account-service/app/account-service/internal/data/repo"
 	passwordutil "github.com/ikaiguang/go-srv-kit/kit/password"
+	regexpkg "github.com/ikaiguang/go-srv-kit/kit/regex"
 	uuidpkg "github.com/ikaiguang/go-srv-kit/kit/uuid"
 	authpkg "github.com/ikaiguang/go-srv-kit/kratos/auth"
 	errorpkg "github.com/ikaiguang/go-srv-kit/kratos/error"
@@ -53,20 +54,19 @@ func (s *userAuthBiz) LoginByEmail(ctx context.Context, in *resourcev1.LoginByEm
 		return nil, nil, err
 	}
 	loginParam := &bo.LoginParam{
-		Password: in.Password,
+		PlaintextPassword: in.Password,
 	}
 	return s.LoginByUserID(ctx, regEmailModel.UserId, loginParam)
 }
 
 // LoginByPhone ...
 func (s *userAuthBiz) LoginByPhone(ctx context.Context, in *resourcev1.LoginByPhoneReq) (*po.User, *bo.SignTokenResp, error) {
-	// 注册邮箱
 	regPhoneModel, err := s.CheckAndGetByRegisterPhone(ctx, in.Phone)
 	if err != nil {
 		return nil, nil, err
 	}
 	loginParam := &bo.LoginParam{
-		Password: in.Password,
+		PlaintextPassword: in.Password,
 	}
 	return s.LoginByUserID(ctx, regPhoneModel.UserId, loginParam)
 }
@@ -89,7 +89,7 @@ func (s *userAuthBiz) LoginByUserID(ctx context.Context, userID uint64, loginPar
 // LoginByUser ...
 func (s *userAuthBiz) LoginByUser(ctx context.Context, userModel *po.User, loginParam *bo.LoginParam) (*bo.SignTokenResp, error) {
 	// 验证用户
-	err := s.ValidateLoginUser(userModel, loginParam.Password)
+	err := s.ValidateLoginUser(userModel, loginParam)
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +108,7 @@ func (s *userAuthBiz) LoginByUser(ctx context.Context, userModel *po.User, login
 // CheckAndGetByRegisterEmail 邮箱是否存在
 func (s *userAuthBiz) CheckAndGetByRegisterEmail(ctx context.Context, email string) (*po.UserRegEmail, error) {
 	// 注册邮箱
-	regEmailModel, isNotFound, err := s.userRegEmailDataRepo.QueryOneByUserEmail(ctx, email)
+	regModel, isNotFound, err := s.userRegEmailDataRepo.QueryOneByUserEmail(ctx, email)
 	if err != nil {
 		return nil, err
 	}
@@ -116,13 +116,13 @@ func (s *userAuthBiz) CheckAndGetByRegisterEmail(ctx context.Context, email stri
 		e := errorv1.ErrorS103UserNotExist("用户不存在")
 		return nil, errorpkg.WithStack(e)
 	}
-	return regEmailModel, nil
+	return regModel, nil
 }
 
 // CheckAndGetByRegisterPhone 手机是否存在
 func (s *userAuthBiz) CheckAndGetByRegisterPhone(ctx context.Context, phone string) (*po.UserRegPhone, error) {
 	// 注册手机
-	regEmailModel, isNotFound, err := s.userRegPhoneDataRepo.QueryOneByUserPhone(ctx, phone)
+	regModel, isNotFound, err := s.userRegPhoneDataRepo.QueryOneByUserPhone(ctx, phone)
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +130,7 @@ func (s *userAuthBiz) CheckAndGetByRegisterPhone(ctx context.Context, phone stri
 		e := errorv1.ErrorS103UserNotExist("用户不存在")
 		return nil, errorpkg.WithStack(e)
 	}
-	return regEmailModel, nil
+	return regModel, nil
 }
 
 // CheckAndGetUserByUserId 用户是否存在
@@ -147,10 +147,12 @@ func (s *userAuthBiz) CheckAndGetUserByUserId(ctx context.Context, userId uint64
 }
 
 // ValidateLoginUser 对比密码
-func (s *userAuthBiz) ValidateLoginUser(userModel *po.User, plaintextPassword string) error {
-	err := s.ComparePassword(userModel.PasswordHash, plaintextPassword)
-	if err != nil {
-		return err
+func (s *userAuthBiz) ValidateLoginUser(userModel *po.User, loginParam *bo.LoginParam) error {
+	if !loginParam.SkipValidatePassword {
+		err := s.ComparePassword(userModel.PasswordHash, loginParam.PlaintextPassword)
+		if err != nil {
+			return err
+		}
 	}
 	if !userModel.IsValidStatus() {
 		e := errorv1.ErrorS103UserStatusNotAllow("无效的登录状态")
@@ -239,4 +241,31 @@ func (s *userAuthBiz) RefreshToken(ctx context.Context, refreshToken string) (*b
 	res := &bo.SignTokenResp{}
 	res.SetByAuthTokenResponse(tokenResp)
 	return res, nil
+}
+
+func (s *userAuthBiz) SignupByPhone(ctx context.Context, in *resourcev1.SignupByPhoneReq) (*po.User, *bo.SignTokenResp, error) {
+	if regexpkg.IsPhone(in.Phone) == false {
+		e := errorv1.ErrorS103InvalidPhone("无效的手机号")
+		return nil, nil, errorpkg.WithStack(e)
+
+	}
+	_, isNotFound, err := s.userRegPhoneDataRepo.QueryOneByUserPhone(ctx, in.Phone)
+	if err != nil {
+		return nil, nil, err
+	}
+	if !isNotFound {
+		e := errorv1.ErrorS103UserExist("用户已存在")
+		return nil, nil, errorpkg.WithStack(e)
+	}
+
+	var (
+		_ = po.NewUserByPhone(in.Phone)
+		_ = po.NewUserRegPhone(in.Phone)
+	)
+
+	loginParam := &bo.LoginParam{
+		SkipValidatePassword: true,
+		PlaintextPassword:    in.Password,
+	}
+	return s.LoginByUserID(ctx, 1, loginParam)
 }

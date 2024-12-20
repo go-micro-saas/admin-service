@@ -187,3 +187,35 @@ func ErrorS103UserActiveTimeInvalid(format string, args ...interface{}) *errors.
 	e.Metadata = map[string]string{"reason": strconv.Itoa(int(ERROR_S103_USER_ACTIVE_TIME_INVALID.Number()))}
 	return e
 }
+
+// 无效的手机号
+func IsS103InvalidPhone(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ERROR_S103_INVALID_PHONE.String() && e.Code == 400
+}
+
+// 无效的手机号
+func ErrorS103InvalidPhone(format string, args ...interface{}) *errors.Error {
+	e := errors.New(400, ERROR_S103_INVALID_PHONE.String(), fmt.Sprintf(format, args...))
+	e.Metadata = map[string]string{"reason": strconv.Itoa(int(ERROR_S103_INVALID_PHONE.Number()))}
+	return e
+}
+
+// 无效的邮箱
+func IsS103InvalidEmail(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ERROR_S103_INVALID_EMAIL.String() && e.Code == 400
+}
+
+// 无效的邮箱
+func ErrorS103InvalidEmail(format string, args ...interface{}) *errors.Error {
+	e := errors.New(400, ERROR_S103_INVALID_EMAIL.String(), fmt.Sprintf(format, args...))
+	e.Metadata = map[string]string{"reason": strconv.Itoa(int(ERROR_S103_INVALID_EMAIL.Number()))}
+	return e
+}

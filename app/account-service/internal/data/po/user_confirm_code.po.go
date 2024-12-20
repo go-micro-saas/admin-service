@@ -24,3 +24,22 @@ type UserConfirmCode struct {
 	ConfirmTime   uint64                                         `gorm:"column:confirm_time" json:"confirm_time"`     // 确认时间
 	CancelTime    uint64                                         `gorm:"column:cancel_time" json:"cancel_time"`       // 取消时间
 }
+
+// NewUserConfirmCode default UserConfirmCode
+func NewUserConfirmCode(code string) *UserConfirmCode {
+	var (
+		now = time.Now()
+	)
+	dataModel := &UserConfirmCode{
+		Id:            0,
+		CreatedTime:   now,
+		UpdatedTime:   now,
+		UserIdentify:  "",
+		ConfirmType:   enumv1.UserConfirmTypeEnum_UNSPECIFIED,
+		ConfirmCode:   code,
+		ConfirmStatus: enumv1.UserConfirmStatusEnum_UNSPECIFIED,
+		ConfirmTime:   0,
+		CancelTime:    0,
+	}
+	return dataModel
+}

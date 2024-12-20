@@ -159,135 +159,6 @@ var _ interface {
 	ErrorName() string
 } = UserValidationError{}
 
-// Validate checks the field values on UserSaveReq with the rules defined in
-// the proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *UserSaveReq) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on UserSaveReq with the rules defined in
-// the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in UserSaveReqMultiError, or
-// nil if none found.
-func (m *UserSaveReq) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *UserSaveReq) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for Id
-
-	// no validation rules for CreatedTime
-
-	// no validation rules for UpdatedTime
-
-	// no validation rules for DeletedTime
-
-	// no validation rules for UserId
-
-	// no validation rules for UserPhone
-
-	// no validation rules for UserEmail
-
-	// no validation rules for UserNickname
-
-	// no validation rules for UserAvatar
-
-	// no validation rules for UserGender
-
-	// no validation rules for RegisterType
-
-	// no validation rules for UserStatus
-
-	// no validation rules for DisableTime
-
-	// no validation rules for BlacklistTime
-
-	// no validation rules for PasswordHash
-
-	if len(errors) > 0 {
-		return UserSaveReqMultiError(errors)
-	}
-
-	return nil
-}
-
-// UserSaveReqMultiError is an error wrapping multiple validation errors
-// returned by UserSaveReq.ValidateAll() if the designated constraints aren't met.
-type UserSaveReqMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m UserSaveReqMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m UserSaveReqMultiError) AllErrors() []error { return m }
-
-// UserSaveReqValidationError is the validation error returned by
-// UserSaveReq.Validate if the designated constraints aren't met.
-type UserSaveReqValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e UserSaveReqValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e UserSaveReqValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e UserSaveReqValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e UserSaveReqValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e UserSaveReqValidationError) ErrorName() string { return "UserSaveReqValidationError" }
-
-// Error satisfies the builtin error interface
-func (e UserSaveReqValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sUserSaveReq.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = UserSaveReqValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = UserSaveReqValidationError{}
-
 // Validate checks the field values on UserIdReq with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -310,7 +181,16 @@ func (m *UserIdReq) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for UserId
+	if m.GetUserId() <= 0 {
+		err := UserIdReqValidationError{
+			field:  "UserId",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return UserIdReqMultiError(errors)
@@ -410,6 +290,17 @@ func (m *UserIdsReq) validate(all bool) error {
 	}
 
 	var errors []error
+
+	if len(m.GetUserIds()) < 1 {
+		err := UserIdsReqValidationError{
+			field:  "UserIds",
+			reason: "value must contain at least 1 item(s)",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return UserIdsReqMultiError(errors)
