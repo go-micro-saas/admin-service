@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package saas.api.account.servicev1;
+
+// 多语言特定包名，用于源代码引用
+option go_package           = "github.com/go-micro-saas/account-service/api/account-service/v1/services;servicev1";
+option java_multiple_files  = true;
+option java_package         = "saas.api.account.servicev1";
+option java_outer_classname = "SaasApiAccountServiceV1";
+
+import "google/api/annotations.proto";
+import "api/account-service/v1/resources/user_auth.resource.v1.proto";
+
+// SrvUserAuthV1 User service
+service SrvUserAuthV1 {
+  // 身份验证-Ping测试
+  rpc Ping(resourcev1.PingReq) returns (resourcev1.PingResp) {
+    option (google.api.http) = {
+      get: "/api/v1/user/auth/ping"
+      // body:"*" // WARN: GET xxx body should not be declared.
+    };
+  }
+  // 身份验证-刷新Token
+  rpc RefreshToken(resourcev1.RefreshTokenReq) returns (resourcev1.LoginResp) {
+    option (google.api.http) = {
+      post: "/api/v1/user/auth/refresh-token"
+      body: "*"
+    };
+  }
+  // 身份验证-Email登录
+  rpc LoginByEmail(resourcev1.LoginByEmailReq) returns (resourcev1.LoginResp) {
+    option (google.api.http) = {
+      post: "/api/v1/user/auth/login-by-email"
+      body: "*"
+    };
+  }
+  // 身份验证-手机登录
+  rpc LoginByPhone(resourcev1.LoginByPhoneReq) returns (resourcev1.LoginResp) {
+    option (google.api.http) = {
+      post: "/api/v1/user/auth/login-by-phone"
+      body: "*"
+    };
+  }
+  // 身份验证-开发平台登录
+  rpc OpenApiLogin(resourcev1.OpenApiLoginReq) returns (resourcev1.LoginResp) {
+    option (google.api.http) = {
+      post: "/api/v1/user/open-api/login"
+      body: "*"
+    };
+  }
+}

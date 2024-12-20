@@ -1,0 +1,112 @@
+syntax = "proto3";
+
+package saas.api.account.resourcev1;
+
+// 多语言特定包名，用于源代码引用
+option go_package           = "github.com/go-micro-saas/account-service/api/account-service/v1/resources;resourcev1";
+option java_multiple_files  = true;
+option java_package         = "saas.api.account.resourcev1";
+option java_outer_classname = "SaasApiAccountResourceV1";
+
+import "github.com/ikaiguang/go-srv-kit/kit/page/page.kit.proto";
+import "api/account-service/v1/enums/account.enum.v1.proto";
+
+// User 用户
+message User {
+  // id ID
+  uint64 id = 1;
+  // created_time 创建时间
+  string created_time = 2;
+  // updated_time 最后修改时间
+  string updated_time = 3;
+  // deleted_time 删除时间
+  uint64 deleted_time = 4;
+  // user_id uid
+  uint64 user_id = 5;
+  // user_phone 手机
+  string user_phone = 6;
+  // user_email 邮箱
+  string user_email = 7;
+  // user_nickname 昵称
+  string user_nickname = 8;
+  // user_avatar 头像
+  string user_avatar = 9;
+  // user_gender 性别；0：INIT，1：MALE，2：FEMALE，3：SECRET
+  enumv1.UserGenderEnum.UserGender user_gender = 10;
+  // user_status 状态；0：INIT，1：ENABLE，2：DISABLE，3：WHITELIST，4：BLACKLIST，5：DELETED
+  enumv1.UserStatusEnum.UserStatus user_status = 12;
+  // register_type 注册类型；0：INIT，1：EMAIL，2：MOBILE，3：。。。参考ENUM定义
+  // enumv1.UserRegisterTypeEnum.UserRegisterType register_type = 11;
+  // disable_time 禁用时间
+  //  uint64 disable_time = 13;
+  // blacklist_time 黑名单时间
+  //  uint64 blacklist_time = 14;
+  // password_hash 密码HASH
+  //  string password_hash = 15;
+}
+
+// UserSaveReq save
+message UserSaveReq {
+  // id ID
+  uint64 id = 1;
+  // created_time 创建时间
+  string created_time = 2;
+  // updated_time 最后修改时间
+  string updated_time = 3;
+  // deleted_time 删除时间
+  uint64 deleted_time = 4;
+  // user_id uid
+  uint64 user_id = 5;
+  // user_phone 手机
+  string user_phone = 6;
+  // user_email 邮箱
+  string user_email = 7;
+  // user_nickname 昵称
+  string user_nickname = 8;
+  // user_avatar 头像
+  string user_avatar = 9;
+  // user_gender 性别；0：INIT，1：MALE，2：FEMALE，3：SECRET
+  enumv1.UserGenderEnum.UserGender user_gender = 10;
+  // register_type 注册类型；0：INIT，1：EMAIL，2：MOBILE，3：。。。参考ENUM定义
+  enumv1.UserRegisterTypeEnum.UserRegisterType register_type = 11;
+  // user_status 状态；0：INIT，1：ENABLE，2：DISABLE，3：WHITELIST，4：BLACKLIST，5：DELETED
+  enumv1.UserStatusEnum.UserStatus user_status = 12;
+  // disable_time 禁用时间
+  uint64 disable_time = 13;
+  // blacklist_time 黑名单时间
+  uint64 blacklist_time = 14;
+  // password_hash 密码HASH
+  string password_hash = 15;
+}
+
+// UserIdReq id
+message UserIdReq {
+  // user_id id
+  int64 user_id = 1;
+}
+
+// UserIdsReq ids
+message UserIdsReq {
+  // user_ids ids
+  repeated int64 user_ids = 1;
+}
+
+// UserListReq list
+message UserListReq {
+  // page_request paging request
+  kit.page.pagepkg.PageRequest page_request = 1;
+}
+
+// UserListResp list
+message UserListResp {
+  // list User-array
+  repeated User list = 1;
+  // page_info paging response
+  kit.page.pagepkg.PageResponse page_info = 2;
+}
+
+// UserProcessResult process result
+message UserProcessResult {
+  // is_success true or false
+  bool is_success = 1;
+}

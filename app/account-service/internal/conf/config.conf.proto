@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package saas.api.testing.conf;
+
+option go_package           = "github.com/go-micro-saas/account-service/app/account-service/internal/conf;conf";
+option java_multiple_files  = true;
+option java_package         = "saas.api.account.conf";
+option java_outer_classname = "SaasApiAccountConf";
+
+import "validate/validate.proto";
+
+message ServiceConfig {
+  message AccountService {
+    // Snowflake nodeid for snowflake
+    message Snowflake {
+      string instance_id           = 1 [(validate.rules).string = { min_len: 1 }];
+      string instance_name         = 2;
+      map<string, string> metadata = 3;
+    }
+
+    string key          = 1 [(validate.rules).string = { ignore_empty: true }];
+    Snowflake snowflake = 2;
+  }
+  AccountService account_service = 1;
+}
