@@ -44,13 +44,22 @@ func exportUserRegEmailDataRepo(launcherManager setuputil.LauncherManager) (data
 	return nil, nil
 }
 
+func exportUserConfirmCodeDataRepo(launcherManager setuputil.LauncherManager) (datarepos.UserConfirmCodeDataRepo, error) {
+	panic(wire.Build(
+		setuputil.GetLogger,
+		// data
+		setuputil.GetRecommendDBConn, data.NewUserConfirmCodeDataRepo,
+	))
+	return nil, nil
+}
+
 func exportUserBizRepo(launcherManager setuputil.LauncherManager) (bizrepos.UserAuthBizRepo, error) {
 	panic(wire.Build(
 		setuputil.GetLogger,
 		// authRepo
 		setuputil.GetAuthManager,
 		// data
-		exportUserDataRepo, exportUserRegPhoneDataRepo, exportUserRegEmailDataRepo,
+		exportUserDataRepo, exportUserRegPhoneDataRepo, exportUserRegEmailDataRepo, exportUserConfirmCodeDataRepo,
 		// biz
 		biz.NewUserAuthBiz,
 	))

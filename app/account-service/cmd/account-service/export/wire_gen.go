@@ -60,6 +60,19 @@ func exportUserRegEmailDataRepo(launcherManager setuputil.LauncherManager) (data
 	return userRegEmailDataRepo, nil
 }
 
+func exportUserConfirmCodeDataRepo(launcherManager setuputil.LauncherManager) (datarepos.UserConfirmCodeDataRepo, error) {
+	logger, err := setuputil.GetLogger(launcherManager)
+	if err != nil {
+		return nil, err
+	}
+	db, err := setuputil.GetRecommendDBConn(launcherManager)
+	if err != nil {
+		return nil, err
+	}
+	userConfirmCodeDataRepo := data.NewUserConfirmCodeDataRepo(logger, db)
+	return userConfirmCodeDataRepo, nil
+}
+
 func exportUserBizRepo(launcherManager setuputil.LauncherManager) (bizrepos.UserAuthBizRepo, error) {
 	logger, err := setuputil.GetLogger(launcherManager)
 	if err != nil {
@@ -81,7 +94,11 @@ func exportUserBizRepo(launcherManager setuputil.LauncherManager) (bizrepos.User
 	if err != nil {
 		return nil, err
 	}
-	userAuthBizRepo := biz.NewUserAuthBiz(logger, authRepo, userDataRepo, userRegEmailDataRepo, userRegPhoneDataRepo)
+	userConfirmCodeDataRepo, err := exportUserConfirmCodeDataRepo(launcherManager)
+	if err != nil {
+		return nil, err
+	}
+	userAuthBizRepo := biz.NewUserAuthBiz(logger, authRepo, userDataRepo, userRegEmailDataRepo, userRegPhoneDataRepo, userConfirmCodeDataRepo)
 	return userAuthBizRepo, nil
 }
 

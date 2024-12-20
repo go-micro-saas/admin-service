@@ -17,11 +17,12 @@ import (
 
 // userAuthBiz ...
 type userAuthBiz struct {
-	log                  *log.Helper
-	authRepo             authpkg.AuthRepo
-	userDataRepo         datarepos.UserDataRepo
-	userRegEmailDataRepo datarepos.UserRegEmailDataRepo
-	userRegPhoneDataRepo datarepos.UserRegPhoneDataRepo
+	log                     *log.Helper
+	authRepo                authpkg.AuthRepo
+	userDataRepo            datarepos.UserDataRepo
+	userRegEmailDataRepo    datarepos.UserRegEmailDataRepo
+	userRegPhoneDataRepo    datarepos.UserRegPhoneDataRepo
+	userConfirmCodeDataRepo datarepos.UserConfirmCodeDataRepo
 }
 
 // NewUserAuthBiz ...
@@ -31,14 +32,16 @@ func NewUserAuthBiz(
 	userDataRepo datarepos.UserDataRepo,
 	userRegEmailDataRepo datarepos.UserRegEmailDataRepo,
 	userRegPhoneDataRepo datarepos.UserRegPhoneDataRepo,
+	userConfirmCodeDataRepo datarepos.UserConfirmCodeDataRepo,
 ) bizrepos.UserAuthBizRepo {
 	logHelper := log.NewHelper(log.With(logger, "module", "account-service/biz/user_auth"))
 	return &userAuthBiz{
-		log:                  logHelper,
-		authRepo:             authRepo,
-		userDataRepo:         userDataRepo,
-		userRegEmailDataRepo: userRegEmailDataRepo,
-		userRegPhoneDataRepo: userRegPhoneDataRepo,
+		log:                     logHelper,
+		authRepo:                authRepo,
+		userDataRepo:            userDataRepo,
+		userRegEmailDataRepo:    userRegEmailDataRepo,
+		userRegPhoneDataRepo:    userRegPhoneDataRepo,
+		userConfirmCodeDataRepo: userConfirmCodeDataRepo,
 	}
 }
 

@@ -5,6 +5,7 @@ package data
 import (
 	"bytes"
 	context "context"
+	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/data/po"
 	datarepos "github.com/go-micro-saas/account-service/app/account-service/internal/data/repo"
 	schemas "github.com/go-micro-saas/account-service/app/account-service/internal/data/schema/user_confirm_code"
@@ -16,13 +17,16 @@ import (
 
 // userConfirmCodeDataRepo repo
 type userConfirmCodeDataRepo struct {
+	log                   *log.Helper
 	dbConn                *gorm.DB                // *gorm.DB
 	UserConfirmCodeSchema schemas.UserConfirmCode // UserConfirmCode
 }
 
 // NewUserConfirmCodeDataRepo new data repo
-func NewUserConfirmCodeDataRepo(dbConn *gorm.DB) datarepos.UserConfirmCodeDataRepo {
+func NewUserConfirmCodeDataRepo(logger log.Logger, dbConn *gorm.DB) datarepos.UserConfirmCodeDataRepo {
+	logHelper := log.NewHelper(log.With(logger, "module", "account-service/data/user_confirm_code"))
 	return &userConfirmCodeDataRepo{
+		log:    logHelper,
 		dbConn: dbConn,
 	}
 }
