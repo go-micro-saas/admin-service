@@ -638,46 +638,20 @@ func (m *UserListResp) validate(all bool) error {
 
 	var errors []error
 
-	for idx, item := range m.GetList() {
-		_, _ = idx, item
+	// no validation rules for Code
 
-		if all {
-			switch v := interface{}(item).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, UserListRespValidationError{
-						field:  fmt.Sprintf("List[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, UserListRespValidationError{
-						field:  fmt.Sprintf("List[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return UserListRespValidationError{
-					field:  fmt.Sprintf("List[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
+	// no validation rules for Reason
 
-	}
+	// no validation rules for Message
+
+	// no validation rules for Metadata
 
 	if all {
-		switch v := interface{}(m.GetPageInfo()).(type) {
+		switch v := interface{}(m.GetData()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
 				errors = append(errors, UserListRespValidationError{
-					field:  "PageInfo",
+					field:  "Data",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
@@ -685,16 +659,16 @@ func (m *UserListResp) validate(all bool) error {
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
 				errors = append(errors, UserListRespValidationError{
-					field:  "PageInfo",
+					field:  "Data",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
 			}
 		}
-	} else if v, ok := interface{}(m.GetPageInfo()).(interface{ Validate() error }); ok {
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return UserListRespValidationError{
-				field:  "PageInfo",
+				field:  "Data",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
@@ -777,6 +751,169 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = UserListRespValidationError{}
+
+// Validate checks the field values on UserListRespData with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *UserListRespData) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on UserListRespData with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// UserListRespDataMultiError, or nil if none found.
+func (m *UserListRespData) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *UserListRespData) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetList() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, UserListRespDataValidationError{
+						field:  fmt.Sprintf("List[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, UserListRespDataValidationError{
+						field:  fmt.Sprintf("List[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return UserListRespDataValidationError{
+					field:  fmt.Sprintf("List[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if all {
+		switch v := interface{}(m.GetPageInfo()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, UserListRespDataValidationError{
+					field:  "PageInfo",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, UserListRespDataValidationError{
+					field:  "PageInfo",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetPageInfo()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return UserListRespDataValidationError{
+				field:  "PageInfo",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return UserListRespDataMultiError(errors)
+	}
+
+	return nil
+}
+
+// UserListRespDataMultiError is an error wrapping multiple validation errors
+// returned by UserListRespData.ValidateAll() if the designated constraints
+// aren't met.
+type UserListRespDataMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m UserListRespDataMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m UserListRespDataMultiError) AllErrors() []error { return m }
+
+// UserListRespDataValidationError is the validation error returned by
+// UserListRespData.Validate if the designated constraints aren't met.
+type UserListRespDataValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e UserListRespDataValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e UserListRespDataValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e UserListRespDataValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e UserListRespDataValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e UserListRespDataValidationError) ErrorName() string { return "UserListRespDataValidationError" }
+
+// Error satisfies the builtin error interface
+func (e UserListRespDataValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sUserListRespData.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = UserListRespDataValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = UserListRespDataValidationError{}
 
 // Validate checks the field values on UserProcessResult with the rules defined
 // in the proto definition for this message. If any rules are violated, the

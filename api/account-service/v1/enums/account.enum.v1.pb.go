@@ -237,6 +237,113 @@ func (UserRegisterTypeEnum_UserRegisterType) EnumDescriptor() ([]byte, []int) {
 	return file_api_account_service_v1_enums_account_enum_v1_proto_rawDescGZIP(), []int{3, 0}
 }
 
+type UserConfirmTypeEnum_UserConfirmType int32
+
+const (
+	UserConfirmTypeEnum_UNSPECIFIED UserConfirmTypeEnum_UserConfirmType = 0 // 未指定
+	UserConfirmTypeEnum_EMAIL       UserConfirmTypeEnum_UserConfirmType = 1 // 邮箱
+	UserConfirmTypeEnum_PHONE       UserConfirmTypeEnum_UserConfirmType = 2 // 手机
+	UserConfirmTypeEnum_PASSWORD    UserConfirmTypeEnum_UserConfirmType = 3 // 密码
+)
+
+// Enum value maps for UserConfirmTypeEnum_UserConfirmType.
+var (
+	UserConfirmTypeEnum_UserConfirmType_name = map[int32]string{
+		0: "UNSPECIFIED",
+		1: "EMAIL",
+		2: "PHONE",
+		3: "PASSWORD",
+	}
+	UserConfirmTypeEnum_UserConfirmType_value = map[string]int32{
+		"UNSPECIFIED": 0,
+		"EMAIL":       1,
+		"PHONE":       2,
+		"PASSWORD":    3,
+	}
+)
+
+func (x UserConfirmTypeEnum_UserConfirmType) Enum() *UserConfirmTypeEnum_UserConfirmType {
+	p := new(UserConfirmTypeEnum_UserConfirmType)
+	*p = x
+	return p
+}
+
+func (x UserConfirmTypeEnum_UserConfirmType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (UserConfirmTypeEnum_UserConfirmType) Descriptor() protoreflect.EnumDescriptor {
+	return file_api_account_service_v1_enums_account_enum_v1_proto_enumTypes[4].Descriptor()
+}
+
+func (UserConfirmTypeEnum_UserConfirmType) Type() protoreflect.EnumType {
+	return &file_api_account_service_v1_enums_account_enum_v1_proto_enumTypes[4]
+}
+
+func (x UserConfirmTypeEnum_UserConfirmType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use UserConfirmTypeEnum_UserConfirmType.Descriptor instead.
+func (UserConfirmTypeEnum_UserConfirmType) EnumDescriptor() ([]byte, []int) {
+	return file_api_account_service_v1_enums_account_enum_v1_proto_rawDescGZIP(), []int{4, 0}
+}
+
+type UserConfirmStatusEnum_UserConfirmStatus int32
+
+const (
+	UserConfirmStatusEnum_UNSPECIFIED UserConfirmStatusEnum_UserConfirmStatus = 0 // 未指定
+	UserConfirmStatusEnum_CONFIRMING  UserConfirmStatusEnum_UserConfirmStatus = 1 // 确认中
+	UserConfirmStatusEnum_CONFIRMED   UserConfirmStatusEnum_UserConfirmStatus = 2 // 已确认
+	UserConfirmStatusEnum_EXPIRED     UserConfirmStatusEnum_UserConfirmStatus = 3 // 已过期
+	UserConfirmStatusEnum_CANCELLED   UserConfirmStatusEnum_UserConfirmStatus = 4 // 已取消
+)
+
+// Enum value maps for UserConfirmStatusEnum_UserConfirmStatus.
+var (
+	UserConfirmStatusEnum_UserConfirmStatus_name = map[int32]string{
+		0: "UNSPECIFIED",
+		1: "CONFIRMING",
+		2: "CONFIRMED",
+		3: "EXPIRED",
+		4: "CANCELLED",
+	}
+	UserConfirmStatusEnum_UserConfirmStatus_value = map[string]int32{
+		"UNSPECIFIED": 0,
+		"CONFIRMING":  1,
+		"CONFIRMED":   2,
+		"EXPIRED":     3,
+		"CANCELLED":   4,
+	}
+)
+
+func (x UserConfirmStatusEnum_UserConfirmStatus) Enum() *UserConfirmStatusEnum_UserConfirmStatus {
+	p := new(UserConfirmStatusEnum_UserConfirmStatus)
+	*p = x
+	return p
+}
+
+func (x UserConfirmStatusEnum_UserConfirmStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (UserConfirmStatusEnum_UserConfirmStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_api_account_service_v1_enums_account_enum_v1_proto_enumTypes[5].Descriptor()
+}
+
+func (UserConfirmStatusEnum_UserConfirmStatus) Type() protoreflect.EnumType {
+	return &file_api_account_service_v1_enums_account_enum_v1_proto_enumTypes[5]
+}
+
+func (x UserConfirmStatusEnum_UserConfirmStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use UserConfirmStatusEnum_UserConfirmStatus.Descriptor instead.
+func (UserConfirmStatusEnum_UserConfirmStatus) EnumDescriptor() ([]byte, []int) {
+	return file_api_account_service_v1_enums_account_enum_v1_proto_rawDescGZIP(), []int{5, 0}
+}
+
 // AccountInitEnum enum
 type AccountInitEnum struct {
 	state         protoimpl.MessageState
@@ -393,6 +500,82 @@ func (*UserRegisterTypeEnum) Descriptor() ([]byte, []int) {
 	return file_api_account_service_v1_enums_account_enum_v1_proto_rawDescGZIP(), []int{3}
 }
 
+type UserConfirmTypeEnum struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *UserConfirmTypeEnum) Reset() {
+	*x = UserConfirmTypeEnum{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_account_service_v1_enums_account_enum_v1_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UserConfirmTypeEnum) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserConfirmTypeEnum) ProtoMessage() {}
+
+func (x *UserConfirmTypeEnum) ProtoReflect() protoreflect.Message {
+	mi := &file_api_account_service_v1_enums_account_enum_v1_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserConfirmTypeEnum.ProtoReflect.Descriptor instead.
+func (*UserConfirmTypeEnum) Descriptor() ([]byte, []int) {
+	return file_api_account_service_v1_enums_account_enum_v1_proto_rawDescGZIP(), []int{4}
+}
+
+type UserConfirmStatusEnum struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *UserConfirmStatusEnum) Reset() {
+	*x = UserConfirmStatusEnum{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_account_service_v1_enums_account_enum_v1_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UserConfirmStatusEnum) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserConfirmStatusEnum) ProtoMessage() {}
+
+func (x *UserConfirmStatusEnum) ProtoReflect() protoreflect.Message {
+	mi := &file_api_account_service_v1_enums_account_enum_v1_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserConfirmStatusEnum.ProtoReflect.Descriptor instead.
+func (*UserConfirmStatusEnum) Descriptor() ([]byte, []int) {
+	return file_api_account_service_v1_enums_account_enum_v1_proto_rawDescGZIP(), []int{5}
+}
+
 var File_api_account_service_v1_enums_account_enum_v1_proto protoreflect.FileDescriptor
 
 var file_api_account_service_v1_enums_account_enum_v1_proto_rawDesc = []byte{
@@ -427,15 +610,29 @@ var file_api_account_service_v1_enums_account_enum_v1_proto_rawDesc = []byte{
 	0x0d, 0x4a, 0x55, 0x4c, 0x49, 0x41, 0x4e, 0x47, 0x5f, 0x4f, 0x41, 0x55, 0x54, 0x48, 0x10, 0x67,
 	0x12, 0x12, 0x0a, 0x0e, 0x44, 0x49, 0x4e, 0x47, 0x54, 0x41, 0x4c, 0x4b, 0x5f, 0x4f, 0x41, 0x55,
 	0x54, 0x48, 0x10, 0x68, 0x12, 0x10, 0x0a, 0x0b, 0x54, 0x48, 0x49, 0x52, 0x44, 0x5f, 0x50, 0x41,
-	0x52, 0x54, 0x59, 0x10, 0xd1, 0x0f, 0x42, 0x7f, 0x0a, 0x17, 0x73, 0x61, 0x61, 0x73, 0x2e, 0x61,
-	0x70, 0x69, 0x2e, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x2e, 0x65, 0x6e, 0x75, 0x6d, 0x76,
-	0x31, 0x42, 0x14, 0x53, 0x61, 0x61, 0x73, 0x41, 0x70, 0x69, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e,
-	0x74, 0x45, 0x6e, 0x75, 0x6d, 0x56, 0x31, 0x50, 0x01, 0x5a, 0x4c, 0x67, 0x69, 0x74, 0x68, 0x75,
-	0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x67, 0x6f, 0x2d, 0x6d, 0x69, 0x63, 0x72, 0x6f, 0x2d, 0x73,
-	0x61, 0x61, 0x73, 0x2f, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x2d, 0x73, 0x65, 0x72, 0x76,
-	0x69, 0x63, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x2d,
-	0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2f, 0x76, 0x31, 0x2f, 0x65, 0x6e, 0x75, 0x6d, 0x73,
-	0x3b, 0x65, 0x6e, 0x75, 0x6d, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x52, 0x54, 0x59, 0x10, 0xd1, 0x0f, 0x22, 0x5d, 0x0a, 0x13, 0x55, 0x73, 0x65, 0x72, 0x43, 0x6f,
+	0x6e, 0x66, 0x69, 0x72, 0x6d, 0x54, 0x79, 0x70, 0x65, 0x45, 0x6e, 0x75, 0x6d, 0x22, 0x46, 0x0a,
+	0x0f, 0x55, 0x73, 0x65, 0x72, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x72, 0x6d, 0x54, 0x79, 0x70, 0x65,
+	0x12, 0x0f, 0x0a, 0x0b, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10,
+	0x00, 0x12, 0x09, 0x0a, 0x05, 0x45, 0x4d, 0x41, 0x49, 0x4c, 0x10, 0x01, 0x12, 0x09, 0x0a, 0x05,
+	0x50, 0x48, 0x4f, 0x4e, 0x45, 0x10, 0x02, 0x12, 0x0c, 0x0a, 0x08, 0x50, 0x41, 0x53, 0x53, 0x57,
+	0x4f, 0x52, 0x44, 0x10, 0x03, 0x22, 0x78, 0x0a, 0x15, 0x55, 0x73, 0x65, 0x72, 0x43, 0x6f, 0x6e,
+	0x66, 0x69, 0x72, 0x6d, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x45, 0x6e, 0x75, 0x6d, 0x22, 0x5f,
+	0x0a, 0x11, 0x55, 0x73, 0x65, 0x72, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x72, 0x6d, 0x53, 0x74, 0x61,
+	0x74, 0x75, 0x73, 0x12, 0x0f, 0x0a, 0x0b, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49,
+	0x45, 0x44, 0x10, 0x00, 0x12, 0x0e, 0x0a, 0x0a, 0x43, 0x4f, 0x4e, 0x46, 0x49, 0x52, 0x4d, 0x49,
+	0x4e, 0x47, 0x10, 0x01, 0x12, 0x0d, 0x0a, 0x09, 0x43, 0x4f, 0x4e, 0x46, 0x49, 0x52, 0x4d, 0x45,
+	0x44, 0x10, 0x02, 0x12, 0x0b, 0x0a, 0x07, 0x45, 0x58, 0x50, 0x49, 0x52, 0x45, 0x44, 0x10, 0x03,
+	0x12, 0x0d, 0x0a, 0x09, 0x43, 0x41, 0x4e, 0x43, 0x45, 0x4c, 0x4c, 0x45, 0x44, 0x10, 0x04, 0x42,
+	0x7f, 0x0a, 0x17, 0x73, 0x61, 0x61, 0x73, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x61, 0x63, 0x63, 0x6f,
+	0x75, 0x6e, 0x74, 0x2e, 0x65, 0x6e, 0x75, 0x6d, 0x76, 0x31, 0x42, 0x14, 0x53, 0x61, 0x61, 0x73,
+	0x41, 0x70, 0x69, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x45, 0x6e, 0x75, 0x6d, 0x56, 0x31,
+	0x50, 0x01, 0x5a, 0x4c, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x67,
+	0x6f, 0x2d, 0x6d, 0x69, 0x63, 0x72, 0x6f, 0x2d, 0x73, 0x61, 0x61, 0x73, 0x2f, 0x61, 0x63, 0x63,
+	0x6f, 0x75, 0x6e, 0x74, 0x2d, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2f, 0x61, 0x70, 0x69,
+	0x2f, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x2d, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
+	0x2f, 0x76, 0x31, 0x2f, 0x65, 0x6e, 0x75, 0x6d, 0x73, 0x3b, 0x65, 0x6e, 0x75, 0x6d, 0x76, 0x31,
+	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -450,17 +647,21 @@ func file_api_account_service_v1_enums_account_enum_v1_proto_rawDescGZIP() []byt
 	return file_api_account_service_v1_enums_account_enum_v1_proto_rawDescData
 }
 
-var file_api_account_service_v1_enums_account_enum_v1_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_api_account_service_v1_enums_account_enum_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_api_account_service_v1_enums_account_enum_v1_proto_enumTypes = make([]protoimpl.EnumInfo, 6)
+var file_api_account_service_v1_enums_account_enum_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_api_account_service_v1_enums_account_enum_v1_proto_goTypes = []any{
-	(AccountInitEnum_AccountInit)(0),           // 0: saas.api.account.enumv1.AccountInitEnum.AccountInit
-	(UserStatusEnum_UserStatus)(0),             // 1: saas.api.account.enumv1.UserStatusEnum.UserStatus
-	(UserGenderEnum_UserGender)(0),             // 2: saas.api.account.enumv1.UserGenderEnum.UserGender
-	(UserRegisterTypeEnum_UserRegisterType)(0), // 3: saas.api.account.enumv1.UserRegisterTypeEnum.UserRegisterType
-	(*AccountInitEnum)(nil),                    // 4: saas.api.account.enumv1.AccountInitEnum
-	(*UserStatusEnum)(nil),                     // 5: saas.api.account.enumv1.UserStatusEnum
-	(*UserGenderEnum)(nil),                     // 6: saas.api.account.enumv1.UserGenderEnum
-	(*UserRegisterTypeEnum)(nil),               // 7: saas.api.account.enumv1.UserRegisterTypeEnum
+	(AccountInitEnum_AccountInit)(0),             // 0: saas.api.account.enumv1.AccountInitEnum.AccountInit
+	(UserStatusEnum_UserStatus)(0),               // 1: saas.api.account.enumv1.UserStatusEnum.UserStatus
+	(UserGenderEnum_UserGender)(0),               // 2: saas.api.account.enumv1.UserGenderEnum.UserGender
+	(UserRegisterTypeEnum_UserRegisterType)(0),   // 3: saas.api.account.enumv1.UserRegisterTypeEnum.UserRegisterType
+	(UserConfirmTypeEnum_UserConfirmType)(0),     // 4: saas.api.account.enumv1.UserConfirmTypeEnum.UserConfirmType
+	(UserConfirmStatusEnum_UserConfirmStatus)(0), // 5: saas.api.account.enumv1.UserConfirmStatusEnum.UserConfirmStatus
+	(*AccountInitEnum)(nil),                      // 6: saas.api.account.enumv1.AccountInitEnum
+	(*UserStatusEnum)(nil),                       // 7: saas.api.account.enumv1.UserStatusEnum
+	(*UserGenderEnum)(nil),                       // 8: saas.api.account.enumv1.UserGenderEnum
+	(*UserRegisterTypeEnum)(nil),                 // 9: saas.api.account.enumv1.UserRegisterTypeEnum
+	(*UserConfirmTypeEnum)(nil),                  // 10: saas.api.account.enumv1.UserConfirmTypeEnum
+	(*UserConfirmStatusEnum)(nil),                // 11: saas.api.account.enumv1.UserConfirmStatusEnum
 }
 var file_api_account_service_v1_enums_account_enum_v1_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -524,14 +725,38 @@ func file_api_account_service_v1_enums_account_enum_v1_proto_init() {
 				return nil
 			}
 		}
+		file_api_account_service_v1_enums_account_enum_v1_proto_msgTypes[4].Exporter = func(v any, i int) any {
+			switch v := v.(*UserConfirmTypeEnum); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_account_service_v1_enums_account_enum_v1_proto_msgTypes[5].Exporter = func(v any, i int) any {
+			switch v := v.(*UserConfirmStatusEnum); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_api_account_service_v1_enums_account_enum_v1_proto_rawDesc,
-			NumEnums:      4,
-			NumMessages:   4,
+			NumEnums:      6,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

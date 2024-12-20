@@ -36,7 +36,9 @@ func (s *userAuth) LoginByEmail(ctx context.Context, in *resourcev1.LoginByEmail
 		return nil, err
 	}
 
-	out := dto.UserDto.ToPbLoginResp(userModel, signResp)
+	out := &resourcev1.LoginResp{
+		Data: dto.UserDto.ToPbLoginRespData(userModel, signResp),
+	}
 	return out, nil
 }
 
@@ -47,7 +49,9 @@ func (s *userAuth) LoginByPhone(ctx context.Context, in *resourcev1.LoginByPhone
 		return nil, err
 	}
 
-	out := dto.UserDto.ToPbLoginResp(userModel, signResp)
+	out := &resourcev1.LoginResp{
+		Data: dto.UserDto.ToPbLoginRespData(userModel, signResp),
+	}
 	return out, nil
 }
 
@@ -65,7 +69,9 @@ func (s *userAuth) RefreshToken(ctx context.Context, in *resourcev1.RefreshToken
 		return nil, err
 	}
 
-	out := dto.UserDto.ToPbLoginResp(userModel, signResp)
+	out := &resourcev1.LoginResp{
+		Data: dto.UserDto.ToPbLoginRespData(userModel, signResp),
+	}
 	return out, nil
 }
 

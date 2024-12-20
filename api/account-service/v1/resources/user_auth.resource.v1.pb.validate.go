@@ -161,7 +161,42 @@ func (m *PingResp) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for Code
+
+	// no validation rules for Reason
+
 	// no validation rules for Message
+
+	// no validation rules for Metadata
+
+	if all {
+		switch v := interface{}(m.GetData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, PingRespValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, PingRespValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return PingRespValidationError{
+				field:  "Data",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
 
 	if len(errors) > 0 {
 		return PingRespMultiError(errors)
@@ -239,6 +274,107 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = PingRespValidationError{}
+
+// Validate checks the field values on PingRespData with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *PingRespData) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on PingRespData with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in PingRespDataMultiError, or
+// nil if none found.
+func (m *PingRespData) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *PingRespData) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Message
+
+	if len(errors) > 0 {
+		return PingRespDataMultiError(errors)
+	}
+
+	return nil
+}
+
+// PingRespDataMultiError is an error wrapping multiple validation errors
+// returned by PingRespData.ValidateAll() if the designated constraints aren't met.
+type PingRespDataMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m PingRespDataMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m PingRespDataMultiError) AllErrors() []error { return m }
+
+// PingRespDataValidationError is the validation error returned by
+// PingRespData.Validate if the designated constraints aren't met.
+type PingRespDataValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PingRespDataValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PingRespDataValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PingRespDataValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PingRespDataValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PingRespDataValidationError) ErrorName() string { return "PingRespDataValidationError" }
+
+// Error satisfies the builtin error interface
+func (e PingRespDataValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPingRespData.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PingRespDataValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PingRespDataValidationError{}
 
 // Validate checks the field values on UserInfo with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
@@ -345,48 +481,46 @@ var _ interface {
 	ErrorName() string
 } = UserInfoValidationError{}
 
-// Validate checks the field values on LoginOrRegByPhoneReq with the rules
+// Validate checks the field values on LoginOrSignupByPhoneReq with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *LoginOrRegByPhoneReq) Validate() error {
+func (m *LoginOrSignupByPhoneReq) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on LoginOrRegByPhoneReq with the rules
-// defined in the proto definition for this message. If any rules are
+// ValidateAll checks the field values on LoginOrSignupByPhoneReq with the
+// rules defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// LoginOrRegByPhoneReqMultiError, or nil if none found.
-func (m *LoginOrRegByPhoneReq) ValidateAll() error {
+// LoginOrSignupByPhoneReqMultiError, or nil if none found.
+func (m *LoginOrSignupByPhoneReq) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *LoginOrRegByPhoneReq) validate(all bool) error {
+func (m *LoginOrSignupByPhoneReq) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
-	// no validation rules for UserMobile
-
-	// no validation rules for Password
+	// no validation rules for UserPhone
 
 	// no validation rules for Code
 
 	if len(errors) > 0 {
-		return LoginOrRegByPhoneReqMultiError(errors)
+		return LoginOrSignupByPhoneReqMultiError(errors)
 	}
 
 	return nil
 }
 
-// LoginOrRegByPhoneReqMultiError is an error wrapping multiple validation
-// errors returned by LoginOrRegByPhoneReq.ValidateAll() if the designated
+// LoginOrSignupByPhoneReqMultiError is an error wrapping multiple validation
+// errors returned by LoginOrSignupByPhoneReq.ValidateAll() if the designated
 // constraints aren't met.
-type LoginOrRegByPhoneReqMultiError []error
+type LoginOrSignupByPhoneReqMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m LoginOrRegByPhoneReqMultiError) Error() string {
+func (m LoginOrSignupByPhoneReqMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -395,11 +529,11 @@ func (m LoginOrRegByPhoneReqMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m LoginOrRegByPhoneReqMultiError) AllErrors() []error { return m }
+func (m LoginOrSignupByPhoneReqMultiError) AllErrors() []error { return m }
 
-// LoginOrRegByPhoneReqValidationError is the validation error returned by
-// LoginOrRegByPhoneReq.Validate if the designated constraints aren't met.
-type LoginOrRegByPhoneReqValidationError struct {
+// LoginOrSignupByPhoneReqValidationError is the validation error returned by
+// LoginOrSignupByPhoneReq.Validate if the designated constraints aren't met.
+type LoginOrSignupByPhoneReqValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -407,24 +541,24 @@ type LoginOrRegByPhoneReqValidationError struct {
 }
 
 // Field function returns field value.
-func (e LoginOrRegByPhoneReqValidationError) Field() string { return e.field }
+func (e LoginOrSignupByPhoneReqValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e LoginOrRegByPhoneReqValidationError) Reason() string { return e.reason }
+func (e LoginOrSignupByPhoneReqValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e LoginOrRegByPhoneReqValidationError) Cause() error { return e.cause }
+func (e LoginOrSignupByPhoneReqValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e LoginOrRegByPhoneReqValidationError) Key() bool { return e.key }
+func (e LoginOrSignupByPhoneReqValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e LoginOrRegByPhoneReqValidationError) ErrorName() string {
-	return "LoginOrRegByPhoneReqValidationError"
+func (e LoginOrSignupByPhoneReqValidationError) ErrorName() string {
+	return "LoginOrSignupByPhoneReqValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e LoginOrRegByPhoneReqValidationError) Error() string {
+func (e LoginOrSignupByPhoneReqValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -436,14 +570,14 @@ func (e LoginOrRegByPhoneReqValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sLoginOrRegByPhoneReq.%s: %s%s",
+		"invalid %sLoginOrSignupByPhoneReq.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = LoginOrRegByPhoneReqValidationError{}
+var _ error = LoginOrSignupByPhoneReqValidationError{}
 
 var _ interface {
 	Field() string
@@ -451,132 +585,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = LoginOrRegByPhoneReqValidationError{}
+} = LoginOrSignupByPhoneReqValidationError{}
 
-// Validate checks the field values on RegByUserNameReq with the rules defined
+// Validate checks the field values on SignupByPhoneReq with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
-func (m *RegByUserNameReq) Validate() error {
+func (m *SignupByPhoneReq) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on RegByUserNameReq with the rules
+// ValidateAll checks the field values on SignupByPhoneReq with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// RegByUserNameReqMultiError, or nil if none found.
-func (m *RegByUserNameReq) ValidateAll() error {
+// SignupByPhoneReqMultiError, or nil if none found.
+func (m *SignupByPhoneReq) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *RegByUserNameReq) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for UserName
-
-	// no validation rules for Password
-
-	// no validation rules for PasswordConfirm
-
-	// no validation rules for Code
-
-	if len(errors) > 0 {
-		return RegByUserNameReqMultiError(errors)
-	}
-
-	return nil
-}
-
-// RegByUserNameReqMultiError is an error wrapping multiple validation errors
-// returned by RegByUserNameReq.ValidateAll() if the designated constraints
-// aren't met.
-type RegByUserNameReqMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m RegByUserNameReqMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m RegByUserNameReqMultiError) AllErrors() []error { return m }
-
-// RegByUserNameReqValidationError is the validation error returned by
-// RegByUserNameReq.Validate if the designated constraints aren't met.
-type RegByUserNameReqValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e RegByUserNameReqValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e RegByUserNameReqValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e RegByUserNameReqValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e RegByUserNameReqValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e RegByUserNameReqValidationError) ErrorName() string { return "RegByUserNameReqValidationError" }
-
-// Error satisfies the builtin error interface
-func (e RegByUserNameReqValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sRegByUserNameReq.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = RegByUserNameReqValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = RegByUserNameReqValidationError{}
-
-// Validate checks the field values on LoginByUserNameReq with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the first error encountered is returned, or nil if there are no violations.
-func (m *LoginByUserNameReq) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on LoginByUserNameReq with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// LoginByUserNameReqMultiError, or nil if none found.
-func (m *LoginByUserNameReq) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *LoginByUserNameReq) validate(all bool) error {
+func (m *SignupByPhoneReq) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -590,19 +616,19 @@ func (m *LoginByUserNameReq) validate(all bool) error {
 	// no validation rules for Code
 
 	if len(errors) > 0 {
-		return LoginByUserNameReqMultiError(errors)
+		return SignupByPhoneReqMultiError(errors)
 	}
 
 	return nil
 }
 
-// LoginByUserNameReqMultiError is an error wrapping multiple validation errors
-// returned by LoginByUserNameReq.ValidateAll() if the designated constraints
+// SignupByPhoneReqMultiError is an error wrapping multiple validation errors
+// returned by SignupByPhoneReq.ValidateAll() if the designated constraints
 // aren't met.
-type LoginByUserNameReqMultiError []error
+type SignupByPhoneReqMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m LoginByUserNameReqMultiError) Error() string {
+func (m SignupByPhoneReqMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -611,11 +637,11 @@ func (m LoginByUserNameReqMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m LoginByUserNameReqMultiError) AllErrors() []error { return m }
+func (m SignupByPhoneReqMultiError) AllErrors() []error { return m }
 
-// LoginByUserNameReqValidationError is the validation error returned by
-// LoginByUserNameReq.Validate if the designated constraints aren't met.
-type LoginByUserNameReqValidationError struct {
+// SignupByPhoneReqValidationError is the validation error returned by
+// SignupByPhoneReq.Validate if the designated constraints aren't met.
+type SignupByPhoneReqValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -623,24 +649,22 @@ type LoginByUserNameReqValidationError struct {
 }
 
 // Field function returns field value.
-func (e LoginByUserNameReqValidationError) Field() string { return e.field }
+func (e SignupByPhoneReqValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e LoginByUserNameReqValidationError) Reason() string { return e.reason }
+func (e SignupByPhoneReqValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e LoginByUserNameReqValidationError) Cause() error { return e.cause }
+func (e SignupByPhoneReqValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e LoginByUserNameReqValidationError) Key() bool { return e.key }
+func (e SignupByPhoneReqValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e LoginByUserNameReqValidationError) ErrorName() string {
-	return "LoginByUserNameReqValidationError"
-}
+func (e SignupByPhoneReqValidationError) ErrorName() string { return "SignupByPhoneReqValidationError" }
 
 // Error satisfies the builtin error interface
-func (e LoginByUserNameReqValidationError) Error() string {
+func (e SignupByPhoneReqValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -652,14 +676,14 @@ func (e LoginByUserNameReqValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sLoginByUserNameReq.%s: %s%s",
+		"invalid %sSignupByPhoneReq.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = LoginByUserNameReqValidationError{}
+var _ error = SignupByPhoneReqValidationError{}
 
 var _ interface {
 	Field() string
@@ -667,24 +691,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = LoginByUserNameReqValidationError{}
+} = SignupByPhoneReqValidationError{}
 
-// Validate checks the field values on RegByEmailReq with the rules defined in
-// the proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *RegByEmailReq) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on RegByEmailReq with the rules defined
+// Validate checks the field values on SignupByEmailReq with the rules defined
 // in the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in RegByEmailReqMultiError, or
-// nil if none found.
-func (m *RegByEmailReq) ValidateAll() error {
+// first error encountered is returned, or nil if there are no violations.
+func (m *SignupByEmailReq) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SignupByEmailReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// SignupByEmailReqMultiError, or nil if none found.
+func (m *SignupByEmailReq) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *RegByEmailReq) validate(all bool) error {
+func (m *SignupByEmailReq) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -700,19 +724,19 @@ func (m *RegByEmailReq) validate(all bool) error {
 	// no validation rules for Code
 
 	if len(errors) > 0 {
-		return RegByEmailReqMultiError(errors)
+		return SignupByEmailReqMultiError(errors)
 	}
 
 	return nil
 }
 
-// RegByEmailReqMultiError is an error wrapping multiple validation errors
-// returned by RegByEmailReq.ValidateAll() if the designated constraints
+// SignupByEmailReqMultiError is an error wrapping multiple validation errors
+// returned by SignupByEmailReq.ValidateAll() if the designated constraints
 // aren't met.
-type RegByEmailReqMultiError []error
+type SignupByEmailReqMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m RegByEmailReqMultiError) Error() string {
+func (m SignupByEmailReqMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -721,11 +745,11 @@ func (m RegByEmailReqMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m RegByEmailReqMultiError) AllErrors() []error { return m }
+func (m SignupByEmailReqMultiError) AllErrors() []error { return m }
 
-// RegByEmailReqValidationError is the validation error returned by
-// RegByEmailReq.Validate if the designated constraints aren't met.
-type RegByEmailReqValidationError struct {
+// SignupByEmailReqValidationError is the validation error returned by
+// SignupByEmailReq.Validate if the designated constraints aren't met.
+type SignupByEmailReqValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -733,22 +757,22 @@ type RegByEmailReqValidationError struct {
 }
 
 // Field function returns field value.
-func (e RegByEmailReqValidationError) Field() string { return e.field }
+func (e SignupByEmailReqValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e RegByEmailReqValidationError) Reason() string { return e.reason }
+func (e SignupByEmailReqValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e RegByEmailReqValidationError) Cause() error { return e.cause }
+func (e SignupByEmailReqValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e RegByEmailReqValidationError) Key() bool { return e.key }
+func (e SignupByEmailReqValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e RegByEmailReqValidationError) ErrorName() string { return "RegByEmailReqValidationError" }
+func (e SignupByEmailReqValidationError) ErrorName() string { return "SignupByEmailReqValidationError" }
 
 // Error satisfies the builtin error interface
-func (e RegByEmailReqValidationError) Error() string {
+func (e SignupByEmailReqValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -760,14 +784,14 @@ func (e RegByEmailReqValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sRegByEmailReq.%s: %s%s",
+		"invalid %sSignupByEmailReq.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = RegByEmailReqValidationError{}
+var _ error = SignupByEmailReqValidationError{}
 
 var _ interface {
 	Field() string
@@ -775,7 +799,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = RegByEmailReqValidationError{}
+} = SignupByEmailReqValidationError{}
 
 // Validate checks the field values on LoginByPhoneReq with the rules defined
 // in the proto definition for this message. If any rules are violated, the
@@ -1115,12 +1139,20 @@ func (m *LoginResp) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for Code
+
+	// no validation rules for Reason
+
+	// no validation rules for Message
+
+	// no validation rules for Metadata
+
 	if all {
-		switch v := interface{}(m.GetUserInfo()).(type) {
+		switch v := interface{}(m.GetData()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
 				errors = append(errors, LoginRespValidationError{
-					field:  "UserInfo",
+					field:  "Data",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
@@ -1128,29 +1160,21 @@ func (m *LoginResp) validate(all bool) error {
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
 				errors = append(errors, LoginRespValidationError{
-					field:  "UserInfo",
+					field:  "Data",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
 			}
 		}
-	} else if v, ok := interface{}(m.GetUserInfo()).(interface{ Validate() error }); ok {
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return LoginRespValidationError{
-				field:  "UserInfo",
+				field:  "Data",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
 		}
 	}
-
-	// no validation rules for AccessToken
-
-	// no validation rules for AccessTokenExpiredAt
-
-	// no validation rules for RefreshToken
-
-	// no validation rules for RefreshTokenExpiredAt
 
 	if len(errors) > 0 {
 		return LoginRespMultiError(errors)
@@ -1228,6 +1252,143 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = LoginRespValidationError{}
+
+// Validate checks the field values on LoginRespData with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *LoginRespData) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on LoginRespData with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in LoginRespDataMultiError, or
+// nil if none found.
+func (m *LoginRespData) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *LoginRespData) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetUserInfo()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, LoginRespDataValidationError{
+					field:  "UserInfo",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, LoginRespDataValidationError{
+					field:  "UserInfo",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetUserInfo()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return LoginRespDataValidationError{
+				field:  "UserInfo",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for AccessToken
+
+	// no validation rules for AccessTokenExpiredAt
+
+	// no validation rules for RefreshToken
+
+	// no validation rules for RefreshTokenExpiredAt
+
+	if len(errors) > 0 {
+		return LoginRespDataMultiError(errors)
+	}
+
+	return nil
+}
+
+// LoginRespDataMultiError is an error wrapping multiple validation errors
+// returned by LoginRespData.ValidateAll() if the designated constraints
+// aren't met.
+type LoginRespDataMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m LoginRespDataMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m LoginRespDataMultiError) AllErrors() []error { return m }
+
+// LoginRespDataValidationError is the validation error returned by
+// LoginRespData.Validate if the designated constraints aren't met.
+type LoginRespDataValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e LoginRespDataValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e LoginRespDataValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e LoginRespDataValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e LoginRespDataValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e LoginRespDataValidationError) ErrorName() string { return "LoginRespDataValidationError" }
+
+// Error satisfies the builtin error interface
+func (e LoginRespDataValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sLoginRespData.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = LoginRespDataValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = LoginRespDataValidationError{}
 
 // Validate checks the field values on RefreshTokenReq with the rules defined
 // in the proto definition for this message. If any rules are violated, the
@@ -1461,6 +1622,43 @@ func (m *ChangePasswordResp) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for Code
+
+	// no validation rules for Reason
+
+	// no validation rules for Message
+
+	// no validation rules for Metadata
+
+	if all {
+		switch v := interface{}(m.GetData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ChangePasswordRespValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ChangePasswordRespValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ChangePasswordRespValidationError{
+				field:  "Data",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return ChangePasswordRespMultiError(errors)
 	}
@@ -1540,6 +1738,108 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ChangePasswordRespValidationError{}
+
+// Validate checks the field values on ChangePasswordRespData with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ChangePasswordRespData) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ChangePasswordRespData with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ChangePasswordRespDataMultiError, or nil if none found.
+func (m *ChangePasswordRespData) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ChangePasswordRespData) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return ChangePasswordRespDataMultiError(errors)
+	}
+
+	return nil
+}
+
+// ChangePasswordRespDataMultiError is an error wrapping multiple validation
+// errors returned by ChangePasswordRespData.ValidateAll() if the designated
+// constraints aren't met.
+type ChangePasswordRespDataMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ChangePasswordRespDataMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ChangePasswordRespDataMultiError) AllErrors() []error { return m }
+
+// ChangePasswordRespDataValidationError is the validation error returned by
+// ChangePasswordRespData.Validate if the designated constraints aren't met.
+type ChangePasswordRespDataValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ChangePasswordRespDataValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ChangePasswordRespDataValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ChangePasswordRespDataValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ChangePasswordRespDataValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ChangePasswordRespDataValidationError) ErrorName() string {
+	return "ChangePasswordRespDataValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ChangePasswordRespDataValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sChangePasswordRespData.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ChangePasswordRespDataValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ChangePasswordRespDataValidationError{}
 
 // Validate checks the field values on ChangeAvatarReq with the rules defined
 // in the proto definition for this message. If any rules are violated, the
@@ -1665,6 +1965,43 @@ func (m *ChangeAvatarResp) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for Code
+
+	// no validation rules for Reason
+
+	// no validation rules for Message
+
+	// no validation rules for Metadata
+
+	if all {
+		switch v := interface{}(m.GetData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ChangeAvatarRespValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ChangeAvatarRespValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ChangeAvatarRespValidationError{
+				field:  "Data",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return ChangeAvatarRespMultiError(errors)
 	}
@@ -1743,44 +2080,42 @@ var _ interface {
 	ErrorName() string
 } = ChangeAvatarRespValidationError{}
 
-// Validate checks the field values on ChangeMobileReq with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *ChangeMobileReq) Validate() error {
+// Validate checks the field values on ChangeAvatarRespData with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ChangeAvatarRespData) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on ChangeMobileReq with the rules
+// ValidateAll checks the field values on ChangeAvatarRespData with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// ChangeMobileReqMultiError, or nil if none found.
-func (m *ChangeMobileReq) ValidateAll() error {
+// ChangeAvatarRespDataMultiError, or nil if none found.
+func (m *ChangeAvatarRespData) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *ChangeMobileReq) validate(all bool) error {
+func (m *ChangeAvatarRespData) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
-	// no validation rules for UserMobile
-
 	if len(errors) > 0 {
-		return ChangeMobileReqMultiError(errors)
+		return ChangeAvatarRespDataMultiError(errors)
 	}
 
 	return nil
 }
 
-// ChangeMobileReqMultiError is an error wrapping multiple validation errors
-// returned by ChangeMobileReq.ValidateAll() if the designated constraints
-// aren't met.
-type ChangeMobileReqMultiError []error
+// ChangeAvatarRespDataMultiError is an error wrapping multiple validation
+// errors returned by ChangeAvatarRespData.ValidateAll() if the designated
+// constraints aren't met.
+type ChangeAvatarRespDataMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m ChangeMobileReqMultiError) Error() string {
+func (m ChangeAvatarRespDataMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -1789,11 +2124,11 @@ func (m ChangeMobileReqMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m ChangeMobileReqMultiError) AllErrors() []error { return m }
+func (m ChangeAvatarRespDataMultiError) AllErrors() []error { return m }
 
-// ChangeMobileReqValidationError is the validation error returned by
-// ChangeMobileReq.Validate if the designated constraints aren't met.
-type ChangeMobileReqValidationError struct {
+// ChangeAvatarRespDataValidationError is the validation error returned by
+// ChangeAvatarRespData.Validate if the designated constraints aren't met.
+type ChangeAvatarRespDataValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1801,22 +2136,24 @@ type ChangeMobileReqValidationError struct {
 }
 
 // Field function returns field value.
-func (e ChangeMobileReqValidationError) Field() string { return e.field }
+func (e ChangeAvatarRespDataValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ChangeMobileReqValidationError) Reason() string { return e.reason }
+func (e ChangeAvatarRespDataValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ChangeMobileReqValidationError) Cause() error { return e.cause }
+func (e ChangeAvatarRespDataValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ChangeMobileReqValidationError) Key() bool { return e.key }
+func (e ChangeAvatarRespDataValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ChangeMobileReqValidationError) ErrorName() string { return "ChangeMobileReqValidationError" }
+func (e ChangeAvatarRespDataValidationError) ErrorName() string {
+	return "ChangeAvatarRespDataValidationError"
+}
 
 // Error satisfies the builtin error interface
-func (e ChangeMobileReqValidationError) Error() string {
+func (e ChangeAvatarRespDataValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1828,14 +2165,14 @@ func (e ChangeMobileReqValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sChangeMobileReq.%s: %s%s",
+		"invalid %sChangeAvatarRespData.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ChangeMobileReqValidationError{}
+var _ error = ChangeAvatarRespDataValidationError{}
 
 var _ interface {
 	Field() string
@@ -1843,44 +2180,46 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ChangeMobileReqValidationError{}
+} = ChangeAvatarRespDataValidationError{}
 
-// Validate checks the field values on ChangeMobileResp with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *ChangeMobileResp) Validate() error {
+// Validate checks the field values on ChangePhoneReq with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *ChangePhoneReq) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on ChangeMobileResp with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// ChangeMobileRespMultiError, or nil if none found.
-func (m *ChangeMobileResp) ValidateAll() error {
+// ValidateAll checks the field values on ChangePhoneReq with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in ChangePhoneReqMultiError,
+// or nil if none found.
+func (m *ChangePhoneReq) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *ChangeMobileResp) validate(all bool) error {
+func (m *ChangePhoneReq) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
+	// no validation rules for UserPhone
+
 	if len(errors) > 0 {
-		return ChangeMobileRespMultiError(errors)
+		return ChangePhoneReqMultiError(errors)
 	}
 
 	return nil
 }
 
-// ChangeMobileRespMultiError is an error wrapping multiple validation errors
-// returned by ChangeMobileResp.ValidateAll() if the designated constraints
+// ChangePhoneReqMultiError is an error wrapping multiple validation errors
+// returned by ChangePhoneReq.ValidateAll() if the designated constraints
 // aren't met.
-type ChangeMobileRespMultiError []error
+type ChangePhoneReqMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m ChangeMobileRespMultiError) Error() string {
+func (m ChangePhoneReqMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -1889,11 +2228,11 @@ func (m ChangeMobileRespMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m ChangeMobileRespMultiError) AllErrors() []error { return m }
+func (m ChangePhoneReqMultiError) AllErrors() []error { return m }
 
-// ChangeMobileRespValidationError is the validation error returned by
-// ChangeMobileResp.Validate if the designated constraints aren't met.
-type ChangeMobileRespValidationError struct {
+// ChangePhoneReqValidationError is the validation error returned by
+// ChangePhoneReq.Validate if the designated constraints aren't met.
+type ChangePhoneReqValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1901,22 +2240,22 @@ type ChangeMobileRespValidationError struct {
 }
 
 // Field function returns field value.
-func (e ChangeMobileRespValidationError) Field() string { return e.field }
+func (e ChangePhoneReqValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ChangeMobileRespValidationError) Reason() string { return e.reason }
+func (e ChangePhoneReqValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ChangeMobileRespValidationError) Cause() error { return e.cause }
+func (e ChangePhoneReqValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ChangeMobileRespValidationError) Key() bool { return e.key }
+func (e ChangePhoneReqValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ChangeMobileRespValidationError) ErrorName() string { return "ChangeMobileRespValidationError" }
+func (e ChangePhoneReqValidationError) ErrorName() string { return "ChangePhoneReqValidationError" }
 
 // Error satisfies the builtin error interface
-func (e ChangeMobileRespValidationError) Error() string {
+func (e ChangePhoneReqValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1928,14 +2267,14 @@ func (e ChangeMobileRespValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sChangeMobileResp.%s: %s%s",
+		"invalid %sChangePhoneReq.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ChangeMobileRespValidationError{}
+var _ error = ChangePhoneReqValidationError{}
 
 var _ interface {
 	Field() string
@@ -1943,7 +2282,246 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ChangeMobileRespValidationError{}
+} = ChangePhoneReqValidationError{}
+
+// Validate checks the field values on ChangePhoneResp with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *ChangePhoneResp) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ChangePhoneResp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ChangePhoneRespMultiError, or nil if none found.
+func (m *ChangePhoneResp) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ChangePhoneResp) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Code
+
+	// no validation rules for Reason
+
+	// no validation rules for Message
+
+	// no validation rules for Metadata
+
+	if all {
+		switch v := interface{}(m.GetData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ChangePhoneRespValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ChangePhoneRespValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ChangePhoneRespValidationError{
+				field:  "Data",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ChangePhoneRespMultiError(errors)
+	}
+
+	return nil
+}
+
+// ChangePhoneRespMultiError is an error wrapping multiple validation errors
+// returned by ChangePhoneResp.ValidateAll() if the designated constraints
+// aren't met.
+type ChangePhoneRespMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ChangePhoneRespMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ChangePhoneRespMultiError) AllErrors() []error { return m }
+
+// ChangePhoneRespValidationError is the validation error returned by
+// ChangePhoneResp.Validate if the designated constraints aren't met.
+type ChangePhoneRespValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ChangePhoneRespValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ChangePhoneRespValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ChangePhoneRespValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ChangePhoneRespValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ChangePhoneRespValidationError) ErrorName() string { return "ChangePhoneRespValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ChangePhoneRespValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sChangePhoneResp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ChangePhoneRespValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ChangePhoneRespValidationError{}
+
+// Validate checks the field values on ChangePhoneRespData with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ChangePhoneRespData) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ChangePhoneRespData with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ChangePhoneRespDataMultiError, or nil if none found.
+func (m *ChangePhoneRespData) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ChangePhoneRespData) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return ChangePhoneRespDataMultiError(errors)
+	}
+
+	return nil
+}
+
+// ChangePhoneRespDataMultiError is an error wrapping multiple validation
+// errors returned by ChangePhoneRespData.ValidateAll() if the designated
+// constraints aren't met.
+type ChangePhoneRespDataMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ChangePhoneRespDataMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ChangePhoneRespDataMultiError) AllErrors() []error { return m }
+
+// ChangePhoneRespDataValidationError is the validation error returned by
+// ChangePhoneRespData.Validate if the designated constraints aren't met.
+type ChangePhoneRespDataValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ChangePhoneRespDataValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ChangePhoneRespDataValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ChangePhoneRespDataValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ChangePhoneRespDataValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ChangePhoneRespDataValidationError) ErrorName() string {
+	return "ChangePhoneRespDataValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ChangePhoneRespDataValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sChangePhoneRespData.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ChangePhoneRespDataValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ChangePhoneRespDataValidationError{}
 
 // Validate checks the field values on ChangeEmailReq with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
@@ -2069,6 +2647,43 @@ func (m *ChangeEmailResp) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for Code
+
+	// no validation rules for Reason
+
+	// no validation rules for Message
+
+	// no validation rules for Metadata
+
+	if all {
+		switch v := interface{}(m.GetData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ChangeEmailRespValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ChangeEmailRespValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ChangeEmailRespValidationError{
+				field:  "Data",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return ChangeEmailRespMultiError(errors)
 	}
@@ -2146,6 +2761,108 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ChangeEmailRespValidationError{}
+
+// Validate checks the field values on ChangeEmailRespData with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ChangeEmailRespData) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ChangeEmailRespData with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ChangeEmailRespDataMultiError, or nil if none found.
+func (m *ChangeEmailRespData) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ChangeEmailRespData) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return ChangeEmailRespDataMultiError(errors)
+	}
+
+	return nil
+}
+
+// ChangeEmailRespDataMultiError is an error wrapping multiple validation
+// errors returned by ChangeEmailRespData.ValidateAll() if the designated
+// constraints aren't met.
+type ChangeEmailRespDataMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ChangeEmailRespDataMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ChangeEmailRespDataMultiError) AllErrors() []error { return m }
+
+// ChangeEmailRespDataValidationError is the validation error returned by
+// ChangeEmailRespData.Validate if the designated constraints aren't met.
+type ChangeEmailRespDataValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ChangeEmailRespDataValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ChangeEmailRespDataValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ChangeEmailRespDataValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ChangeEmailRespDataValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ChangeEmailRespDataValidationError) ErrorName() string {
+	return "ChangeEmailRespDataValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ChangeEmailRespDataValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sChangeEmailRespData.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ChangeEmailRespDataValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ChangeEmailRespDataValidationError{}
 
 // Validate checks the field values on ChangeNicknameReq with the rules defined
 // in the proto definition for this message. If any rules are violated, the
@@ -2273,6 +2990,43 @@ func (m *ChangeNicknameResp) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for Code
+
+	// no validation rules for Reason
+
+	// no validation rules for Message
+
+	// no validation rules for Metadata
+
+	if all {
+		switch v := interface{}(m.GetData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ChangeNicknameRespValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ChangeNicknameRespValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ChangeNicknameRespValidationError{
+				field:  "Data",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return ChangeNicknameRespMultiError(errors)
 	}
@@ -2352,6 +3106,108 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ChangeNicknameRespValidationError{}
+
+// Validate checks the field values on ChangeNicknameRespData with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ChangeNicknameRespData) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ChangeNicknameRespData with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ChangeNicknameRespDataMultiError, or nil if none found.
+func (m *ChangeNicknameRespData) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ChangeNicknameRespData) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return ChangeNicknameRespDataMultiError(errors)
+	}
+
+	return nil
+}
+
+// ChangeNicknameRespDataMultiError is an error wrapping multiple validation
+// errors returned by ChangeNicknameRespData.ValidateAll() if the designated
+// constraints aren't met.
+type ChangeNicknameRespDataMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ChangeNicknameRespDataMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ChangeNicknameRespDataMultiError) AllErrors() []error { return m }
+
+// ChangeNicknameRespDataValidationError is the validation error returned by
+// ChangeNicknameRespData.Validate if the designated constraints aren't met.
+type ChangeNicknameRespDataValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ChangeNicknameRespDataValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ChangeNicknameRespDataValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ChangeNicknameRespDataValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ChangeNicknameRespDataValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ChangeNicknameRespDataValidationError) ErrorName() string {
+	return "ChangeNicknameRespDataValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ChangeNicknameRespDataValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sChangeNicknameRespData.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ChangeNicknameRespDataValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ChangeNicknameRespDataValidationError{}
 
 // Validate checks the field values on ChangeGenderReq with the rules defined
 // in the proto definition for this message. If any rules are violated, the
@@ -2477,6 +3333,43 @@ func (m *ChangeGenderResp) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for Code
+
+	// no validation rules for Reason
+
+	// no validation rules for Message
+
+	// no validation rules for Metadata
+
+	if all {
+		switch v := interface{}(m.GetData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ChangeGenderRespValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ChangeGenderRespValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ChangeGenderRespValidationError{
+				field:  "Data",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return ChangeGenderRespMultiError(errors)
 	}
@@ -2554,3 +3447,105 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ChangeGenderRespValidationError{}
+
+// Validate checks the field values on ChangeGenderRespData with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ChangeGenderRespData) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ChangeGenderRespData with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ChangeGenderRespDataMultiError, or nil if none found.
+func (m *ChangeGenderRespData) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ChangeGenderRespData) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return ChangeGenderRespDataMultiError(errors)
+	}
+
+	return nil
+}
+
+// ChangeGenderRespDataMultiError is an error wrapping multiple validation
+// errors returned by ChangeGenderRespData.ValidateAll() if the designated
+// constraints aren't met.
+type ChangeGenderRespDataMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ChangeGenderRespDataMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ChangeGenderRespDataMultiError) AllErrors() []error { return m }
+
+// ChangeGenderRespDataValidationError is the validation error returned by
+// ChangeGenderRespData.Validate if the designated constraints aren't met.
+type ChangeGenderRespDataValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ChangeGenderRespDataValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ChangeGenderRespDataValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ChangeGenderRespDataValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ChangeGenderRespDataValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ChangeGenderRespDataValidationError) ErrorName() string {
+	return "ChangeGenderRespDataValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ChangeGenderRespDataValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sChangeGenderRespData.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ChangeGenderRespDataValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ChangeGenderRespDataValidationError{}

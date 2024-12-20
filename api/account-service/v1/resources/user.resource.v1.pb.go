@@ -483,16 +483,16 @@ func (x *UserListReq) GetPageRequest() *page.PageRequest {
 	return nil
 }
 
-// UserListResp list
 type UserListResp struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// list User-array
-	List []*User `protobuf:"bytes,1,rep,name=list,proto3" json:"list,omitempty"`
-	// page_info paging response
-	PageInfo *page.PageResponse `protobuf:"bytes,2,opt,name=page_info,json=pageInfo,proto3" json:"page_info,omitempty"`
+	Code     int32             `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Reason   string            `protobuf:"bytes,2,opt,name=reason,proto3" json:"reason,omitempty"`
+	Message  string            `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
+	Metadata map[string]string `protobuf:"bytes,4,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	Data     *UserListRespData `protobuf:"bytes,100,opt,name=data,proto3" json:"data,omitempty"`
 }
 
 func (x *UserListResp) Reset() {
@@ -527,14 +527,90 @@ func (*UserListResp) Descriptor() ([]byte, []int) {
 	return file_api_account_service_v1_resources_user_resource_v1_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *UserListResp) GetList() []*User {
+func (x *UserListResp) GetCode() int32 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *UserListResp) GetReason() string {
+	if x != nil {
+		return x.Reason
+	}
+	return ""
+}
+
+func (x *UserListResp) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *UserListResp) GetMetadata() map[string]string {
+	if x != nil {
+		return x.Metadata
+	}
+	return nil
+}
+
+func (x *UserListResp) GetData() *UserListRespData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+type UserListRespData struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	List     []*User            `protobuf:"bytes,1,rep,name=list,proto3" json:"list,omitempty"`
+	PageInfo *page.PageResponse `protobuf:"bytes,2,opt,name=page_info,json=pageInfo,proto3" json:"page_info,omitempty"`
+}
+
+func (x *UserListRespData) Reset() {
+	*x = UserListRespData{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_account_service_v1_resources_user_resource_v1_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UserListRespData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserListRespData) ProtoMessage() {}
+
+func (x *UserListRespData) ProtoReflect() protoreflect.Message {
+	mi := &file_api_account_service_v1_resources_user_resource_v1_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserListRespData.ProtoReflect.Descriptor instead.
+func (*UserListRespData) Descriptor() ([]byte, []int) {
+	return file_api_account_service_v1_resources_user_resource_v1_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *UserListRespData) GetList() []*User {
 	if x != nil {
 		return x.List
 	}
 	return nil
 }
 
-func (x *UserListResp) GetPageInfo() *page.PageResponse {
+func (x *UserListRespData) GetPageInfo() *page.PageResponse {
 	if x != nil {
 		return x.PageInfo
 	}
@@ -554,7 +630,7 @@ type UserProcessResult struct {
 func (x *UserProcessResult) Reset() {
 	*x = UserProcessResult{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_api_account_service_v1_resources_user_resource_v1_proto_msgTypes[6]
+		mi := &file_api_account_service_v1_resources_user_resource_v1_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -567,7 +643,7 @@ func (x *UserProcessResult) String() string {
 func (*UserProcessResult) ProtoMessage() {}
 
 func (x *UserProcessResult) ProtoReflect() protoreflect.Message {
-	mi := &file_api_account_service_v1_resources_user_resource_v1_proto_msgTypes[6]
+	mi := &file_api_account_service_v1_resources_user_resource_v1_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -580,7 +656,7 @@ func (x *UserProcessResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserProcessResult.ProtoReflect.Descriptor instead.
 func (*UserProcessResult) Descriptor() ([]byte, []int) {
-	return file_api_account_service_v1_resources_user_resource_v1_proto_rawDescGZIP(), []int{6}
+	return file_api_account_service_v1_resources_user_resource_v1_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *UserProcessResult) GetIsSuccess() bool {
@@ -686,8 +762,27 @@ var file_api_account_service_v1_resources_user_resource_v1_proto_rawDesc = []byt
 	0x20, 0x01, 0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x6b, 0x69, 0x74, 0x2e, 0x70, 0x61, 0x67, 0x65, 0x2e,
 	0x70, 0x61, 0x67, 0x65, 0x70, 0x6b, 0x67, 0x2e, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75,
 	0x65, 0x73, 0x74, 0x52, 0x0b, 0x70, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x22, 0x82, 0x01, 0x0a, 0x0c, 0x55, 0x73, 0x65, 0x72, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73,
-	0x70, 0x12, 0x35, 0x0a, 0x04, 0x6c, 0x69, 0x73, 0x74, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32,
+	0x22, 0xa9, 0x02, 0x0a, 0x0c, 0x55, 0x73, 0x65, 0x72, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73,
+	0x70, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52,
+	0x04, 0x63, 0x6f, 0x64, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x72, 0x65, 0x61, 0x73, 0x6f, 0x6e, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x72, 0x65, 0x61, 0x73, 0x6f, 0x6e, 0x12, 0x18, 0x0a,
+	0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07,
+	0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x53, 0x0a, 0x08, 0x6d, 0x65, 0x74, 0x61, 0x64,
+	0x61, 0x74, 0x61, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x37, 0x2e, 0x73, 0x61, 0x61, 0x73,
+	0x2e, 0x61, 0x70, 0x69, 0x2e, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x2e, 0x72, 0x65, 0x73,
+	0x6f, 0x75, 0x72, 0x63, 0x65, 0x76, 0x31, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x4c, 0x69, 0x73, 0x74,
+	0x52, 0x65, 0x73, 0x70, 0x2e, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x45, 0x6e, 0x74,
+	0x72, 0x79, 0x52, 0x08, 0x6d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x12, 0x41, 0x0a, 0x04,
+	0x64, 0x61, 0x74, 0x61, 0x18, 0x64, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2d, 0x2e, 0x73, 0x61, 0x61,
+	0x73, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x2e, 0x72, 0x65,
+	0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x76, 0x31, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x4c, 0x69, 0x73,
+	0x74, 0x52, 0x65, 0x73, 0x70, 0x44, 0x61, 0x74, 0x61, 0x52, 0x04, 0x64, 0x61, 0x74, 0x61, 0x1a,
+	0x3b, 0x0a, 0x0d, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x45, 0x6e, 0x74, 0x72, 0x79,
+	0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b,
+	0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0x86, 0x01, 0x0a,
+	0x10, 0x55, 0x73, 0x65, 0x72, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x44, 0x61, 0x74,
+	0x61, 0x12, 0x35, 0x0a, 0x04, 0x6c, 0x69, 0x73, 0x74, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32,
 	0x21, 0x2e, 0x73, 0x61, 0x61, 0x73, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x61, 0x63, 0x63, 0x6f, 0x75,
 	0x6e, 0x74, 0x2e, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x76, 0x31, 0x2e, 0x55, 0x73,
 	0x65, 0x72, 0x52, 0x04, 0x6c, 0x69, 0x73, 0x74, 0x12, 0x3b, 0x0a, 0x09, 0x70, 0x61, 0x67, 0x65,
@@ -722,35 +817,39 @@ func file_api_account_service_v1_resources_user_resource_v1_proto_rawDescGZIP() 
 	return file_api_account_service_v1_resources_user_resource_v1_proto_rawDescData
 }
 
-var file_api_account_service_v1_resources_user_resource_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_api_account_service_v1_resources_user_resource_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_api_account_service_v1_resources_user_resource_v1_proto_goTypes = []any{
-	(*User)(nil),                                     // 0: saas.api.account.resourcev1.User
-	(*UserSaveReq)(nil),                              // 1: saas.api.account.resourcev1.UserSaveReq
-	(*UserIdReq)(nil),                                // 2: saas.api.account.resourcev1.UserIdReq
-	(*UserIdsReq)(nil),                               // 3: saas.api.account.resourcev1.UserIdsReq
-	(*UserListReq)(nil),                              // 4: saas.api.account.resourcev1.UserListReq
-	(*UserListResp)(nil),                             // 5: saas.api.account.resourcev1.UserListResp
-	(*UserProcessResult)(nil),                        // 6: saas.api.account.resourcev1.UserProcessResult
-	(enums.UserGenderEnum_UserGender)(0),             // 7: saas.api.account.enumv1.UserGenderEnum.UserGender
-	(enums.UserStatusEnum_UserStatus)(0),             // 8: saas.api.account.enumv1.UserStatusEnum.UserStatus
-	(enums.UserRegisterTypeEnum_UserRegisterType)(0), // 9: saas.api.account.enumv1.UserRegisterTypeEnum.UserRegisterType
-	(*page.PageRequest)(nil),                         // 10: kit.page.pagepkg.PageRequest
-	(*page.PageResponse)(nil),                        // 11: kit.page.pagepkg.PageResponse
+	(*User)(nil),                         // 0: saas.api.account.resourcev1.User
+	(*UserSaveReq)(nil),                  // 1: saas.api.account.resourcev1.UserSaveReq
+	(*UserIdReq)(nil),                    // 2: saas.api.account.resourcev1.UserIdReq
+	(*UserIdsReq)(nil),                   // 3: saas.api.account.resourcev1.UserIdsReq
+	(*UserListReq)(nil),                  // 4: saas.api.account.resourcev1.UserListReq
+	(*UserListResp)(nil),                 // 5: saas.api.account.resourcev1.UserListResp
+	(*UserListRespData)(nil),             // 6: saas.api.account.resourcev1.UserListRespData
+	(*UserProcessResult)(nil),            // 7: saas.api.account.resourcev1.UserProcessResult
+	nil,                                  // 8: saas.api.account.resourcev1.UserListResp.MetadataEntry
+	(enums.UserGenderEnum_UserGender)(0), // 9: saas.api.account.enumv1.UserGenderEnum.UserGender
+	(enums.UserStatusEnum_UserStatus)(0), // 10: saas.api.account.enumv1.UserStatusEnum.UserStatus
+	(enums.UserRegisterTypeEnum_UserRegisterType)(0), // 11: saas.api.account.enumv1.UserRegisterTypeEnum.UserRegisterType
+	(*page.PageRequest)(nil),                         // 12: kit.page.pagepkg.PageRequest
+	(*page.PageResponse)(nil),                        // 13: kit.page.pagepkg.PageResponse
 }
 var file_api_account_service_v1_resources_user_resource_v1_proto_depIdxs = []int32{
-	7,  // 0: saas.api.account.resourcev1.User.user_gender:type_name -> saas.api.account.enumv1.UserGenderEnum.UserGender
-	8,  // 1: saas.api.account.resourcev1.User.user_status:type_name -> saas.api.account.enumv1.UserStatusEnum.UserStatus
-	7,  // 2: saas.api.account.resourcev1.UserSaveReq.user_gender:type_name -> saas.api.account.enumv1.UserGenderEnum.UserGender
-	9,  // 3: saas.api.account.resourcev1.UserSaveReq.register_type:type_name -> saas.api.account.enumv1.UserRegisterTypeEnum.UserRegisterType
-	8,  // 4: saas.api.account.resourcev1.UserSaveReq.user_status:type_name -> saas.api.account.enumv1.UserStatusEnum.UserStatus
-	10, // 5: saas.api.account.resourcev1.UserListReq.page_request:type_name -> kit.page.pagepkg.PageRequest
-	0,  // 6: saas.api.account.resourcev1.UserListResp.list:type_name -> saas.api.account.resourcev1.User
-	11, // 7: saas.api.account.resourcev1.UserListResp.page_info:type_name -> kit.page.pagepkg.PageResponse
-	8,  // [8:8] is the sub-list for method output_type
-	8,  // [8:8] is the sub-list for method input_type
-	8,  // [8:8] is the sub-list for extension type_name
-	8,  // [8:8] is the sub-list for extension extendee
-	0,  // [0:8] is the sub-list for field type_name
+	9,  // 0: saas.api.account.resourcev1.User.user_gender:type_name -> saas.api.account.enumv1.UserGenderEnum.UserGender
+	10, // 1: saas.api.account.resourcev1.User.user_status:type_name -> saas.api.account.enumv1.UserStatusEnum.UserStatus
+	9,  // 2: saas.api.account.resourcev1.UserSaveReq.user_gender:type_name -> saas.api.account.enumv1.UserGenderEnum.UserGender
+	11, // 3: saas.api.account.resourcev1.UserSaveReq.register_type:type_name -> saas.api.account.enumv1.UserRegisterTypeEnum.UserRegisterType
+	10, // 4: saas.api.account.resourcev1.UserSaveReq.user_status:type_name -> saas.api.account.enumv1.UserStatusEnum.UserStatus
+	12, // 5: saas.api.account.resourcev1.UserListReq.page_request:type_name -> kit.page.pagepkg.PageRequest
+	8,  // 6: saas.api.account.resourcev1.UserListResp.metadata:type_name -> saas.api.account.resourcev1.UserListResp.MetadataEntry
+	6,  // 7: saas.api.account.resourcev1.UserListResp.data:type_name -> saas.api.account.resourcev1.UserListRespData
+	0,  // 8: saas.api.account.resourcev1.UserListRespData.list:type_name -> saas.api.account.resourcev1.User
+	13, // 9: saas.api.account.resourcev1.UserListRespData.page_info:type_name -> kit.page.pagepkg.PageResponse
+	10, // [10:10] is the sub-list for method output_type
+	10, // [10:10] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_api_account_service_v1_resources_user_resource_v1_proto_init() }
@@ -832,6 +931,18 @@ func file_api_account_service_v1_resources_user_resource_v1_proto_init() {
 			}
 		}
 		file_api_account_service_v1_resources_user_resource_v1_proto_msgTypes[6].Exporter = func(v any, i int) any {
+			switch v := v.(*UserListRespData); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_account_service_v1_resources_user_resource_v1_proto_msgTypes[7].Exporter = func(v any, i int) any {
 			switch v := v.(*UserProcessResult); i {
 			case 0:
 				return &v.state
@@ -850,7 +961,7 @@ func file_api_account_service_v1_resources_user_resource_v1_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_api_account_service_v1_resources_user_resource_v1_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

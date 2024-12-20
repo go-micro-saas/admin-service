@@ -51,3 +51,22 @@ message UserRegisterTypeEnum {
     THIRD_PARTY = 2001;  // 第三方
   }
 }
+
+message UserConfirmTypeEnum {
+  enum UserConfirmType {
+    UNSPECIFIED = 0;  // 未指定
+    EMAIL       = 1;  // 邮箱
+    PHONE       = 2;  // 手机
+    PASSWORD    = 3;  // 密码
+  }
+}
+
+message UserConfirmStatusEnum {
+  enum UserConfirmStatus {
+    UNSPECIFIED = 0;  // 未指定
+    CONFIRMING  = 1;  // 确认中
+    CONFIRMED   = 2;  // 已确认
+    EXPIRED     = 3;  // 已过期
+    CANCELLED   = 4;  // 已取消
+  }
+}

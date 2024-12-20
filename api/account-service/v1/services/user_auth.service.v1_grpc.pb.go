@@ -20,11 +20,14 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	SrvUserAuthV1_Ping_FullMethodName         = "/saas.api.account.servicev1.SrvUserAuthV1/Ping"
-	SrvUserAuthV1_RefreshToken_FullMethodName = "/saas.api.account.servicev1.SrvUserAuthV1/RefreshToken"
-	SrvUserAuthV1_LoginByEmail_FullMethodName = "/saas.api.account.servicev1.SrvUserAuthV1/LoginByEmail"
-	SrvUserAuthV1_LoginByPhone_FullMethodName = "/saas.api.account.servicev1.SrvUserAuthV1/LoginByPhone"
-	SrvUserAuthV1_OpenApiLogin_FullMethodName = "/saas.api.account.servicev1.SrvUserAuthV1/OpenApiLogin"
+	SrvUserAuthV1_Ping_FullMethodName                 = "/saas.api.account.servicev1.SrvUserAuthV1/Ping"
+	SrvUserAuthV1_SignupByEmail_FullMethodName        = "/saas.api.account.servicev1.SrvUserAuthV1/SignupByEmail"
+	SrvUserAuthV1_SignupByPhone_FullMethodName        = "/saas.api.account.servicev1.SrvUserAuthV1/SignupByPhone"
+	SrvUserAuthV1_LoginOrSignupByPhone_FullMethodName = "/saas.api.account.servicev1.SrvUserAuthV1/LoginOrSignupByPhone"
+	SrvUserAuthV1_RefreshToken_FullMethodName         = "/saas.api.account.servicev1.SrvUserAuthV1/RefreshToken"
+	SrvUserAuthV1_LoginByEmail_FullMethodName         = "/saas.api.account.servicev1.SrvUserAuthV1/LoginByEmail"
+	SrvUserAuthV1_LoginByPhone_FullMethodName         = "/saas.api.account.servicev1.SrvUserAuthV1/LoginByPhone"
+	SrvUserAuthV1_OpenApiLogin_FullMethodName         = "/saas.api.account.servicev1.SrvUserAuthV1/OpenApiLogin"
 )
 
 // SrvUserAuthV1Client is the client API for SrvUserAuthV1 service.
@@ -33,6 +36,12 @@ const (
 type SrvUserAuthV1Client interface {
 	// 身份验证-Ping测试
 	Ping(ctx context.Context, in *resources.PingReq, opts ...grpc.CallOption) (*resources.PingResp, error)
+	// 身份验证-Email注册
+	SignupByEmail(ctx context.Context, in *resources.SignupByEmailReq, opts ...grpc.CallOption) (*resources.LoginResp, error)
+	// 身份验证-手机注册
+	SignupByPhone(ctx context.Context, in *resources.SignupByPhoneReq, opts ...grpc.CallOption) (*resources.LoginResp, error)
+	// 身份验证-手机登陆(自动注册)
+	LoginOrSignupByPhone(ctx context.Context, in *resources.LoginOrSignupByPhoneReq, opts ...grpc.CallOption) (*resources.LoginResp, error)
 	// 身份验证-刷新Token
 	RefreshToken(ctx context.Context, in *resources.RefreshTokenReq, opts ...grpc.CallOption) (*resources.LoginResp, error)
 	// 身份验证-Email登录
@@ -54,6 +63,33 @@ func NewSrvUserAuthV1Client(cc grpc.ClientConnInterface) SrvUserAuthV1Client {
 func (c *srvUserAuthV1Client) Ping(ctx context.Context, in *resources.PingReq, opts ...grpc.CallOption) (*resources.PingResp, error) {
 	out := new(resources.PingResp)
 	err := c.cc.Invoke(ctx, SrvUserAuthV1_Ping_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *srvUserAuthV1Client) SignupByEmail(ctx context.Context, in *resources.SignupByEmailReq, opts ...grpc.CallOption) (*resources.LoginResp, error) {
+	out := new(resources.LoginResp)
+	err := c.cc.Invoke(ctx, SrvUserAuthV1_SignupByEmail_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *srvUserAuthV1Client) SignupByPhone(ctx context.Context, in *resources.SignupByPhoneReq, opts ...grpc.CallOption) (*resources.LoginResp, error) {
+	out := new(resources.LoginResp)
+	err := c.cc.Invoke(ctx, SrvUserAuthV1_SignupByPhone_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *srvUserAuthV1Client) LoginOrSignupByPhone(ctx context.Context, in *resources.LoginOrSignupByPhoneReq, opts ...grpc.CallOption) (*resources.LoginResp, error) {
+	out := new(resources.LoginResp)
+	err := c.cc.Invoke(ctx, SrvUserAuthV1_LoginOrSignupByPhone_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -102,6 +138,12 @@ func (c *srvUserAuthV1Client) OpenApiLogin(ctx context.Context, in *resources.Op
 type SrvUserAuthV1Server interface {
 	// 身份验证-Ping测试
 	Ping(context.Context, *resources.PingReq) (*resources.PingResp, error)
+	// 身份验证-Email注册
+	SignupByEmail(context.Context, *resources.SignupByEmailReq) (*resources.LoginResp, error)
+	// 身份验证-手机注册
+	SignupByPhone(context.Context, *resources.SignupByPhoneReq) (*resources.LoginResp, error)
+	// 身份验证-手机登陆(自动注册)
+	LoginOrSignupByPhone(context.Context, *resources.LoginOrSignupByPhoneReq) (*resources.LoginResp, error)
 	// 身份验证-刷新Token
 	RefreshToken(context.Context, *resources.RefreshTokenReq) (*resources.LoginResp, error)
 	// 身份验证-Email登录
@@ -119,6 +161,15 @@ type UnimplementedSrvUserAuthV1Server struct {
 
 func (UnimplementedSrvUserAuthV1Server) Ping(context.Context, *resources.PingReq) (*resources.PingResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
+}
+func (UnimplementedSrvUserAuthV1Server) SignupByEmail(context.Context, *resources.SignupByEmailReq) (*resources.LoginResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SignupByEmail not implemented")
+}
+func (UnimplementedSrvUserAuthV1Server) SignupByPhone(context.Context, *resources.SignupByPhoneReq) (*resources.LoginResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SignupByPhone not implemented")
+}
+func (UnimplementedSrvUserAuthV1Server) LoginOrSignupByPhone(context.Context, *resources.LoginOrSignupByPhoneReq) (*resources.LoginResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoginOrSignupByPhone not implemented")
 }
 func (UnimplementedSrvUserAuthV1Server) RefreshToken(context.Context, *resources.RefreshTokenReq) (*resources.LoginResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RefreshToken not implemented")
@@ -159,6 +210,60 @@ func _SrvUserAuthV1_Ping_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SrvUserAuthV1Server).Ping(ctx, req.(*resources.PingReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SrvUserAuthV1_SignupByEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(resources.SignupByEmailReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SrvUserAuthV1Server).SignupByEmail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SrvUserAuthV1_SignupByEmail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SrvUserAuthV1Server).SignupByEmail(ctx, req.(*resources.SignupByEmailReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SrvUserAuthV1_SignupByPhone_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(resources.SignupByPhoneReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SrvUserAuthV1Server).SignupByPhone(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SrvUserAuthV1_SignupByPhone_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SrvUserAuthV1Server).SignupByPhone(ctx, req.(*resources.SignupByPhoneReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SrvUserAuthV1_LoginOrSignupByPhone_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(resources.LoginOrSignupByPhoneReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SrvUserAuthV1Server).LoginOrSignupByPhone(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SrvUserAuthV1_LoginOrSignupByPhone_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SrvUserAuthV1Server).LoginOrSignupByPhone(ctx, req.(*resources.LoginOrSignupByPhoneReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -245,6 +350,18 @@ var SrvUserAuthV1_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Ping",
 			Handler:    _SrvUserAuthV1_Ping_Handler,
+		},
+		{
+			MethodName: "SignupByEmail",
+			Handler:    _SrvUserAuthV1_SignupByEmail_Handler,
+		},
+		{
+			MethodName: "SignupByPhone",
+			Handler:    _SrvUserAuthV1_SignupByPhone_Handler,
+		},
+		{
+			MethodName: "LoginOrSignupByPhone",
+			Handler:    _SrvUserAuthV1_LoginOrSignupByPhone_Handler,
 		},
 		{
 			MethodName: "RefreshToken",

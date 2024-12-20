@@ -13,8 +13,8 @@ var (
 
 type userDto struct{}
 
-func (s *userDto) ToPbLoginResp(userModel *po.User, tokenResp *bo.SignTokenResp) *resourcev1.LoginResp {
-	res := &resourcev1.LoginResp{
+func (s *userDto) ToPbLoginRespData(userModel *po.User, tokenResp *bo.SignTokenResp) *resourcev1.LoginRespData {
+	res := &resourcev1.LoginRespData{
 		UserInfo: &resourcev1.UserInfo{
 			// Id:           userModel.Id,
 			UserId:       userModel.UserId,

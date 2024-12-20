@@ -96,12 +96,16 @@ message UserListReq {
   // page_request paging request
   kit.page.pagepkg.PageRequest page_request = 1;
 }
-
-// UserListResp list
 message UserListResp {
-  // list User-array
-  repeated User list = 1;
-  // page_info paging response
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  UserListRespData data = 100;
+}
+message UserListRespData {
+  repeated User list                      = 1;
   kit.page.pagepkg.PageResponse page_info = 2;
 }
 

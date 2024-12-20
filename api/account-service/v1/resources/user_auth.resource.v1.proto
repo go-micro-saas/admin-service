@@ -9,6 +9,7 @@ option java_package         = "saas.api.account.resourcev1";
 option java_outer_classname = "SaasApiAccountResourceV1";
 
 import "api/account-service/v1/enums/account.enum.v1.proto";
+// import "google/protobuf/empty.proto";
 
 // PingReq ...
 message PingReq {
@@ -17,6 +18,15 @@ message PingReq {
 
 // PingResp ...
 message PingResp {
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  PingRespData data = 100;
+}
+
+message PingRespData {
   string message = 1;
 }
 
@@ -27,33 +37,21 @@ message UserInfo {
   string user_avatar   = 3;
 }
 
-// LoginOrRegByPhoneReq 手机登陆(自动注册)
-message LoginOrRegByPhoneReq {
-  // user_mobile 手机号码
-  string user_mobile = 1;
-  // password 密码
-  string password = 4;
+// LoginOrSignupByPhoneReq 手机登陆(自动注册)
+message LoginOrSignupByPhoneReq {
+  // user_phone 手机号码
+  string user_phone = 1;
   // code 验证码
   string code = 5;
 }
 
-// RegByUserNameReq 用户注册
-message RegByUserNameReq {
-  string user_name        = 1;
-  string password         = 2;
-  string password_confirm = 3;
-  string code             = 4;
-}
-
-// LoginByUserNameReq 用户登录
-message LoginByUserNameReq {
+message SignupByPhoneReq {
   string user_name = 1;
   string password  = 2;
   string code      = 3;
 }
 
-// RegByEmailReq 用户注册
-message RegByEmailReq {
+message SignupByEmailReq {
   string email            = 1;
   string password         = 2;
   string password_confirm = 3;
@@ -80,8 +78,16 @@ message OpenApiLoginReq {
   string access_secret = 2;
 }
 
-// LoginResp 用户登录
 message LoginResp {
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  LoginRespData data = 100;
+}
+
+message LoginRespData {
   UserInfo user_info = 1;
 
   string access_token            = 10;
@@ -90,63 +96,92 @@ message LoginResp {
   int64 refresh_token_expired_at = 13;  // 时间戳，单位：秒
 }
 
-// RefreshTokenReq 刷新token
 message RefreshTokenReq {
   string refresh_token = 1;
 }
 
-// ChangePasswordReq 修改密码
 message ChangePasswordReq {
   string old_password         = 1;
   string new_password         = 2;
   string new_password_confirm = 3;
 }
-
-// ChangePasswordResp 修改密码
 message ChangePasswordResp {
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  ChangePasswordRespData data = 100;
+}
+message ChangePasswordRespData {
 }
 
-// ChangeAvatarReq 修改头像
 message ChangeAvatarReq {
   string user_avatar = 2;
 }
-
-// ChangeAvatarResp 修改头像
 message ChangeAvatarResp {
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  ChangeAvatarRespData data = 100;
+}
+message ChangeAvatarRespData {
 }
 
-// ChangeMobileReq 修改手机号
-message ChangeMobileReq {
-  string user_mobile = 2;
+message ChangePhoneReq {
+  string user_phone = 2;
+}
+message ChangePhoneResp {
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  ChangePhoneRespData data = 100;
+}
+message ChangePhoneRespData {
 }
 
-// ChangeMobileResp 修改手机号
-message ChangeMobileResp {
-}
-
-// ChangeEmailReq 修改邮箱
 message ChangeEmailReq {
   string user_email = 2;
 }
-
-// ChangeEmailResp 修改邮箱
 message ChangeEmailResp {
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  ChangeEmailRespData data = 100;
+}
+message ChangeEmailRespData {
 }
 
-// ChangeNicknameReq 修改昵称
 message ChangeNicknameReq {
   string user_nickname = 2;
 }
-
-// ChangeNicknameResp 修改昵称
 message ChangeNicknameResp {
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  ChangeNicknameRespData data = 100;
+}
+message ChangeNicknameRespData {
 }
 
-// ChangeGenderReq 修改性别
 message ChangeGenderReq {
   enumv1.UserGenderEnum.UserGender user_gender = 6;
 }
-
-// ChangeGenderResp 修改性别
 message ChangeGenderResp {
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  ChangeGenderRespData data = 100;
+}
+message ChangeGenderRespData {
 }
