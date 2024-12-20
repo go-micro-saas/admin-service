@@ -5,6 +5,7 @@ package data
 import (
 	"bytes"
 	context "context"
+	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/data/po"
 	datarepos "github.com/go-micro-saas/account-service/app/account-service/internal/data/repo"
 	schemas "github.com/go-micro-saas/account-service/app/account-service/internal/data/schema/user_reg_phone"
@@ -16,13 +17,16 @@ import (
 
 // userRegPhoneDataRepo repo
 type userRegPhoneDataRepo struct {
+	log                *log.Helper
 	dbConn             *gorm.DB             // *gorm.DB
 	UserRegPhoneSchema schemas.UserRegPhone // UserRegPhone
 }
 
-// NewUserRegPhoneRepo new data repo
-func NewUserRegPhoneRepo(dbConn *gorm.DB) datarepos.UserRegPhoneDataRepo {
+// NewUserRegPhoneDataRepo new data repo
+func NewUserRegPhoneDataRepo(logger log.Logger, dbConn *gorm.DB) datarepos.UserRegPhoneDataRepo {
+	logHelper := log.NewHelper(log.With(logger, "module", "account-service/data/user_reg_phone"))
 	return &userRegPhoneDataRepo{
+		log:    logHelper,
 		dbConn: dbConn,
 	}
 }

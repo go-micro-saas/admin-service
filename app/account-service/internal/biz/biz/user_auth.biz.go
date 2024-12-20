@@ -2,6 +2,7 @@ package biz
 
 import (
 	"context"
+	"github.com/go-kratos/kratos/v2/log"
 	errorv1 "github.com/go-micro-saas/account-service/api/account-service/v1/errors"
 	resourcev1 "github.com/go-micro-saas/account-service/api/account-service/v1/resources"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/biz/bo"
@@ -16,6 +17,7 @@ import (
 
 // userAuthBiz ...
 type userAuthBiz struct {
+	log                  *log.Helper
 	authRepo             authpkg.AuthRepo
 	userDataRepo         datarepos.UserDataRepo
 	userRegEmailDataRepo datarepos.UserRegEmailDataRepo
@@ -24,12 +26,15 @@ type userAuthBiz struct {
 
 // NewUserAuthBiz ...
 func NewUserAuthBiz(
+	logger log.Logger,
 	authRepo authpkg.AuthRepo,
 	userDataRepo datarepos.UserDataRepo,
 	userRegEmailDataRepo datarepos.UserRegEmailDataRepo,
 	userRegPhoneDataRepo datarepos.UserRegPhoneDataRepo,
 ) bizrepos.UserAuthBizRepo {
+	logHelper := log.NewHelper(log.With(logger, "module", "account-service/biz/user_auth"))
 	return &userAuthBiz{
+		log:                  logHelper,
 		authRepo:             authRepo,
 		userDataRepo:         userDataRepo,
 		userRegEmailDataRepo: userRegEmailDataRepo,

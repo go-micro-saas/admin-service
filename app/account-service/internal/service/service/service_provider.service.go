@@ -3,7 +3,7 @@ package service
 import (
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
-	servicev1 "github.com/go-micro-saas/account-service/api/testing-service/v1/services"
+	servicev1 "github.com/go-micro-saas/account-service/api/account-service/v1/services"
 	cleanuputil "github.com/ikaiguang/go-srv-kit/service/cleanup"
 	stdlog "log"
 )
@@ -14,22 +14,22 @@ import (
 // @return error 错误
 func RegisterServices(
 	hs *http.Server, gs *grpc.Server,
-	testingV1Service servicev1.SrvTestdataServer,
+	userAuthV1Service servicev1.SrvUserAuthV1Server,
 ) (cleanuputil.CleanupManager, error) {
 	// 先进后出
 	var cleanupManager = cleanuputil.NewCleanupManager()
 	// grpc
 	if gs != nil {
-		stdlog.Println("|*** REGISTER_ROUTER：GRPC: testingV1Service")
-		servicev1.RegisterSrvTestdataServer(gs, testingV1Service)
+		stdlog.Println("|*** REGISTER_ROUTER：GRPC: userAuthV1Service")
+		servicev1.RegisterSrvUserAuthV1Server(gs, userAuthV1Service)
 
 		//cleanupManager.Append(cleanup)
 	}
 
 	// http
 	if hs != nil {
-		stdlog.Println("|*** REGISTER_ROUTER：HTTP: testingV1Service")
-		servicev1.RegisterSrvTestdataHTTPServer(hs, testingV1Service)
+		stdlog.Println("|*** REGISTER_ROUTER：HTTP: userAuthV1Service")
+		servicev1.RegisterSrvUserAuthV1HTTPServer(hs, userAuthV1Service)
 
 		// special
 		//RegisterSpecialRouters(hs, homeService, websocketService)
