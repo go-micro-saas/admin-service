@@ -9,6 +9,7 @@ import (
 	bizrepos "github.com/go-micro-saas/account-service/app/account-service/internal/biz/repo"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/data/po"
 	datarepos "github.com/go-micro-saas/account-service/app/account-service/internal/data/repo"
+	idpkg "github.com/ikaiguang/go-srv-kit/kit/id"
 	passwordutil "github.com/ikaiguang/go-srv-kit/kit/password"
 	regexpkg "github.com/ikaiguang/go-srv-kit/kit/regex"
 	uuidpkg "github.com/ikaiguang/go-srv-kit/kit/uuid"
@@ -18,8 +19,10 @@ import (
 
 // userAuthBiz ...
 type userAuthBiz struct {
-	log                     *log.Helper
-	authRepo                authpkg.AuthRepo
+	log         *log.Helper
+	authRepo    authpkg.AuthRepo
+	idGenerator idpkg.Snowflake
+
 	userDataRepo            datarepos.UserDataRepo
 	userRegEmailDataRepo    datarepos.UserRegEmailDataRepo
 	userRegPhoneDataRepo    datarepos.UserRegPhoneDataRepo
@@ -30,6 +33,8 @@ type userAuthBiz struct {
 func NewUserAuthBiz(
 	logger log.Logger,
 	authRepo authpkg.AuthRepo,
+	idGenerator idpkg.Snowflake,
+
 	userDataRepo datarepos.UserDataRepo,
 	userRegEmailDataRepo datarepos.UserRegEmailDataRepo,
 	userRegPhoneDataRepo datarepos.UserRegPhoneDataRepo,
@@ -37,8 +42,10 @@ func NewUserAuthBiz(
 ) bizrepos.UserAuthBizRepo {
 	logHelper := log.NewHelper(log.With(logger, "module", "account-service/biz/user_auth"))
 	return &userAuthBiz{
-		log:                     logHelper,
-		authRepo:                authRepo,
+		log:         logHelper,
+		authRepo:    authRepo,
+		idGenerator: idGenerator,
+
 		userDataRepo:            userDataRepo,
 		userRegEmailDataRepo:    userRegEmailDataRepo,
 		userRegPhoneDataRepo:    userRegPhoneDataRepo,
