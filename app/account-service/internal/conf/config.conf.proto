@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package saas.api.testing.conf;
+package saas.api.account.conf;
 
 option go_package           = "github.com/go-micro-saas/account-service/app/account-service/internal/conf;conf";
 option java_multiple_files  = true;

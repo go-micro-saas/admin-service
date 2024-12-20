@@ -16,7 +16,8 @@ run-account-service:
 .PHONY: testing-account-service
 # testing service :-->: testing account-service
 testing-account-service:
-	go run testdata/get-node-id/main.go
+	@echo "==> testing-account-service"
+
 
 .PHONY: run-service
 # run service :-->: run account-service
@@ -27,4 +28,4 @@ run-service:
 .PHONY: testing-service
 # testing service :-->: testing account-service
 testing-service:
-	go run testdata/get-node-id/main.go
+	$(MAKE) testing-account-service

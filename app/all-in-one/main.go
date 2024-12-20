@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	accountserviceexporter "github.com/go-micro-saas/account-service/app/account-service/cmd/account-service/export"
 	serviceexporter "github.com/go-micro-saas/account-service/app/testing-service/cmd/testing-service/export"
 	configutil "github.com/ikaiguang/go-srv-kit/service/config"
 	middlewareutil "github.com/ikaiguang/go-srv-kit/service/middleware"
@@ -43,6 +44,11 @@ func main() {
 	configOpts = append(configOpts, pingserviceexporter.ExportServiceConfig()...)
 	whitelist = append(whitelist, pingserviceexporter.ExportAuthWhitelist()...)
 	services = append(services, pingserviceexporter.ExportServices)
+
+	// account-service
+	configOpts = append(configOpts, accountserviceexporter.ExportServiceConfig()...)
+	whitelist = append(whitelist, accountserviceexporter.ExportAuthWhitelist()...)
+	services = append(services, accountserviceexporter.ExportServices)
 
 	app, cleanup, err := serverutil.AllInOneServer(flagconf, configOpts, services, whitelist)
 	if err != nil {
