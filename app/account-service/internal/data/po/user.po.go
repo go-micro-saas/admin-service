@@ -5,6 +5,7 @@ package po
 import (
 	enumv1 "github.com/go-micro-saas/account-service/api/account-service/v1/enums"
 	datatypes "gorm.io/datatypes"
+	"strconv"
 	time "time"
 )
 
@@ -40,6 +41,10 @@ func (s *User) IsValidStatus() bool {
 	}
 }
 
+func RandomNickname() string {
+	return "u_" + strconv.FormatInt(time.Now().UnixNano(), 36)
+}
+
 func NewUser() *User {
 	var (
 		now = time.Now()
@@ -52,7 +57,7 @@ func NewUser() *User {
 		UserId:        0,
 		UserPhone:     "",
 		UserEmail:     "",
-		UserNickname:  "",
+		UserNickname:  RandomNickname(),
 		UserAvatar:    "",
 		UserGender:    enumv1.UserGenderEnum_UNSPECIFIED,
 		RegisterType:  enumv1.UserRegisterTypeEnum_PHONE,

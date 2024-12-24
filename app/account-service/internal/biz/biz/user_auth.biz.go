@@ -266,13 +266,19 @@ func (s *userAuthBiz) SignupByPhone(ctx context.Context, in *resourcev1.SignupBy
 	}
 
 	var (
-		_ = po.NewUserByPhone(in.Phone)
-		_ = po.NewUserRegPhone(in.Phone)
+		dataModel = po.NewUserByPhone(in.Phone)
+		regModel  = po.NewUserRegPhone(in.Phone)
 	)
+	dataModel.UserId, err = s.idGenerator.NextID()
+	if err != nil {
+		e := errorpkg.ErrorInternalServer(err.Error())
+		return nil, nil, errorpkg.WithStack(e)
+	}
+	regModel.UserId = dataModel.UserId
 
 	loginParam := &bo.LoginParam{
 		SkipValidatePassword: true,
 		PlaintextPassword:    in.Password,
 	}
-	return s.LoginByUserID(ctx, 1, loginParam)
+	return s.LoginByUserID(ctx, dataModel.UserId, loginParam)
 }
