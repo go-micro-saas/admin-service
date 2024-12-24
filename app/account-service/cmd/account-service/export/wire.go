@@ -67,7 +67,7 @@ func exportIdGenerator(launcherManager setuputil.LauncherManager) (idpkg.Snowfla
 		// opts
 		snowflakeapi.DefaultOptions,
 		// snowflake
-		snowflakeapi.GetSingletonIdGeneratorByHTTPAPI,
+		snowflakeapi.GetSingletonIDGeneratorByHTTPAPI,
 	))
 	return nil, nil, nil
 }

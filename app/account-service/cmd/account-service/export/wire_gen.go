@@ -92,7 +92,7 @@ func exportIdGenerator(launcherManager setuputil.LauncherManager) (idpkg.Snowfla
 		return nil, nil, err
 	}
 	v := snowflakeapi.DefaultOptions(logger)
-	snowflake, cleanup, err := snowflakeapi.GetSingletonIdGeneratorByHTTPAPI(serviceAPIManager, getNodeIdReq, v...)
+	snowflake, cleanup, err := snowflakeapi.GetSingletonIDGeneratorByHTTPAPI(serviceAPIManager, getNodeIdReq, v...)
 	if err != nil {
 		return nil, nil, err
 	}
