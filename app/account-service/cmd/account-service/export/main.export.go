@@ -31,8 +31,8 @@ func ExportServices(launcherManager setuputil.LauncherManager, serverManager ser
 	if err != nil {
 		return nil, err
 	}
-	return exportServices(launcherManager, hs, gs)
-	//return cleanuputil.Merge(exportServices(launcherManager, hs, gs))
+	//return exportServices(launcherManager, hs, gs)
+	return cleanuputil.Merge(exportServices(launcherManager, hs, gs))
 }
 
 func ExportServicesWithDatabaseMigration(launcherManager setuputil.LauncherManager, serverManager serverutil.ServerManager) (cleanuputil.CleanupManager, error) {
