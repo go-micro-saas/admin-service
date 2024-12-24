@@ -1,7 +1,7 @@
-user_service:
+account_service:
   key: value
   snowflake:
-    instance_id: "${app.project_name}/${app.server_name}/${app.server_env}/${app.version}"
+    instance_id: "${app.project_name}/${app.server_name}/${app.server_env}/${app.server_version}"
     instance_name: "account-service"
     metadata:
       service: account-service
