@@ -302,23 +302,13 @@ func (s *userAuthBiz) SignupByPhone(ctx context.Context, in *resourcev1.SignupBy
 	}
 	regModel.UserId = dataModel.UserId
 
-	// 事务
-	tx := s.userDataRepo.NewTransaction(ctx)
-	defer func() {
-		commitErr := tx.CommitAndErrRollback(ctx, err)
-		if commitErr != nil {
-			s.log.WithContext(ctx).Errorw(
-				"mgs", "GetNodeId tx.CommitAndErrRollback failed!",
-				"err", commitErr,
-			)
-		}
-	}()
-	err = s.userDataRepo.CreateWithTransaction(ctx, tx, dataModel)
-	if err != nil {
-		return nil, nil, err
+	// create
+	createParam := &po.CreateAccountParam{
+		UserModel:     dataModel,
+		RegPhoneModel: regModel,
+		RegEmailModel: nil,
 	}
-	err = s.userRegPhoneDataRepo.CreateWithTransaction(ctx, tx, regModel)
-	if err != nil {
+	if err = s.CreateAccount(ctx, createParam); err != nil {
 		return nil, nil, err
 	}
 
@@ -327,6 +317,37 @@ func (s *userAuthBiz) SignupByPhone(ctx context.Context, in *resourcev1.SignupBy
 		PlaintextPassword:    in.Password,
 	}
 	return s.LoginByUserID(ctx, dataModel.UserId, loginParam)
+}
+
+func (s *userAuthBiz) CreateAccount(ctx context.Context, param *po.CreateAccountParam) (err error) {
+	// 事务
+	tx := s.userDataRepo.NewTransaction(ctx)
+	defer func() {
+		commitErr := tx.CommitAndErrRollback(ctx, err)
+		if commitErr != nil {
+			s.log.WithContext(ctx).Errorw(
+				"mgs", "CreateAccount tx.CommitAndErrRollback failed!",
+				"err", commitErr,
+			)
+		}
+	}()
+	err = s.userDataRepo.CreateWithTransaction(ctx, tx, param.UserModel)
+	if err != nil {
+		return err
+	}
+	if param.RegPhoneModel != nil {
+		err = s.userRegPhoneDataRepo.CreateWithTransaction(ctx, tx, param.RegPhoneModel)
+		if err != nil {
+			return err
+		}
+	}
+	if param.RegEmailModel != nil {
+		err = s.userRegEmailDataRepo.CreateWithTransaction(ctx, tx, param.RegEmailModel)
+		if err != nil {
+			return err
+		}
+	}
+	return err
 }
 
 func (s *userAuthBiz) SendVerifyCode(ctx context.Context, param *bo.SendVerifyCodeParam) (*bo.SendVerifyCodeReply, error) {
