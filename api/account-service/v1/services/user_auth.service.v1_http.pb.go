@@ -26,6 +26,8 @@ const OperationSrvUserAuthV1LoginByPhone = "/saas.api.account.servicev1.SrvUserA
 const OperationSrvUserAuthV1LoginOrSignupByPhone = "/saas.api.account.servicev1.SrvUserAuthV1/LoginOrSignupByPhone"
 const OperationSrvUserAuthV1Ping = "/saas.api.account.servicev1.SrvUserAuthV1/Ping"
 const OperationSrvUserAuthV1RefreshToken = "/saas.api.account.servicev1.SrvUserAuthV1/RefreshToken"
+const OperationSrvUserAuthV1SendEmailVerifyCode = "/saas.api.account.servicev1.SrvUserAuthV1/SendEmailVerifyCode"
+const OperationSrvUserAuthV1SendPhoneVerifyCode = "/saas.api.account.servicev1.SrvUserAuthV1/SendPhoneVerifyCode"
 const OperationSrvUserAuthV1SignupByEmail = "/saas.api.account.servicev1.SrvUserAuthV1/SignupByEmail"
 const OperationSrvUserAuthV1SignupByPhone = "/saas.api.account.servicev1.SrvUserAuthV1/SignupByPhone"
 
@@ -42,6 +44,10 @@ type SrvUserAuthV1HTTPServer interface {
 	Ping(context.Context, *resources.PingReq) (*resources.PingResp, error)
 	// RefreshToken 身份验证-刷新Token
 	RefreshToken(context.Context, *resources.RefreshTokenReq) (*resources.LoginResp, error)
+	// SendEmailVerifyCode 身份验证-发送邮箱验证码
+	SendEmailVerifyCode(context.Context, *resources.SendEmailVerifyCodeReq) (*resources.SendVerifyCodeResp, error)
+	// SendPhoneVerifyCode 身份验证-发送手机验证码
+	SendPhoneVerifyCode(context.Context, *resources.SendPhoneVerifyCodeReq) (*resources.SendVerifyCodeResp, error)
 	// SignupByEmail 身份验证-Email注册
 	SignupByEmail(context.Context, *resources.SignupByEmailReq) (*resources.LoginResp, error)
 	// SignupByPhone 身份验证-手机注册
@@ -51,6 +57,8 @@ type SrvUserAuthV1HTTPServer interface {
 func RegisterSrvUserAuthV1HTTPServer(s *http.Server, srv SrvUserAuthV1HTTPServer) {
 	r := s.Route("/")
 	r.GET("/api/v1/auth/ping", _SrvUserAuthV1_Ping0_HTTP_Handler(srv))
+	r.POST("/api/v1/auth/send-phone-verify-code", _SrvUserAuthV1_SendPhoneVerifyCode0_HTTP_Handler(srv))
+	r.POST("/api/v1/auth/send-email-verify-code", _SrvUserAuthV1_SendEmailVerifyCode0_HTTP_Handler(srv))
 	r.POST("/api/v1/auth/signup-by-email", _SrvUserAuthV1_SignupByEmail0_HTTP_Handler(srv))
 	r.POST("/api/v1/auth/signup-by-phone", _SrvUserAuthV1_SignupByPhone0_HTTP_Handler(srv))
 	r.POST("/api/v1/auth/login-or-signup-by-phone", _SrvUserAuthV1_LoginOrSignupByPhone0_HTTP_Handler(srv))
@@ -75,6 +83,50 @@ func _SrvUserAuthV1_Ping0_HTTP_Handler(srv SrvUserAuthV1HTTPServer) func(ctx htt
 			return err
 		}
 		reply := out.(*resources.PingResp)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _SrvUserAuthV1_SendPhoneVerifyCode0_HTTP_Handler(srv SrvUserAuthV1HTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in resources.SendPhoneVerifyCodeReq
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationSrvUserAuthV1SendPhoneVerifyCode)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.SendPhoneVerifyCode(ctx, req.(*resources.SendPhoneVerifyCodeReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*resources.SendVerifyCodeResp)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _SrvUserAuthV1_SendEmailVerifyCode0_HTTP_Handler(srv SrvUserAuthV1HTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in resources.SendEmailVerifyCodeReq
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationSrvUserAuthV1SendEmailVerifyCode)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.SendEmailVerifyCode(ctx, req.(*resources.SendEmailVerifyCodeReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*resources.SendVerifyCodeResp)
 		return ctx.Result(200, reply)
 	}
 }
@@ -240,6 +292,8 @@ type SrvUserAuthV1HTTPClient interface {
 	LoginOrSignupByPhone(ctx context.Context, req *resources.LoginOrSignupByPhoneReq, opts ...http.CallOption) (rsp *resources.LoginResp, err error)
 	Ping(ctx context.Context, req *resources.PingReq, opts ...http.CallOption) (rsp *resources.PingResp, err error)
 	RefreshToken(ctx context.Context, req *resources.RefreshTokenReq, opts ...http.CallOption) (rsp *resources.LoginResp, err error)
+	SendEmailVerifyCode(ctx context.Context, req *resources.SendEmailVerifyCodeReq, opts ...http.CallOption) (rsp *resources.SendVerifyCodeResp, err error)
+	SendPhoneVerifyCode(ctx context.Context, req *resources.SendPhoneVerifyCodeReq, opts ...http.CallOption) (rsp *resources.SendVerifyCodeResp, err error)
 	SignupByEmail(ctx context.Context, req *resources.SignupByEmailReq, opts ...http.CallOption) (rsp *resources.LoginResp, err error)
 	SignupByPhone(ctx context.Context, req *resources.SignupByPhoneReq, opts ...http.CallOption) (rsp *resources.LoginResp, err error)
 }
@@ -322,6 +376,32 @@ func (c *SrvUserAuthV1HTTPClientImpl) RefreshToken(ctx context.Context, in *reso
 	pattern := "/api/v1/auth/refresh-token"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationSrvUserAuthV1RefreshToken))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+func (c *SrvUserAuthV1HTTPClientImpl) SendEmailVerifyCode(ctx context.Context, in *resources.SendEmailVerifyCodeReq, opts ...http.CallOption) (*resources.SendVerifyCodeResp, error) {
+	var out resources.SendVerifyCodeResp
+	pattern := "/api/v1/auth/send-email-verify-code"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationSrvUserAuthV1SendEmailVerifyCode))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+func (c *SrvUserAuthV1HTTPClientImpl) SendPhoneVerifyCode(ctx context.Context, in *resources.SendPhoneVerifyCodeReq, opts ...http.CallOption) (*resources.SendVerifyCodeResp, error) {
+	var out resources.SendVerifyCodeResp
+	pattern := "/api/v1/auth/send-phone-verify-code"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationSrvUserAuthV1SendPhoneVerifyCode))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

@@ -43,6 +43,26 @@ message LoginOrSignupByPhoneReq {
   string code       = 5 [(validate.rules).string = { max_len: 1024 }];
 }
 
+message SendEmailVerifyCodeReq {
+  string email = 1 [(validate.rules).string = { email: true }];
+}
+
+message SendPhoneVerifyCodeReq {
+  string phone = 1 [(validate.rules).string = { pattern: "^1[1-9]\\d{9}$" }];
+}
+
+message SendVerifyCodeResp {
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  SendVerifyCodeRespData data = 100;
+}
+message SendVerifyCodeRespData {
+  string code = 1;
+}
+
 message SignupByPhoneReq {
   string phone            = 1 [(validate.rules).string = { pattern: "^1[1-9]\\d{9}$" }];
   string password         = 2 [(validate.rules).string = { pattern: "^.{6,}$" }];
