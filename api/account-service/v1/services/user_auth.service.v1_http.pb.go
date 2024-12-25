@@ -23,6 +23,7 @@ const _ = http.SupportPackageIsVersion1
 const OperationSrvUserAuthV1LoginByEmail = "/saas.api.account.servicev1.SrvUserAuthV1/LoginByEmail"
 const OperationSrvUserAuthV1LoginByOpenApi = "/saas.api.account.servicev1.SrvUserAuthV1/LoginByOpenApi"
 const OperationSrvUserAuthV1LoginByPhone = "/saas.api.account.servicev1.SrvUserAuthV1/LoginByPhone"
+const OperationSrvUserAuthV1LoginOrSignupByEmail = "/saas.api.account.servicev1.SrvUserAuthV1/LoginOrSignupByEmail"
 const OperationSrvUserAuthV1LoginOrSignupByPhone = "/saas.api.account.servicev1.SrvUserAuthV1/LoginOrSignupByPhone"
 const OperationSrvUserAuthV1Ping = "/saas.api.account.servicev1.SrvUserAuthV1/Ping"
 const OperationSrvUserAuthV1RefreshToken = "/saas.api.account.servicev1.SrvUserAuthV1/RefreshToken"
@@ -38,6 +39,8 @@ type SrvUserAuthV1HTTPServer interface {
 	LoginByOpenApi(context.Context, *resources.LoginByOpenApiReq) (*resources.LoginResp, error)
 	// LoginByPhone 身份验证-手机登录
 	LoginByPhone(context.Context, *resources.LoginByPhoneReq) (*resources.LoginResp, error)
+	// LoginOrSignupByEmail 身份验证-邮箱登陆(自动注册)
+	LoginOrSignupByEmail(context.Context, *resources.LoginOrSignupByEmailReq) (*resources.LoginResp, error)
 	// LoginOrSignupByPhone 身份验证-手机登陆(自动注册)
 	LoginOrSignupByPhone(context.Context, *resources.LoginOrSignupByPhoneReq) (*resources.LoginResp, error)
 	// Ping 身份验证-Ping测试
@@ -62,6 +65,7 @@ func RegisterSrvUserAuthV1HTTPServer(s *http.Server, srv SrvUserAuthV1HTTPServer
 	r.POST("/api/v1/auth/signup-by-email", _SrvUserAuthV1_SignupByEmail0_HTTP_Handler(srv))
 	r.POST("/api/v1/auth/signup-by-phone", _SrvUserAuthV1_SignupByPhone0_HTTP_Handler(srv))
 	r.POST("/api/v1/auth/login-or-signup-by-phone", _SrvUserAuthV1_LoginOrSignupByPhone0_HTTP_Handler(srv))
+	r.POST("/api/v1/auth/login-or-signup-by-email", _SrvUserAuthV1_LoginOrSignupByEmail0_HTTP_Handler(srv))
 	r.POST("/api/v1/auth/refresh-token", _SrvUserAuthV1_RefreshToken0_HTTP_Handler(srv))
 	r.POST("/api/v1/auth/login-by-email", _SrvUserAuthV1_LoginByEmail0_HTTP_Handler(srv))
 	r.POST("/api/v1/auth/login-by-phone", _SrvUserAuthV1_LoginByPhone0_HTTP_Handler(srv))
@@ -197,6 +201,28 @@ func _SrvUserAuthV1_LoginOrSignupByPhone0_HTTP_Handler(srv SrvUserAuthV1HTTPServ
 	}
 }
 
+func _SrvUserAuthV1_LoginOrSignupByEmail0_HTTP_Handler(srv SrvUserAuthV1HTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in resources.LoginOrSignupByEmailReq
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationSrvUserAuthV1LoginOrSignupByEmail)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.LoginOrSignupByEmail(ctx, req.(*resources.LoginOrSignupByEmailReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*resources.LoginResp)
+		return ctx.Result(200, reply)
+	}
+}
+
 func _SrvUserAuthV1_RefreshToken0_HTTP_Handler(srv SrvUserAuthV1HTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in resources.RefreshTokenReq
@@ -289,6 +315,7 @@ type SrvUserAuthV1HTTPClient interface {
 	LoginByEmail(ctx context.Context, req *resources.LoginByEmailReq, opts ...http.CallOption) (rsp *resources.LoginResp, err error)
 	LoginByOpenApi(ctx context.Context, req *resources.LoginByOpenApiReq, opts ...http.CallOption) (rsp *resources.LoginResp, err error)
 	LoginByPhone(ctx context.Context, req *resources.LoginByPhoneReq, opts ...http.CallOption) (rsp *resources.LoginResp, err error)
+	LoginOrSignupByEmail(ctx context.Context, req *resources.LoginOrSignupByEmailReq, opts ...http.CallOption) (rsp *resources.LoginResp, err error)
 	LoginOrSignupByPhone(ctx context.Context, req *resources.LoginOrSignupByPhoneReq, opts ...http.CallOption) (rsp *resources.LoginResp, err error)
 	Ping(ctx context.Context, req *resources.PingReq, opts ...http.CallOption) (rsp *resources.PingResp, err error)
 	RefreshToken(ctx context.Context, req *resources.RefreshTokenReq, opts ...http.CallOption) (rsp *resources.LoginResp, err error)
@@ -337,6 +364,19 @@ func (c *SrvUserAuthV1HTTPClientImpl) LoginByPhone(ctx context.Context, in *reso
 	pattern := "/api/v1/auth/login-by-phone"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationSrvUserAuthV1LoginByPhone))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+func (c *SrvUserAuthV1HTTPClientImpl) LoginOrSignupByEmail(ctx context.Context, in *resources.LoginOrSignupByEmailReq, opts ...http.CallOption) (*resources.LoginResp, error) {
+	var out resources.LoginResp
+	pattern := "/api/v1/auth/login-or-signup-by-email"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationSrvUserAuthV1LoginOrSignupByEmail))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

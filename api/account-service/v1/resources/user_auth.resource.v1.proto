@@ -39,8 +39,14 @@ message UserInfo {
 
 // LoginOrSignupByPhoneReq 手机登陆(自动注册)
 message LoginOrSignupByPhoneReq {
-  string user_phone = 1 [(validate.rules).string = { pattern: "^1[1-9]\\d{9}$" }];
-  string code       = 5 [(validate.rules).string = { max_len: 1024 }];
+  string phone = 1 [(validate.rules).string = { pattern: "^1[1-9]\\d{9}$" }];
+  string code  = 5 [(validate.rules).string = { max_len: 1024 }];
+}
+
+// LoginOrSignupByPhoneReq 邮箱登陆(自动注册)
+message LoginOrSignupByEmailReq {
+  string email = 1 [(validate.rules).string = { email: true }];
+  string code  = 5 [(validate.rules).string = { max_len: 1024 }];
 }
 
 message SendEmailVerifyCodeReq {
@@ -147,8 +153,8 @@ message ChangeAvatarRespData {
 }
 
 message ChangePhoneReq {
-  string user_phone = 1 [(validate.rules).string = { pattern: "^1[1-9]\\d{9}$" }];
-  string code       = 2 [(validate.rules).string = { max_len: 1024 }];
+  string phone = 1 [(validate.rules).string = { pattern: "^1[1-9]\\d{9}$" }];
+  string code  = 2 [(validate.rules).string = { max_len: 1024 }];
 }
 message ChangePhoneResp {
   int32 code                   = 1;

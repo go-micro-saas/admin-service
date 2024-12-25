@@ -140,7 +140,10 @@ func (s *userAuth) SignupByPhone(ctx context.Context, req *resourcev1.SignupByPh
 	return out, nil
 }
 
-// LoginOrSignupByPhone 身份验证-手机登陆(自动注册)
 func (s *userAuth) LoginOrSignupByPhone(ctx context.Context, req *resourcev1.LoginOrSignupByPhoneReq) (*resourcev1.LoginResp, error) {
 	return s.UnimplementedSrvUserAuthV1Server.LoginOrSignupByPhone(ctx, req)
+}
+
+func (s *userAuth) LoginOrSignupByEmail(ctx context.Context, req *resourcev1.LoginOrSignupByEmailReq) (*resourcev1.LoginResp, error) {
+	return s.UnimplementedSrvUserAuthV1Server.LoginOrSignupByEmail(ctx, req)
 }

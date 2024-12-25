@@ -55,6 +55,13 @@ service SrvUserAuthV1 {
       body: "*"
     };
   }
+  // 身份验证-邮箱登陆(自动注册)
+  rpc LoginOrSignupByEmail(resourcev1.LoginOrSignupByEmailReq) returns (resourcev1.LoginResp) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/login-or-signup-by-email"
+      body: "*"
+    };
+  }
   // 身份验证-刷新Token
   rpc RefreshToken(resourcev1.RefreshTokenReq) returns (resourcev1.LoginResp) {
     option (google.api.http) = {

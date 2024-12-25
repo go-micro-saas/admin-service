@@ -26,6 +26,7 @@ const (
 	SrvUserAuthV1_SignupByEmail_FullMethodName        = "/saas.api.account.servicev1.SrvUserAuthV1/SignupByEmail"
 	SrvUserAuthV1_SignupByPhone_FullMethodName        = "/saas.api.account.servicev1.SrvUserAuthV1/SignupByPhone"
 	SrvUserAuthV1_LoginOrSignupByPhone_FullMethodName = "/saas.api.account.servicev1.SrvUserAuthV1/LoginOrSignupByPhone"
+	SrvUserAuthV1_LoginOrSignupByEmail_FullMethodName = "/saas.api.account.servicev1.SrvUserAuthV1/LoginOrSignupByEmail"
 	SrvUserAuthV1_RefreshToken_FullMethodName         = "/saas.api.account.servicev1.SrvUserAuthV1/RefreshToken"
 	SrvUserAuthV1_LoginByEmail_FullMethodName         = "/saas.api.account.servicev1.SrvUserAuthV1/LoginByEmail"
 	SrvUserAuthV1_LoginByPhone_FullMethodName         = "/saas.api.account.servicev1.SrvUserAuthV1/LoginByPhone"
@@ -48,6 +49,8 @@ type SrvUserAuthV1Client interface {
 	SignupByPhone(ctx context.Context, in *resources.SignupByPhoneReq, opts ...grpc.CallOption) (*resources.LoginResp, error)
 	// 身份验证-手机登陆(自动注册)
 	LoginOrSignupByPhone(ctx context.Context, in *resources.LoginOrSignupByPhoneReq, opts ...grpc.CallOption) (*resources.LoginResp, error)
+	// 身份验证-邮箱登陆(自动注册)
+	LoginOrSignupByEmail(ctx context.Context, in *resources.LoginOrSignupByEmailReq, opts ...grpc.CallOption) (*resources.LoginResp, error)
 	// 身份验证-刷新Token
 	RefreshToken(ctx context.Context, in *resources.RefreshTokenReq, opts ...grpc.CallOption) (*resources.LoginResp, error)
 	// 身份验证-Email登录
@@ -120,6 +123,15 @@ func (c *srvUserAuthV1Client) LoginOrSignupByPhone(ctx context.Context, in *reso
 	return out, nil
 }
 
+func (c *srvUserAuthV1Client) LoginOrSignupByEmail(ctx context.Context, in *resources.LoginOrSignupByEmailReq, opts ...grpc.CallOption) (*resources.LoginResp, error) {
+	out := new(resources.LoginResp)
+	err := c.cc.Invoke(ctx, SrvUserAuthV1_LoginOrSignupByEmail_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *srvUserAuthV1Client) RefreshToken(ctx context.Context, in *resources.RefreshTokenReq, opts ...grpc.CallOption) (*resources.LoginResp, error) {
 	out := new(resources.LoginResp)
 	err := c.cc.Invoke(ctx, SrvUserAuthV1_RefreshToken_FullMethodName, in, out, opts...)
@@ -172,6 +184,8 @@ type SrvUserAuthV1Server interface {
 	SignupByPhone(context.Context, *resources.SignupByPhoneReq) (*resources.LoginResp, error)
 	// 身份验证-手机登陆(自动注册)
 	LoginOrSignupByPhone(context.Context, *resources.LoginOrSignupByPhoneReq) (*resources.LoginResp, error)
+	// 身份验证-邮箱登陆(自动注册)
+	LoginOrSignupByEmail(context.Context, *resources.LoginOrSignupByEmailReq) (*resources.LoginResp, error)
 	// 身份验证-刷新Token
 	RefreshToken(context.Context, *resources.RefreshTokenReq) (*resources.LoginResp, error)
 	// 身份验证-Email登录
@@ -204,6 +218,9 @@ func (UnimplementedSrvUserAuthV1Server) SignupByPhone(context.Context, *resource
 }
 func (UnimplementedSrvUserAuthV1Server) LoginOrSignupByPhone(context.Context, *resources.LoginOrSignupByPhoneReq) (*resources.LoginResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoginOrSignupByPhone not implemented")
+}
+func (UnimplementedSrvUserAuthV1Server) LoginOrSignupByEmail(context.Context, *resources.LoginOrSignupByEmailReq) (*resources.LoginResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoginOrSignupByEmail not implemented")
 }
 func (UnimplementedSrvUserAuthV1Server) RefreshToken(context.Context, *resources.RefreshTokenReq) (*resources.LoginResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RefreshToken not implemented")
@@ -338,6 +355,24 @@ func _SrvUserAuthV1_LoginOrSignupByPhone_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SrvUserAuthV1_LoginOrSignupByEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(resources.LoginOrSignupByEmailReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SrvUserAuthV1Server).LoginOrSignupByEmail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SrvUserAuthV1_LoginOrSignupByEmail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SrvUserAuthV1Server).LoginOrSignupByEmail(ctx, req.(*resources.LoginOrSignupByEmailReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _SrvUserAuthV1_RefreshToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(resources.RefreshTokenReq)
 	if err := dec(in); err != nil {
@@ -440,6 +475,10 @@ var SrvUserAuthV1_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LoginOrSignupByPhone",
 			Handler:    _SrvUserAuthV1_LoginOrSignupByPhone_Handler,
+		},
+		{
+			MethodName: "LoginOrSignupByEmail",
+			Handler:    _SrvUserAuthV1_LoginOrSignupByEmail_Handler,
 		},
 		{
 			MethodName: "RefreshToken",
