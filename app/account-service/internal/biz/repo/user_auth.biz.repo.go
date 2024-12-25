@@ -8,6 +8,8 @@ import (
 )
 
 type UserAuthBizRepo interface {
+	SendVerifyCode(ctx context.Context, param *bo.SendVerifyCodeParam) (*bo.SendVerifyCodeReply, error)
+
 	LoginByEmail(ctx context.Context, in *resourcev1.LoginByEmailReq) (*po.User, *bo.SignTokenResp, error)
 	LoginByPhone(ctx context.Context, in *resourcev1.LoginByPhoneReq) (*po.User, *bo.SignTokenResp, error)
 	LoginByUserID(ctx context.Context, userID uint64, loginParam *bo.LoginParam) (*po.User, *bo.SignTokenResp, error)

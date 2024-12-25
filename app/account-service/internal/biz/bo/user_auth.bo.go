@@ -84,3 +84,8 @@ func (s *SendVerifyCodeParam) Validate() error {
 	}
 	return nil
 }
+
+type SendVerifyCodeReply struct {
+	IsSendSuccess bool   // 是否发送成功
+	Code          string // code
+}

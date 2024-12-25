@@ -37,7 +37,7 @@ func (s *userAuth) LoginByEmail(ctx context.Context, in *resourcev1.LoginByEmail
 	}
 
 	out := &resourcev1.LoginResp{
-		Data: dto.UserDto.ToPbLoginRespData(userModel, signResp),
+		Data: dto.AccountDto.ToPbLoginRespData(userModel, signResp),
 	}
 	return out, nil
 }
@@ -50,7 +50,7 @@ func (s *userAuth) LoginByPhone(ctx context.Context, in *resourcev1.LoginByPhone
 	}
 
 	out := &resourcev1.LoginResp{
-		Data: dto.UserDto.ToPbLoginRespData(userModel, signResp),
+		Data: dto.AccountDto.ToPbLoginRespData(userModel, signResp),
 	}
 	return out, nil
 }
@@ -70,7 +70,7 @@ func (s *userAuth) RefreshToken(ctx context.Context, in *resourcev1.RefreshToken
 	}
 
 	out := &resourcev1.LoginResp{
-		Data: dto.UserDto.ToPbLoginRespData(userModel, signResp),
+		Data: dto.AccountDto.ToPbLoginRespData(userModel, signResp),
 	}
 	return out, nil
 }
@@ -91,11 +91,27 @@ func (s *userAuth) Ping(ctx context.Context, in *resourcev1.PingReq) (out *resou
 }
 
 func (s *userAuth) SendPhoneVerifyCode(ctx context.Context, req *resourcev1.SendPhoneVerifyCodeReq) (*resourcev1.SendVerifyCodeResp, error) {
-	return s.UnimplementedSrvUserAuthV1Server.SendPhoneVerifyCode(ctx, req)
+	param := dto.AccountDto.ToBoSendVerifyCodeParam(req)
+	dataModel, err := s.userAuthBizRepo.SendVerifyCode(ctx, param)
+	if err != nil {
+		return nil, err
+	}
+
+	return &resourcev1.SendVerifyCodeResp{
+		Data: dto.AccountDto.ToPbSendVerifyCodeRespData(dataModel),
+	}, nil
 }
 
 func (s *userAuth) SendEmailVerifyCode(ctx context.Context, req *resourcev1.SendEmailVerifyCodeReq) (*resourcev1.SendVerifyCodeResp, error) {
-	return s.UnimplementedSrvUserAuthV1Server.SendEmailVerifyCode(ctx, req)
+	param := dto.AccountDto.ToBoSendVerifyCodeParam2(req)
+	dataModel, err := s.userAuthBizRepo.SendVerifyCode(ctx, param)
+	if err != nil {
+		return nil, err
+	}
+
+	return &resourcev1.SendVerifyCodeResp{
+		Data: dto.AccountDto.ToPbSendVerifyCodeRespData(dataModel),
+	}, nil
 }
 
 // SignupByEmail 身份验证-Email注册

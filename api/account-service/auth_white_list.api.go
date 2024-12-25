@@ -12,12 +12,14 @@ func GetAuthWhiteList() map[string]middlewareutil.TransportServiceKind {
 	whiteList := make(map[string]middlewareutil.TransportServiceKind)
 
 	// 测试
-	whiteList[servicev1.OperationSrvUserAuthV1Ping] = middlewareutil.TransportServiceKindALL
 	whiteList[servicev1.OperationSrvUserAuthV1LoginByEmail] = middlewareutil.TransportServiceKindALL
+	whiteList[servicev1.OperationSrvUserAuthV1LoginByOpenApi] = middlewareutil.TransportServiceKindALL
 	whiteList[servicev1.OperationSrvUserAuthV1LoginByPhone] = middlewareutil.TransportServiceKindALL
 	whiteList[servicev1.OperationSrvUserAuthV1LoginOrSignupByPhone] = middlewareutil.TransportServiceKindALL
-	whiteList[servicev1.OperationSrvUserAuthV1LoginByOpenApi] = middlewareutil.TransportServiceKindALL
+	whiteList[servicev1.OperationSrvUserAuthV1Ping] = middlewareutil.TransportServiceKindALL
 	whiteList[servicev1.OperationSrvUserAuthV1RefreshToken] = middlewareutil.TransportServiceKindALL
+	whiteList[servicev1.OperationSrvUserAuthV1SendEmailVerifyCode] = middlewareutil.TransportServiceKindALL
+	whiteList[servicev1.OperationSrvUserAuthV1SendPhoneVerifyCode] = middlewareutil.TransportServiceKindALL
 	whiteList[servicev1.OperationSrvUserAuthV1SignupByEmail] = middlewareutil.TransportServiceKindALL
 	whiteList[servicev1.OperationSrvUserAuthV1SignupByPhone] = middlewareutil.TransportServiceKindALL
 

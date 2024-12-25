@@ -314,7 +314,7 @@ func (s *userAuthBiz) SignupByPhone(ctx context.Context, in *resourcev1.SignupBy
 	return s.LoginByUserID(ctx, dataModel.UserId, loginParam)
 }
 
-func (s *userAuthBiz) SendVerifyCode(ctx context.Context, param *bo.SendVerifyCodeParam) (*bo.SignTokenResp, error) {
+func (s *userAuthBiz) SendVerifyCode(ctx context.Context, param *bo.SendVerifyCodeParam) (*bo.SendVerifyCodeReply, error) {
 	if err := param.Validate(); err != nil {
 		return nil, err
 	}
@@ -323,7 +323,20 @@ func (s *userAuthBiz) SendVerifyCode(ctx context.Context, param *bo.SendVerifyCo
 		code      = po.NewVerifyCode()
 		dataModel = po.NewUserVerifyCode(code)
 	)
-	dataModel.VerifyCode = param.VerifyAccount
+	dataModel.VerifyAccount = param.VerifyAccount
 	dataModel.VerifyType = param.VerifyType
-	return nil, nil
+
+	err := s.userVerifyCodeDataRepo.Create(ctx, dataModel)
+	if err != nil {
+		return nil, err
+	}
+
+	resp := &bo.SendVerifyCodeReply{
+		IsSendSuccess: false,
+		Code:          dataModel.VerifyCode,
+	}
+	if resp.IsSendSuccess {
+		resp.Code = ""
+	}
+	return resp, nil
 }
