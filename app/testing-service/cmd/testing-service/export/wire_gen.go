@@ -11,9 +11,7 @@ import (
 	"github.com/go-kratos/kratos/v2/transport/http"
 	"github.com/go-micro-saas/account-service/api/testing-service/v1/services"
 	"github.com/go-micro-saas/account-service/app/testing-service/internal/biz/biz"
-	"github.com/go-micro-saas/account-service/app/testing-service/internal/biz/repo"
 	"github.com/go-micro-saas/account-service/app/testing-service/internal/data/data"
-	"github.com/go-micro-saas/account-service/app/testing-service/internal/data/repo"
 	"github.com/go-micro-saas/account-service/app/testing-service/internal/service/service"
 	"github.com/ikaiguang/go-srv-kit/service/cleanup"
 	"github.com/ikaiguang/go-srv-kit/service/setup"
@@ -21,37 +19,13 @@ import (
 
 // Injectors from wire.go:
 
-func exportTestingData(launcherManager setuputil.LauncherManager) (datarepos.TestingDataRepo, error) {
-	logger, err := setuputil.GetLogger(launcherManager)
-	if err != nil {
-		return nil, err
-	}
-	testingDataRepo := data.NewTestingData(logger)
-	return testingDataRepo, nil
-}
-
-func exportTestingBiz(launcherManager setuputil.LauncherManager) (bizrepos.TestingBizRepo, error) {
-	logger, err := setuputil.GetLogger(launcherManager)
-	if err != nil {
-		return nil, err
-	}
-	testingDataRepo, err := exportTestingData(launcherManager)
-	if err != nil {
-		return nil, err
-	}
-	testingBizRepo := biz.NewTestingBiz(logger, testingDataRepo)
-	return testingBizRepo, nil
-}
-
 func exportTestdataServer(launcherManager setuputil.LauncherManager) (servicev1.SrvTestdataServer, error) {
 	logger, err := setuputil.GetLogger(launcherManager)
 	if err != nil {
 		return nil, err
 	}
-	testingBizRepo, err := exportTestingBiz(launcherManager)
-	if err != nil {
-		return nil, err
-	}
+	testingDataRepo := data.NewTestingData(logger)
+	testingBizRepo := biz.NewTestingBiz(logger, testingDataRepo)
 	srvTestdataServer := service.NewTestingV1Service(logger, testingBizRepo)
 	return srvTestdataServer, nil
 }

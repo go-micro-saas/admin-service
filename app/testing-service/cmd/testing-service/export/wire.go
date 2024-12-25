@@ -8,41 +8,21 @@ import (
 	"github.com/go-kratos/kratos/v2/transport/http"
 	servicev1 "github.com/go-micro-saas/account-service/api/testing-service/v1/services"
 	"github.com/go-micro-saas/account-service/app/testing-service/internal/biz/biz"
-	bizrepos "github.com/go-micro-saas/account-service/app/testing-service/internal/biz/repo"
 	"github.com/go-micro-saas/account-service/app/testing-service/internal/data/data"
-	datarepos "github.com/go-micro-saas/account-service/app/testing-service/internal/data/repo"
 	"github.com/go-micro-saas/account-service/app/testing-service/internal/service/service"
 	"github.com/google/wire"
 	cleanuputil "github.com/ikaiguang/go-srv-kit/service/cleanup"
 	setuputil "github.com/ikaiguang/go-srv-kit/service/setup"
 )
 
-func exportTestingData(launcherManager setuputil.LauncherManager) (datarepos.TestingDataRepo, error) {
-	panic(wire.Build(
-		setuputil.GetLogger,
-		// data
-		//setuputil.GetRecommendDBConn,
-		data.NewTestingData,
-	))
-	return nil, nil
-}
-
-func exportTestingBiz(launcherManager setuputil.LauncherManager) (bizrepos.TestingBizRepo, error) {
-	panic(wire.Build(
-		setuputil.GetLogger,
-		// data
-		exportTestingData,
-		// biz
-		biz.NewTestingBiz,
-	))
-	return nil, nil
-}
-
 func exportTestdataServer(launcherManager setuputil.LauncherManager) (servicev1.SrvTestdataServer, error) {
 	panic(wire.Build(
 		setuputil.GetLogger,
+		//setuputil.GetRecommendDBConn,
+		// data
+		data.NewTestingData,
 		// biz
-		exportTestingBiz,
+		biz.NewTestingBiz,
 		// service
 		service.NewTestingV1Service,
 	))
