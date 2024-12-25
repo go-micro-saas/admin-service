@@ -79,8 +79,9 @@ init:
 # generate
 generate:
 	#go mod tidy
-	#wire ./app/testing-service/cmd/testing-service/export
-	go generate ./...
+	#go generate ./...
+	wire ./app/testing-service/cmd/testing-service/export
+	wire ./app/account-service/cmd/account-service/export
 
 # ===== include =====
 # ===== include =====

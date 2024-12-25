@@ -9,75 +9,27 @@ package serviceexporter
 import (
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
-	"github.com/go-micro-saas/account-service/api/account-service/v1/services"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/biz/biz"
-	"github.com/go-micro-saas/account-service/app/account-service/internal/biz/repo"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/conf"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/data/data"
-	"github.com/go-micro-saas/account-service/app/account-service/internal/data/repo"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/service/dto"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/service/service"
 	"github.com/go-micro-saas/service-api/app/snowflake-service"
-	"github.com/ikaiguang/go-srv-kit/kit/id"
 	"github.com/ikaiguang/go-srv-kit/service/cleanup"
 	"github.com/ikaiguang/go-srv-kit/service/setup"
 )
 
 // Injectors from wire.go:
 
-func exportUserDataRepo(launcherManager setuputil.LauncherManager) (datarepos.UserDataRepo, error) {
+func exportServices(launcherManager setuputil.LauncherManager, hs *http.Server, gs *grpc.Server) (cleanuputil.CleanupManager, func(), error) {
 	logger, err := setuputil.GetLogger(launcherManager)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	db, err := setuputil.GetRecommendDBConn(launcherManager)
+	authRepo, err := setuputil.GetAuthManager(launcherManager)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	userDataRepo := data.NewUserDataRepo(logger, db)
-	return userDataRepo, nil
-}
-
-func exportUserRegPhoneDataRepo(launcherManager setuputil.LauncherManager) (datarepos.UserRegPhoneDataRepo, error) {
-	logger, err := setuputil.GetLogger(launcherManager)
-	if err != nil {
-		return nil, err
-	}
-	db, err := setuputil.GetRecommendDBConn(launcherManager)
-	if err != nil {
-		return nil, err
-	}
-	userRegPhoneDataRepo := data.NewUserRegPhoneDataRepo(logger, db)
-	return userRegPhoneDataRepo, nil
-}
-
-func exportUserRegEmailDataRepo(launcherManager setuputil.LauncherManager) (datarepos.UserRegEmailDataRepo, error) {
-	logger, err := setuputil.GetLogger(launcherManager)
-	if err != nil {
-		return nil, err
-	}
-	db, err := setuputil.GetRecommendDBConn(launcherManager)
-	if err != nil {
-		return nil, err
-	}
-	userRegEmailDataRepo := data.NewUserRegEmailDataRepo(logger, db)
-	return userRegEmailDataRepo, nil
-}
-
-func exportUserConfirmCodeDataRepo(launcherManager setuputil.LauncherManager) (datarepos.UserConfirmCodeDataRepo, error) {
-	logger, err := setuputil.GetLogger(launcherManager)
-	if err != nil {
-		return nil, err
-	}
-	db, err := setuputil.GetRecommendDBConn(launcherManager)
-	if err != nil {
-		return nil, err
-	}
-	userConfirmCodeDataRepo := data.NewUserConfirmCodeDataRepo(logger, db)
-	return userConfirmCodeDataRepo, nil
-}
-
-func exportIdGenerator(launcherManager setuputil.LauncherManager) (idpkg.Snowflake, func(), error) {
 	serviceAPIManager, err := setuputil.GetServiceAPIManager(launcherManager)
 	if err != nil {
 		return nil, nil, err
@@ -87,79 +39,22 @@ func exportIdGenerator(launcherManager setuputil.LauncherManager) (idpkg.Snowfla
 	if err != nil {
 		return nil, nil, err
 	}
-	logger, err := setuputil.GetLogger(launcherManager)
-	if err != nil {
-		return nil, nil, err
-	}
 	v := snowflakeapi.DefaultOptions(logger)
 	snowflake, cleanup, err := snowflakeapi.GetSingletonIDGeneratorByHTTPAPI(serviceAPIManager, getNodeIdReq, v...)
 	if err != nil {
 		return nil, nil, err
 	}
-	return snowflake, func() {
-		cleanup()
-	}, nil
-}
-
-func exportUserBizRepo(launcherManager setuputil.LauncherManager) (bizrepos.UserAuthBizRepo, func(), error) {
-	logger, err := setuputil.GetLogger(launcherManager)
-	if err != nil {
-		return nil, nil, err
-	}
-	authRepo, err := setuputil.GetAuthManager(launcherManager)
-	if err != nil {
-		return nil, nil, err
-	}
-	snowflake, cleanup, err := exportIdGenerator(launcherManager)
-	if err != nil {
-		return nil, nil, err
-	}
-	userDataRepo, err := exportUserDataRepo(launcherManager)
+	db, err := setuputil.GetRecommendDBConn(launcherManager)
 	if err != nil {
 		cleanup()
 		return nil, nil, err
 	}
-	userRegEmailDataRepo, err := exportUserRegEmailDataRepo(launcherManager)
-	if err != nil {
-		cleanup()
-		return nil, nil, err
-	}
-	userRegPhoneDataRepo, err := exportUserRegPhoneDataRepo(launcherManager)
-	if err != nil {
-		cleanup()
-		return nil, nil, err
-	}
-	userConfirmCodeDataRepo, err := exportUserConfirmCodeDataRepo(launcherManager)
-	if err != nil {
-		cleanup()
-		return nil, nil, err
-	}
+	userDataRepo := data.NewUserDataRepo(logger, db)
+	userRegEmailDataRepo := data.NewUserRegEmailDataRepo(logger, db)
+	userRegPhoneDataRepo := data.NewUserRegPhoneDataRepo(logger, db)
+	userConfirmCodeDataRepo := data.NewUserConfirmCodeDataRepo(logger, db)
 	userAuthBizRepo := biz.NewUserAuthBiz(logger, authRepo, snowflake, userDataRepo, userRegEmailDataRepo, userRegPhoneDataRepo, userConfirmCodeDataRepo)
-	return userAuthBizRepo, func() {
-		cleanup()
-	}, nil
-}
-
-func exportUserAuthV1Service(launcherManager setuputil.LauncherManager) (servicev1.SrvUserAuthV1Server, func(), error) {
-	logger, err := setuputil.GetLogger(launcherManager)
-	if err != nil {
-		return nil, nil, err
-	}
-	userAuthBizRepo, cleanup, err := exportUserBizRepo(launcherManager)
-	if err != nil {
-		return nil, nil, err
-	}
 	srvUserAuthV1Server := service.NewUserAuthService(logger, userAuthBizRepo)
-	return srvUserAuthV1Server, func() {
-		cleanup()
-	}, nil
-}
-
-func exportServices(launcherManager setuputil.LauncherManager, hs *http.Server, gs *grpc.Server) (cleanuputil.CleanupManager, func(), error) {
-	srvUserAuthV1Server, cleanup, err := exportUserAuthV1Service(launcherManager)
-	if err != nil {
-		return nil, nil, err
-	}
 	cleanupManager, err := service.RegisterServices(hs, gs, srvUserAuthV1Server)
 	if err != nil {
 		cleanup()
