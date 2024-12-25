@@ -319,6 +319,73 @@ func (s *userAuthBiz) SignupByPhone(ctx context.Context, in *resourcev1.SignupBy
 	return s.LoginByUserID(ctx, dataModel.UserId, loginParam)
 }
 
+func (s *userAuthBiz) SignupByEmail(ctx context.Context, in *resourcev1.SignupByEmailReq) (*po.User, *bo.SignTokenResp, error) {
+	if regexpkg.IsEmail(in.Email) == false {
+		e := errorv1.ErrorS103InvalidEmail("无效的邮箱")
+		return nil, nil, errorpkg.WithStack(e)
+
+	}
+
+	// passwd
+	passwdParam := &bo.PasswordParam{
+		Password:        in.Password,
+		PasswordConfirm: in.PasswordConfirm,
+	}
+	passwdHash, err := passwdParam.ValidateAndEncrypt()
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// code
+	verifyParam := &bo.ConfirmVerifyCodeParam{
+		VerifyAccount: in.Email,
+		VerifyType:    enumv1.UserVerifyTypeEnum_EMAIL,
+		VerifyCode:    in.Code,
+	}
+	err = s.ConfirmVerifyCode(ctx, verifyParam)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// exist?
+	_, isNotFound, err := s.userRegEmailDataRepo.QueryOneByUserEmail(ctx, in.Email)
+	if err != nil {
+		return nil, nil, err
+	}
+	if !isNotFound {
+		e := errorv1.ErrorS103UserExist("用户已存在")
+		return nil, nil, errorpkg.WithStack(e)
+	}
+
+	// user
+	var (
+		dataModel = po.NewUserByEmail(in.Email, passwdHash)
+		regModel  = po.NewUserRegEmail(in.Email)
+	)
+	dataModel.UserId, err = s.idGenerator.NextID()
+	if err != nil {
+		e := errorpkg.ErrorInternalServer(err.Error())
+		return nil, nil, errorpkg.WithStack(e)
+	}
+	regModel.UserId = dataModel.UserId
+
+	// create
+	createParam := &po.CreateAccountParam{
+		UserModel:     dataModel,
+		RegPhoneModel: nil,
+		RegEmailModel: regModel,
+	}
+	if err = s.CreateAccount(ctx, createParam); err != nil {
+		return nil, nil, err
+	}
+
+	loginParam := &bo.LoginParam{
+		SkipValidatePassword: true,
+		PlaintextPassword:    in.Password,
+	}
+	return s.LoginByUserID(ctx, dataModel.UserId, loginParam)
+}
+
 func (s *userAuthBiz) CreateAccount(ctx context.Context, param *po.CreateAccountParam) (err error) {
 	// 事务
 	tx := s.userDataRepo.NewTransaction(ctx)

@@ -116,7 +116,15 @@ func (s *userAuth) SendEmailVerifyCode(ctx context.Context, req *resourcev1.Send
 
 // SignupByEmail 身份验证-Email注册
 func (s *userAuth) SignupByEmail(ctx context.Context, req *resourcev1.SignupByEmailReq) (*resourcev1.LoginResp, error) {
-	return s.UnimplementedSrvUserAuthV1Server.SignupByEmail(ctx, req)
+	userModel, signResp, err := s.userAuthBizRepo.SignupByEmail(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+
+	out := &resourcev1.LoginResp{
+		Data: dto.AccountDto.ToPbLoginRespData(userModel, signResp),
+	}
+	return out, nil
 }
 
 // SignupByPhone 身份验证-手机注册

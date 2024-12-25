@@ -12,6 +12,7 @@ type UserAuthBizRepo interface {
 	ConfirmVerifyCode(ctx context.Context, param *bo.ConfirmVerifyCodeParam) error
 
 	SignupByPhone(ctx context.Context, in *resourcev1.SignupByPhoneReq) (*po.User, *bo.SignTokenResp, error)
+	SignupByEmail(ctx context.Context, in *resourcev1.SignupByEmailReq) (*po.User, *bo.SignTokenResp, error)
 	LoginByEmail(ctx context.Context, in *resourcev1.LoginByEmailReq) (*po.User, *bo.SignTokenResp, error)
 	LoginByPhone(ctx context.Context, in *resourcev1.LoginByPhoneReq) (*po.User, *bo.SignTokenResp, error)
 	LoginByUserID(ctx context.Context, userID uint64, loginParam *bo.LoginParam) (*po.User, *bo.SignTokenResp, error)
