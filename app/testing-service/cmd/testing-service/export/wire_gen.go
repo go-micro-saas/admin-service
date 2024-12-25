@@ -9,7 +9,6 @@ package serviceexporter
 import (
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
-	"github.com/go-micro-saas/account-service/api/testing-service/v1/services"
 	"github.com/go-micro-saas/account-service/app/testing-service/internal/biz/biz"
 	"github.com/go-micro-saas/account-service/app/testing-service/internal/data/data"
 	"github.com/go-micro-saas/account-service/app/testing-service/internal/service/service"
@@ -19,7 +18,7 @@ import (
 
 // Injectors from wire.go:
 
-func exportTestdataServer(launcherManager setuputil.LauncherManager) (servicev1.SrvTestdataServer, error) {
+func exportServices(launcherManager setuputil.LauncherManager, hs *http.Server, gs *grpc.Server) (cleanuputil.CleanupManager, error) {
 	logger, err := setuputil.GetLogger(launcherManager)
 	if err != nil {
 		return nil, err
@@ -27,14 +26,6 @@ func exportTestdataServer(launcherManager setuputil.LauncherManager) (servicev1.
 	testingDataRepo := data.NewTestingData(logger)
 	testingBizRepo := biz.NewTestingBiz(logger, testingDataRepo)
 	srvTestdataServer := service.NewTestingV1Service(logger, testingBizRepo)
-	return srvTestdataServer, nil
-}
-
-func exportServices(launcherManager setuputil.LauncherManager, hs *http.Server, gs *grpc.Server) (cleanuputil.CleanupManager, error) {
-	srvTestdataServer, err := exportTestdataServer(launcherManager)
-	if err != nil {
-		return nil, err
-	}
 	cleanupManager, err := service.RegisterServices(hs, gs, srvTestdataServer)
 	if err != nil {
 		return nil, err

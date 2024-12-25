@@ -6,7 +6,6 @@ package serviceexporter
 import (
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
-	servicev1 "github.com/go-micro-saas/account-service/api/testing-service/v1/services"
 	"github.com/go-micro-saas/account-service/app/testing-service/internal/biz/biz"
 	"github.com/go-micro-saas/account-service/app/testing-service/internal/data/data"
 	"github.com/go-micro-saas/account-service/app/testing-service/internal/service/service"
@@ -15,7 +14,7 @@ import (
 	setuputil "github.com/ikaiguang/go-srv-kit/service/setup"
 )
 
-func exportTestdataServer(launcherManager setuputil.LauncherManager) (servicev1.SrvTestdataServer, error) {
+func exportServices(launcherManager setuputil.LauncherManager, hs *http.Server, gs *grpc.Server) (cleanuputil.CleanupManager, error) {
 	panic(wire.Build(
 		setuputil.GetLogger,
 		//setuputil.GetRecommendDBConn,
@@ -25,14 +24,6 @@ func exportTestdataServer(launcherManager setuputil.LauncherManager) (servicev1.
 		biz.NewTestingBiz,
 		// service
 		service.NewTestingV1Service,
-	))
-	return nil, nil
-}
-
-func exportServices(launcherManager setuputil.LauncherManager, hs *http.Server, gs *grpc.Server) (cleanuputil.CleanupManager, error) {
-	panic(wire.Build(
-		// service
-		exportTestdataServer,
 		// register services
 		service.RegisterServices,
 	))

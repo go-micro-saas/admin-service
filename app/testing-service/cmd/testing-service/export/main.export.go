@@ -2,7 +2,6 @@ package serviceexporter
 
 import (
 	testingdapi "github.com/go-micro-saas/account-service/api/testing-service"
-	servicev1 "github.com/go-micro-saas/account-service/api/testing-service/v1/services"
 	"github.com/go-micro-saas/account-service/app/testing-service/cmd/database-migration/migrate"
 	"github.com/go-micro-saas/account-service/app/testing-service/internal/conf"
 	cleanuputil "github.com/ikaiguang/go-srv-kit/service/cleanup"
@@ -57,8 +56,4 @@ func ExportDatabaseMigration() []dbutil.MigrationFunc {
 	return []dbutil.MigrationFunc{
 		dbmigrate.Run,
 	}
-}
-
-func ExportNodeIDV1Service(launcherManager setuputil.LauncherManager) (servicev1.SrvTestdataServer, error) {
-	return exportTestdataServer(launcherManager)
 }
