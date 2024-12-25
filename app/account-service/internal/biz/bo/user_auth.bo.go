@@ -89,3 +89,24 @@ type SendVerifyCodeReply struct {
 	IsSendSuccess bool   // 是否发送成功
 	Code          string // code
 }
+
+type ConfirmVerifyCodeParam struct {
+	VerifyAccount string                                   // 用户标识；手机、邮箱、。。。
+	VerifyType    enumv1.UserVerifyTypeEnum_UserVerifyType //
+	VerifyCode    string                                   // 验证码
+}
+
+func (s *ConfirmVerifyCodeParam) Validate() error {
+	s.VerifyAccount = strings.TrimSpace(s.VerifyAccount)
+	s.VerifyCode = strings.TrimSpace(s.VerifyCode)
+	if s.VerifyAccount == "" {
+		e := errorpkg.ErrorInvalidParameter("account is empty")
+		return errorpkg.WithStack(e)
+	}
+	if s.VerifyCode == "" {
+		e := errorpkg.ErrorInvalidParameter("code is empty")
+		return errorpkg.WithStack(e)
+	}
+	return nil
+
+}

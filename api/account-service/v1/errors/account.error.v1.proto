@@ -30,4 +30,5 @@ enum ERROR {
   S103_PASSWORD_NOT_MATCH_CONFIRM = 103000013 [(errors.code) = 400];  // 密码不匹配
   S103_PASSWORD_NOT_MATCH_RULE    = 103000014 [(errors.code) = 400];  // 密码不符合规则
   S103_PASSWORD_INCORRECT         = 103000015 [(errors.code) = 400];  // 密码不正确
+  S103_VERIFY_CODE_INCORRECT      = 103000016 [(errors.code) = 400];  // 验证码不正确
 }

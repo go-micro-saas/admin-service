@@ -267,3 +267,19 @@ func ErrorS103PasswordIncorrect(format string, args ...interface{}) *errors.Erro
 	e.Metadata = map[string]string{"reason": strconv.Itoa(int(ERROR_S103_PASSWORD_INCORRECT.Number()))}
 	return e
 }
+
+// 验证码不正确
+func IsS103VerifyCodeIncorrect(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ERROR_S103_VERIFY_CODE_INCORRECT.String() && e.Code == 400
+}
+
+// 验证码不正确
+func ErrorS103VerifyCodeIncorrect(format string, args ...interface{}) *errors.Error {
+	e := errors.New(400, ERROR_S103_VERIFY_CODE_INCORRECT.String(), fmt.Sprintf(format, args...))
+	e.Metadata = map[string]string{"reason": strconv.Itoa(int(ERROR_S103_VERIFY_CODE_INCORRECT.Number()))}
+	return e
+}

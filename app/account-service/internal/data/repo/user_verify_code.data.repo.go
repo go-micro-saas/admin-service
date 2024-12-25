@@ -17,8 +17,10 @@ type UserVerifyCodeDataRepo interface {
 	CreateInBatches(ctx context.Context, dataModels []*po.UserVerifyCode, batchSize int) error
 	Insert(ctx context.Context, dataModels []*po.UserVerifyCode) error
 	Update(ctx context.Context, dataModel *po.UserVerifyCode) error
+	UpdateVerifyStatus(ctx context.Context, dataModel *po.UserVerifyCode) (err error)
 	ExistUpdate(ctx context.Context, dataModel *po.UserVerifyCode) (anotherModel *po.UserVerifyCode, isNotFound bool, err error)
 	QueryOneById(ctx context.Context, id interface{}) (dataModel *po.UserVerifyCode, isNotFound bool, err error)
+	QueryOneVerifyCode(ctx context.Context, param *po.GetVerifyCodeParam) (dataModel *po.UserVerifyCode, isNotFound bool, err error)
 	QueryOneByConditions(ctx context.Context, conditions map[string]interface{}) (dataModel *po.UserVerifyCode, isNotFound bool, err error)
 	QueryAllByConditions(ctx context.Context, conditions map[string]interface{}) (dataModels []*po.UserVerifyCode, err error)
 	List(ctx context.Context, conditions map[string]interface{}, paginatorArgs *gormpkg.PaginatorArgs) (dataModels []*po.UserVerifyCode, totalNumber int64, err error)

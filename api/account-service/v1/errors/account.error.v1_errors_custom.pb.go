@@ -25,6 +25,7 @@ var ERROR_http_code = map[string]int{
 	"S103_PASSWORD_NOT_MATCH_CONFIRM": 400,
 	"S103_PASSWORD_NOT_MATCH_RULE":    400,
 	"S103_PASSWORD_INCORRECT":         400,
+	"S103_VERIFY_CODE_INCORRECT":      400,
 }
 
 func (x ERROR) HTTPCode() int {
@@ -143,5 +144,12 @@ func DefaultErrorS103PasswordNotMatchRule() *errors.Error {
 func DefaultErrorS103PasswordIncorrect() *errors.Error {
 	e := errors.New(400, ERROR_S103_PASSWORD_INCORRECT.String(), "密码不正确")
 	e.Metadata = map[string]string{"reason": strconv.Itoa(int(ERROR_S103_PASSWORD_INCORRECT.Number()))}
+	return e
+}
+
+// 验证码不正确
+func DefaultErrorS103VerifyCodeIncorrect() *errors.Error {
+	e := errors.New(400, ERROR_S103_VERIFY_CODE_INCORRECT.String(), "验证码不正确")
+	e.Metadata = map[string]string{"reason": strconv.Itoa(int(ERROR_S103_VERIFY_CODE_INCORRECT.Number()))}
 	return e
 }

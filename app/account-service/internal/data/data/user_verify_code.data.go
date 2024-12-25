@@ -13,6 +13,7 @@ import (
 	errorpkg "github.com/ikaiguang/go-srv-kit/kratos/error"
 	gorm "gorm.io/gorm"
 	"strings"
+	"time"
 )
 
 // userVerifyCodeRepo repo
@@ -133,6 +134,23 @@ func (s *userVerifyCodeRepo) UpdateWithDBConn(ctx context.Context, dbConn *gorm.
 	return s.update(ctx, dbConn, dataModel)
 }
 
+func (s *userVerifyCodeRepo) UpdateVerifyStatus(ctx context.Context, dataModel *po.UserVerifyCode) (err error) {
+	updates := map[string]interface{}{
+		schemas.FieldUpdatedTime:  time.Now(),
+		schemas.FieldVerifyStatus: dataModel.VerifyStatus,
+		schemas.FieldConfirmTime:  dataModel.ConfirmTime,
+	}
+	err = s.dbConn.WithContext(ctx).
+		Table(s.UserVerifyCodeSchema.TableName()).
+		Where(schemas.FieldId+" = ?", dataModel.Id).
+		UpdateColumns(updates).Error
+	if err != nil {
+		e := errorpkg.ErrorInternalServer("")
+		return errorpkg.Wrap(e, err)
+	}
+	return
+}
+
 // existUpdate exist update
 func (s *userVerifyCodeRepo) existUpdate(ctx context.Context, dbConn *gorm.DB, dataModel *po.UserVerifyCode) (anotherModel *po.UserVerifyCode, isNotFound bool, err error) {
 	anotherModel = new(po.UserVerifyCode)
@@ -223,6 +241,24 @@ func (s *userVerifyCodeRepo) QueryOneByConditions(ctx context.Context, condition
 // QueryOneByConditionsWithDBConn query one by conditions
 func (s *userVerifyCodeRepo) QueryOneByConditionsWithDBConn(ctx context.Context, dbConn *gorm.DB, conditions map[string]interface{}) (dataModel *po.UserVerifyCode, isNotFound bool, err error) {
 	return s.queryOneByConditions(ctx, dbConn, conditions)
+}
+
+// QueryOneVerifyCode query one by conditions
+func (s *userVerifyCodeRepo) QueryOneVerifyCode(ctx context.Context, param *po.GetVerifyCodeParam) (dataModel *po.UserVerifyCode, isNotFound bool, err error) {
+	dataModel = new(po.UserVerifyCode)
+	dbConn := s.dbConn.WithContext(ctx).Table(s.UserVerifyCodeSchema.TableName())
+	err = param.WhereConditions(dbConn).First(dataModel).Error
+	if err != nil {
+		if gormpkg.IsErrRecordNotFound(err) {
+			err = nil
+			isNotFound = true
+		} else {
+			e := errorpkg.ErrorInternalServer("")
+			err = errorpkg.Wrap(e, err)
+		}
+		return
+	}
+	return
 }
 
 // =============== query all : 查全部 ===============

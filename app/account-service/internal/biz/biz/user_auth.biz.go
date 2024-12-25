@@ -3,6 +3,7 @@ package biz
 import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
+	enumv1 "github.com/go-micro-saas/account-service/api/account-service/v1/enums"
 	errorv1 "github.com/go-micro-saas/account-service/api/account-service/v1/errors"
 	resourcev1 "github.com/go-micro-saas/account-service/api/account-service/v1/resources"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/biz/bo"
@@ -15,6 +16,7 @@ import (
 	uuidpkg "github.com/ikaiguang/go-srv-kit/kit/uuid"
 	authpkg "github.com/ikaiguang/go-srv-kit/kratos/auth"
 	errorpkg "github.com/ikaiguang/go-srv-kit/kratos/error"
+	"time"
 )
 
 // userAuthBiz ...
@@ -256,14 +258,6 @@ func (s *userAuthBiz) SignupByPhone(ctx context.Context, in *resourcev1.SignupBy
 		return nil, nil, errorpkg.WithStack(e)
 
 	}
-	_, isNotFound, err := s.userRegPhoneDataRepo.QueryOneByUserPhone(ctx, in.Phone)
-	if err != nil {
-		return nil, nil, err
-	}
-	if !isNotFound {
-		e := errorv1.ErrorS103UserExist("用户已存在")
-		return nil, nil, errorpkg.WithStack(e)
-	}
 
 	// passwd
 	passwdParam := &bo.PasswordParam{
@@ -273,6 +267,27 @@ func (s *userAuthBiz) SignupByPhone(ctx context.Context, in *resourcev1.SignupBy
 	passwdHash, err := passwdParam.ValidateAndEncrypt()
 	if err != nil {
 		return nil, nil, err
+	}
+
+	// code
+	verifyParam := &bo.ConfirmVerifyCodeParam{
+		VerifyAccount: in.Phone,
+		VerifyType:    enumv1.UserVerifyTypeEnum_PHONE,
+		VerifyCode:    in.Code,
+	}
+	err = s.ConfirmVerifyCode(ctx, verifyParam)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// exist?
+	_, isNotFound, err := s.userRegPhoneDataRepo.QueryOneByUserPhone(ctx, in.Phone)
+	if err != nil {
+		return nil, nil, err
+	}
+	if !isNotFound {
+		e := errorv1.ErrorS103UserExist("用户已存在")
+		return nil, nil, errorpkg.WithStack(e)
 	}
 
 	// user
@@ -339,4 +354,37 @@ func (s *userAuthBiz) SendVerifyCode(ctx context.Context, param *bo.SendVerifyCo
 		resp.Code = ""
 	}
 	return resp, nil
+}
+
+func (s *userAuthBiz) ConfirmVerifyCode(ctx context.Context, param *bo.ConfirmVerifyCodeParam) error {
+	if err := param.Validate(); err != nil {
+		return nil
+	}
+	queryParam := &po.GetVerifyCodeParam{
+		VerifyAccount: param.VerifyAccount,
+		VerifyType:    param.VerifyType,
+		VerifyCode:    param.VerifyCode,
+		VerifyStatusSlice: []enumv1.UserVerifyStatusEnum_UserVerifyStatus{
+			enumv1.UserVerifyStatusEnum_UNSPECIFIED,
+			enumv1.UserVerifyStatusEnum_CONFIRMING,
+		},
+		GTCreateTime: time.Now().Add(-po.DefaultVerifyCodeExpiredTime),
+	}
+	dataModel, isNotFound, err := s.userVerifyCodeDataRepo.QueryOneVerifyCode(ctx, queryParam)
+	if err != nil {
+		return nil
+	}
+	if isNotFound || dataModel.VerifyCode != param.VerifyCode || !dataModel.CanVerification() {
+		e := errorv1.ErrorS103VerifyCodeIncorrect("验证码不正确")
+		return errorpkg.WithStack(e)
+	}
+
+	// used
+	dataModel.VerifyStatus = enumv1.UserVerifyStatusEnum_CONFIRMED
+	dataModel.ConfirmTime = uint64(time.Now().Unix())
+	err = s.userVerifyCodeDataRepo.UpdateVerifyStatus(ctx, dataModel)
+	if err != nil {
+		return err
+	}
+	return nil
 }

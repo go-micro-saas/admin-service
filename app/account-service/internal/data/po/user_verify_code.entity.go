@@ -4,10 +4,14 @@ package po
 
 import (
 	enumv1 "github.com/go-micro-saas/account-service/api/account-service/v1/enums"
+	schemas "github.com/go-micro-saas/account-service/app/account-service/internal/data/schema/user_verify_code"
 	randompkg "github.com/ikaiguang/go-srv-kit/kit/random"
 	datatypes "gorm.io/datatypes"
+	"gorm.io/gorm"
 	time "time"
 )
+
+var DefaultVerifyCodeExpiredTime = time.Minute * 5
 
 var _ = time.Time{}
 
@@ -24,6 +28,18 @@ type UserVerifyCode struct {
 	VerifyStatus  enumv1.UserVerifyStatusEnum_UserVerifyStatus `gorm:"column:verify_status" json:"verify_status"`   // 确认状态；0：未指定，1：确认中，2：已确认，3：已过期，2：已取消
 	ConfirmTime   uint64                                       `gorm:"column:confirm_time" json:"confirm_time"`     // 确认时间
 	CancelTime    uint64                                       `gorm:"column:cancel_time" json:"cancel_time"`       // 取消时间
+}
+
+func (s *UserVerifyCode) CanVerification() bool {
+	if time.Since(s.CreatedTime) > DefaultVerifyCodeExpiredTime {
+		return false
+	}
+	switch s.VerifyStatus {
+	default:
+		return false
+	case enumv1.UserVerifyStatusEnum_UNSPECIFIED, enumv1.UserVerifyStatusEnum_CONFIRMING:
+		return true
+	}
 }
 
 func NewVerifyCode() string {
@@ -47,4 +63,27 @@ func NewUserVerifyCode(code string) *UserVerifyCode {
 		CancelTime:    0,
 	}
 	return dataModel
+}
+
+type GetVerifyCodeParam struct {
+	VerifyAccount     string                                         // 用户标识；手机、邮箱、。。。
+	VerifyType        enumv1.UserVerifyTypeEnum_UserVerifyType       //
+	VerifyCode        string                                         // 验证码
+	VerifyStatusSlice []enumv1.UserVerifyStatusEnum_UserVerifyStatus //
+	GTCreateTime      time.Time                                      // 创建时间
+}
+
+func (s *GetVerifyCodeParam) WhereConditions(dbConn *gorm.DB) *gorm.DB {
+	dbConn = dbConn.Where(schemas.FieldVerifyAccount+" = ?", s.VerifyAccount).
+		Where(schemas.FieldVerifyType+" = ?", s.VerifyType).
+		Where(schemas.FieldVerifyCode+" = ?", s.VerifyCode)
+	if len(s.VerifyStatusSlice) == 1 {
+		dbConn = dbConn.Where(schemas.FieldVerifyStatus+" = ?", s.VerifyStatusSlice[0])
+	} else if len(s.VerifyStatusSlice) > 1 {
+		dbConn = dbConn.Where(schemas.FieldVerifyStatus+" IN (?)", s.VerifyStatusSlice)
+	}
+	if !s.GTCreateTime.IsZero() {
+		dbConn = dbConn.Where(schemas.FieldCreatedTime+" > ?", s.GTCreateTime)
+	}
+	return dbConn
 }

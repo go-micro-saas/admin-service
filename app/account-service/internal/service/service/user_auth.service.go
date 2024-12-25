@@ -121,7 +121,15 @@ func (s *userAuth) SignupByEmail(ctx context.Context, req *resourcev1.SignupByEm
 
 // SignupByPhone 身份验证-手机注册
 func (s *userAuth) SignupByPhone(ctx context.Context, req *resourcev1.SignupByPhoneReq) (*resourcev1.LoginResp, error) {
-	return s.UnimplementedSrvUserAuthV1Server.SignupByPhone(ctx, req)
+	userModel, signResp, err := s.userAuthBizRepo.SignupByPhone(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+
+	out := &resourcev1.LoginResp{
+		Data: dto.AccountDto.ToPbLoginRespData(userModel, signResp),
+	}
+	return out, nil
 }
 
 // LoginOrSignupByPhone 身份验证-手机登陆(自动注册)
