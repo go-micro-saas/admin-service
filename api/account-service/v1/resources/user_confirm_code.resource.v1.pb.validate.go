@@ -36,7 +36,7 @@ var (
 	_ = anypb.Any{}
 	_ = sort.Sort
 
-	_ = enumv1.UserConfirmTypeEnum_UserConfirmType(0)
+	_ = enumv1.UserVerifyTypeEnum_UserVerifyType(0)
 )
 
 // Validate checks the field values on UserConfirmCode with the rules defined

@@ -15,15 +15,15 @@ var _ = datatypes.JSON{}
 
 // UserVerifyCode ENGINE InnoDB CHARSET utf8mb4 COMMENT '用户验证码确认表'
 type UserVerifyCode struct {
-	Id            uint64                                         `gorm:"column:id;primaryKey" json:"id"`              // ID
-	CreatedTime   time.Time                                      `gorm:"column:created_time" json:"created_time"`     // 创建时间
-	UpdatedTime   time.Time                                      `gorm:"column:updated_time" json:"updated_time"`     // 最后修改时间
-	VerifyAccount string                                         `gorm:"column:verify_account" json:"verify_account"` // 验证账户；手机、邮箱、。。。
-	VerifyType    enumv1.UserConfirmTypeEnum_UserConfirmType     `gorm:"column:verify_type" json:"verify_type"`       // 验证方式；1：邮箱，2：手机，3：密码，。。。
-	VerifyCode    string                                         `gorm:"column:verify_code" json:"verify_code"`       // 验证码
-	VerifyStatus  enumv1.UserConfirmStatusEnum_UserConfirmStatus `gorm:"column:verify_status" json:"verify_status"`   // 确认状态；0：未指定，1：确认中，2：已确认，3：已过期，2：已取消
-	ConfirmTime   uint64                                         `gorm:"column:confirm_time" json:"confirm_time"`     // 确认时间
-	CancelTime    uint64                                         `gorm:"column:cancel_time" json:"cancel_time"`       // 取消时间
+	Id            uint64                                       `gorm:"column:id;primaryKey" json:"id"`              // ID
+	CreatedTime   time.Time                                    `gorm:"column:created_time" json:"created_time"`     // 创建时间
+	UpdatedTime   time.Time                                    `gorm:"column:updated_time" json:"updated_time"`     // 最后修改时间
+	VerifyAccount string                                       `gorm:"column:verify_account" json:"verify_account"` // 验证账户；手机、邮箱、。。。
+	VerifyType    enumv1.UserVerifyTypeEnum_UserVerifyType     `gorm:"column:verify_type" json:"verify_type"`       // 验证方式；1：邮箱，2：手机，3：密码，。。。
+	VerifyCode    string                                       `gorm:"column:verify_code" json:"verify_code"`       // 验证码
+	VerifyStatus  enumv1.UserVerifyStatusEnum_UserVerifyStatus `gorm:"column:verify_status" json:"verify_status"`   // 确认状态；0：未指定，1：确认中，2：已确认，3：已过期，2：已取消
+	ConfirmTime   uint64                                       `gorm:"column:confirm_time" json:"confirm_time"`     // 确认时间
+	CancelTime    uint64                                       `gorm:"column:cancel_time" json:"cancel_time"`       // 取消时间
 }
 
 func NewVerifyCode() string {
@@ -40,9 +40,9 @@ func NewUserVerifyCode(code string) *UserVerifyCode {
 		CreatedTime:   now,
 		UpdatedTime:   now,
 		VerifyAccount: "",
-		VerifyType:    enumv1.UserConfirmTypeEnum_UNSPECIFIED,
+		VerifyType:    enumv1.UserVerifyTypeEnum_UNSPECIFIED,
 		VerifyCode:    code,
-		VerifyStatus:  enumv1.UserConfirmStatusEnum_UNSPECIFIED,
+		VerifyStatus:  enumv1.UserVerifyStatusEnum_UNSPECIFIED,
 		ConfirmTime:   0,
 		CancelTime:    0,
 	}

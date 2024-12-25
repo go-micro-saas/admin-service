@@ -437,22 +437,22 @@ var _ interface {
 	ErrorName() string
 } = UserRegisterTypeEnumValidationError{}
 
-// Validate checks the field values on UserConfirmTypeEnum with the rules
+// Validate checks the field values on UserVerifyTypeEnum with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *UserConfirmTypeEnum) Validate() error {
+func (m *UserVerifyTypeEnum) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on UserConfirmTypeEnum with the rules
+// ValidateAll checks the field values on UserVerifyTypeEnum with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// UserConfirmTypeEnumMultiError, or nil if none found.
-func (m *UserConfirmTypeEnum) ValidateAll() error {
+// UserVerifyTypeEnumMultiError, or nil if none found.
+func (m *UserVerifyTypeEnum) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *UserConfirmTypeEnum) validate(all bool) error {
+func (m *UserVerifyTypeEnum) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -460,19 +460,19 @@ func (m *UserConfirmTypeEnum) validate(all bool) error {
 	var errors []error
 
 	if len(errors) > 0 {
-		return UserConfirmTypeEnumMultiError(errors)
+		return UserVerifyTypeEnumMultiError(errors)
 	}
 
 	return nil
 }
 
-// UserConfirmTypeEnumMultiError is an error wrapping multiple validation
-// errors returned by UserConfirmTypeEnum.ValidateAll() if the designated
-// constraints aren't met.
-type UserConfirmTypeEnumMultiError []error
+// UserVerifyTypeEnumMultiError is an error wrapping multiple validation errors
+// returned by UserVerifyTypeEnum.ValidateAll() if the designated constraints
+// aren't met.
+type UserVerifyTypeEnumMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m UserConfirmTypeEnumMultiError) Error() string {
+func (m UserVerifyTypeEnumMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -481,11 +481,11 @@ func (m UserConfirmTypeEnumMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m UserConfirmTypeEnumMultiError) AllErrors() []error { return m }
+func (m UserVerifyTypeEnumMultiError) AllErrors() []error { return m }
 
-// UserConfirmTypeEnumValidationError is the validation error returned by
-// UserConfirmTypeEnum.Validate if the designated constraints aren't met.
-type UserConfirmTypeEnumValidationError struct {
+// UserVerifyTypeEnumValidationError is the validation error returned by
+// UserVerifyTypeEnum.Validate if the designated constraints aren't met.
+type UserVerifyTypeEnumValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -493,24 +493,24 @@ type UserConfirmTypeEnumValidationError struct {
 }
 
 // Field function returns field value.
-func (e UserConfirmTypeEnumValidationError) Field() string { return e.field }
+func (e UserVerifyTypeEnumValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e UserConfirmTypeEnumValidationError) Reason() string { return e.reason }
+func (e UserVerifyTypeEnumValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e UserConfirmTypeEnumValidationError) Cause() error { return e.cause }
+func (e UserVerifyTypeEnumValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e UserConfirmTypeEnumValidationError) Key() bool { return e.key }
+func (e UserVerifyTypeEnumValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e UserConfirmTypeEnumValidationError) ErrorName() string {
-	return "UserConfirmTypeEnumValidationError"
+func (e UserVerifyTypeEnumValidationError) ErrorName() string {
+	return "UserVerifyTypeEnumValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e UserConfirmTypeEnumValidationError) Error() string {
+func (e UserVerifyTypeEnumValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -522,14 +522,14 @@ func (e UserConfirmTypeEnumValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sUserConfirmTypeEnum.%s: %s%s",
+		"invalid %sUserVerifyTypeEnum.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = UserConfirmTypeEnumValidationError{}
+var _ error = UserVerifyTypeEnumValidationError{}
 
 var _ interface {
 	Field() string
@@ -537,24 +537,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = UserConfirmTypeEnumValidationError{}
+} = UserVerifyTypeEnumValidationError{}
 
-// Validate checks the field values on UserConfirmStatusEnum with the rules
+// Validate checks the field values on UserVerifyStatusEnum with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *UserConfirmStatusEnum) Validate() error {
+func (m *UserVerifyStatusEnum) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on UserConfirmStatusEnum with the rules
+// ValidateAll checks the field values on UserVerifyStatusEnum with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// UserConfirmStatusEnumMultiError, or nil if none found.
-func (m *UserConfirmStatusEnum) ValidateAll() error {
+// UserVerifyStatusEnumMultiError, or nil if none found.
+func (m *UserVerifyStatusEnum) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *UserConfirmStatusEnum) validate(all bool) error {
+func (m *UserVerifyStatusEnum) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -562,19 +562,19 @@ func (m *UserConfirmStatusEnum) validate(all bool) error {
 	var errors []error
 
 	if len(errors) > 0 {
-		return UserConfirmStatusEnumMultiError(errors)
+		return UserVerifyStatusEnumMultiError(errors)
 	}
 
 	return nil
 }
 
-// UserConfirmStatusEnumMultiError is an error wrapping multiple validation
-// errors returned by UserConfirmStatusEnum.ValidateAll() if the designated
+// UserVerifyStatusEnumMultiError is an error wrapping multiple validation
+// errors returned by UserVerifyStatusEnum.ValidateAll() if the designated
 // constraints aren't met.
-type UserConfirmStatusEnumMultiError []error
+type UserVerifyStatusEnumMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m UserConfirmStatusEnumMultiError) Error() string {
+func (m UserVerifyStatusEnumMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -583,11 +583,11 @@ func (m UserConfirmStatusEnumMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m UserConfirmStatusEnumMultiError) AllErrors() []error { return m }
+func (m UserVerifyStatusEnumMultiError) AllErrors() []error { return m }
 
-// UserConfirmStatusEnumValidationError is the validation error returned by
-// UserConfirmStatusEnum.Validate if the designated constraints aren't met.
-type UserConfirmStatusEnumValidationError struct {
+// UserVerifyStatusEnumValidationError is the validation error returned by
+// UserVerifyStatusEnum.Validate if the designated constraints aren't met.
+type UserVerifyStatusEnumValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -595,24 +595,24 @@ type UserConfirmStatusEnumValidationError struct {
 }
 
 // Field function returns field value.
-func (e UserConfirmStatusEnumValidationError) Field() string { return e.field }
+func (e UserVerifyStatusEnumValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e UserConfirmStatusEnumValidationError) Reason() string { return e.reason }
+func (e UserVerifyStatusEnumValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e UserConfirmStatusEnumValidationError) Cause() error { return e.cause }
+func (e UserVerifyStatusEnumValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e UserConfirmStatusEnumValidationError) Key() bool { return e.key }
+func (e UserVerifyStatusEnumValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e UserConfirmStatusEnumValidationError) ErrorName() string {
-	return "UserConfirmStatusEnumValidationError"
+func (e UserVerifyStatusEnumValidationError) ErrorName() string {
+	return "UserVerifyStatusEnumValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e UserConfirmStatusEnumValidationError) Error() string {
+func (e UserVerifyStatusEnumValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -624,14 +624,14 @@ func (e UserConfirmStatusEnumValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sUserConfirmStatusEnum.%s: %s%s",
+		"invalid %sUserVerifyStatusEnum.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = UserConfirmStatusEnumValidationError{}
+var _ error = UserVerifyStatusEnumValidationError{}
 
 var _ interface {
 	Field() string
@@ -639,4 +639,4 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = UserConfirmStatusEnumValidationError{}
+} = UserVerifyStatusEnumValidationError{}

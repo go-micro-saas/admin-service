@@ -70,7 +70,7 @@ func (s *accountDto) ToPbUser(dataModel *po.User) *resourcev1.User {
 func (s *accountDto) ToBoSendVerifyCodeParam(req *resourcev1.SendPhoneVerifyCodeReq) *bo.SendVerifyCodeParam {
 	res := &bo.SendVerifyCodeParam{
 		VerifyAccount: req.Phone,
-		VerifyType:    enumv1.UserConfirmTypeEnum_PHONE,
+		VerifyType:    enumv1.UserVerifyTypeEnum_PHONE,
 	}
 	return res
 }
@@ -78,7 +78,7 @@ func (s *accountDto) ToBoSendVerifyCodeParam(req *resourcev1.SendPhoneVerifyCode
 func (s *accountDto) ToBoSendVerifyCodeParam2(req *resourcev1.SendEmailVerifyCodeReq) *bo.SendVerifyCodeParam {
 	res := &bo.SendVerifyCodeParam{
 		VerifyAccount: req.Email,
-		VerifyType:    enumv1.UserConfirmTypeEnum_EMAIL,
+		VerifyType:    enumv1.UserVerifyTypeEnum_EMAIL,
 	}
 	return res
 }

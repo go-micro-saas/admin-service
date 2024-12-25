@@ -55,7 +55,7 @@ func (s *PasswordParam) ValidateAndEncrypt() (string, error) {
 
 type SendVerifyCodeParam struct {
 	VerifyAccount string // 用户标识；手机、邮箱、。。。
-	VerifyType    enumv1.UserConfirmTypeEnum_UserConfirmType
+	VerifyType    enumv1.UserVerifyTypeEnum_UserVerifyType
 }
 
 func (s *SendVerifyCodeParam) Validate() error {
@@ -66,17 +66,17 @@ func (s *SendVerifyCodeParam) Validate() error {
 			e := errorpkg.ErrorInvalidParameter("account is empty")
 			return errorpkg.WithStack(e)
 		}
-	case enumv1.UserConfirmTypeEnum_PHONE:
+	case enumv1.UserVerifyTypeEnum_PHONE:
 		if !regexpkg.IsPhone(s.VerifyAccount) {
 			e := errorv1.DefaultErrorS103InvalidPhone()
 			return errorpkg.WithStack(e)
 		}
-	case enumv1.UserConfirmTypeEnum_EMAIL:
+	case enumv1.UserVerifyTypeEnum_EMAIL:
 		if !regexpkg.IsEmail(s.VerifyAccount) {
 			e := errorv1.DefaultErrorS103InvalidEmail()
 			return errorpkg.WithStack(e)
 		}
-	case enumv1.UserConfirmTypeEnum_PASSWORD:
+	case enumv1.UserVerifyTypeEnum_PASSWORD:
 		if s.VerifyAccount == "" {
 			e := errorpkg.ErrorInvalidParameter("account is empty")
 			return errorpkg.WithStack(e)

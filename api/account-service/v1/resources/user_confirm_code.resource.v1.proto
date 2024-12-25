@@ -37,11 +37,11 @@ message UserConfirmCode {
   // user_identify 用户标识；手机、邮箱、。。。
   string user_identify = 4;
   // confirm_type 确认方式；1：邮箱，2：手机，3：密码，。。。
-  enumv1.UserConfirmTypeEnum.UserConfirmType confirm_type = 5;
+  enumv1.UserVerifyTypeEnum.UserVerifyType confirm_type = 5;
   // confirm_code 验证码
   string confirm_code = 6;
   // confirm_status 确认状态；0：未指定，1：确认中，2：已确认，3：已过期，2：已取消
-  enumv1.UserConfirmStatusEnum.UserConfirmStatus confirm_status = 7;
+  enumv1.UserVerifyStatusEnum.UserVerifyStatus confirm_status = 7;
   // confirm_time 确认时间
   uint64 confirm_time = 8;
   // cancel_time 取消时间

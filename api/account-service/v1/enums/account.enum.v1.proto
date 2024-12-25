@@ -52,8 +52,8 @@ message UserRegisterTypeEnum {
   }
 }
 
-message UserConfirmTypeEnum {
-  enum UserConfirmType {
+message UserVerifyTypeEnum {
+  enum UserVerifyType {
     UNSPECIFIED = 0;  // 未指定
     EMAIL       = 1;  // 邮箱
     PHONE       = 2;  // 手机
@@ -61,8 +61,8 @@ message UserConfirmTypeEnum {
   }
 }
 
-message UserConfirmStatusEnum {
-  enum UserConfirmStatus {
+message UserVerifyStatusEnum {
+  enum UserVerifyStatus {
     UNSPECIFIED = 0;  // 未指定
     CONFIRMING  = 1;  // 确认中
     CONFIRMED   = 2;  // 已确认
