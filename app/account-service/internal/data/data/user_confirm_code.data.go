@@ -5,6 +5,7 @@ package data
 import (
 	"bytes"
 	context "context"
+	"database/sql"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/data/po"
 	datarepos "github.com/go-micro-saas/account-service/app/account-service/internal/data/repo"
@@ -29,6 +30,10 @@ func NewUserConfirmCodeDataRepo(logger log.Logger, dbConn *gorm.DB) datarepos.Us
 		log:    logHelper,
 		dbConn: dbConn,
 	}
+}
+
+func (s *userConfirmCodeDataRepo) NewTransaction(ctx context.Context, opts ...*sql.TxOptions) gormpkg.TransactionInterface {
+	return gormpkg.NewTransaction(ctx, s.dbConn, opts...)
 }
 
 // =============== 创建 ===============

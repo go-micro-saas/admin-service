@@ -69,14 +69,16 @@ func NewUser() *User {
 	return userModel
 }
 
-func NewUserByPhone(phone string) *User {
+func NewUserByPhone(phone, passwdHash string) *User {
 	userModel := NewUser()
 	userModel.UserPhone = phone
+	userModel.PasswordHash = passwdHash
 	return userModel
 }
 
-func NewUserByEmail(email string) *User {
+func NewUserByEmail(email, passwdHash string) *User {
 	userModel := NewUser()
 	userModel.UserEmail = email
+	userModel.PasswordHash = passwdHash
 	return userModel
 }

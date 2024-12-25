@@ -4,12 +4,14 @@ package datarepos
 
 import (
 	context "context"
+	"database/sql"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/data/po"
 	gormpkg "github.com/ikaiguang/go-srv-kit/data/gorm"
 )
 
 // UserConfirmCodeDataRepo repo
 type UserConfirmCodeDataRepo interface {
+	NewTransaction(ctx context.Context, opts ...*sql.TxOptions) gormpkg.TransactionInterface
 	Create(ctx context.Context, dataModel *po.UserConfirmCode) error
 	ExistCreate(ctx context.Context, dataModel *po.UserConfirmCode) (anotherModel *po.UserConfirmCode, isNotFound bool, err error)
 	CreateInBatches(ctx context.Context, dataModels []*po.UserConfirmCode, batchSize int) error

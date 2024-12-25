@@ -4,13 +4,16 @@ package datarepos
 
 import (
 	context "context"
+	"database/sql"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/data/po"
 	gormpkg "github.com/ikaiguang/go-srv-kit/data/gorm"
 )
 
 // UserRegPhoneDataRepo repo
 type UserRegPhoneDataRepo interface {
+	NewTransaction(ctx context.Context, opts ...*sql.TxOptions) gormpkg.TransactionInterface
 	Create(ctx context.Context, dataModel *po.UserRegPhone) error
+	CreateWithTransaction(ctx context.Context, tx gormpkg.TransactionInterface, dataModel *po.UserRegPhone) (err error)
 	ExistCreate(ctx context.Context, dataModel *po.UserRegPhone) (anotherModel *po.UserRegPhone, isNotFound bool, err error)
 	CreateInBatches(ctx context.Context, dataModels []*po.UserRegPhone, batchSize int) error
 	Insert(ctx context.Context, dataModels []*po.UserRegPhone) error

@@ -5,6 +5,7 @@ package data
 import (
 	"bytes"
 	context "context"
+	"database/sql"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/data/po"
 	datarepos "github.com/go-micro-saas/account-service/app/account-service/internal/data/repo"
@@ -31,6 +32,10 @@ func NewUserDataRepo(logger log.Logger, dbConn *gorm.DB) datarepos.UserDataRepo 
 	}
 }
 
+func (s *userDataRepo) NewTransaction(ctx context.Context, opts ...*sql.TxOptions) gormpkg.TransactionInterface {
+	return gormpkg.NewTransaction(ctx, s.dbConn, opts...)
+}
+
 // =============== 创建 ===============
 
 // create insert one
@@ -53,6 +58,22 @@ func (s *userDataRepo) Create(ctx context.Context, dataModel *po.User) error {
 // CreateWithDBConn create
 func (s *userDataRepo) CreateWithDBConn(ctx context.Context, dbConn *gorm.DB, dataModel *po.User) error {
 	return s.create(ctx, dbConn, dataModel)
+}
+
+func (s *userDataRepo) CreateWithTransaction(ctx context.Context, tx gormpkg.TransactionInterface, dataModel *po.User) (err error) {
+	// 在外部设置即可
+	fc := func(ctx context.Context, tx *gorm.DB) error {
+		return tx.WithContext(ctx).
+			Table(s.UserSchema.TableName()).
+			Create(dataModel).Error
+	}
+	err = tx.Do(ctx, fc)
+	if err != nil {
+		// gormpkg.IsErrDuplicatedKey(err)
+		e := errorpkg.ErrorInternalServer("")
+		return errorpkg.Wrap(e, err)
+	}
+	return
 }
 
 // existCreate exist create

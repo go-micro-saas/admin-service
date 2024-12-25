@@ -265,8 +265,19 @@ func (s *userAuthBiz) SignupByPhone(ctx context.Context, in *resourcev1.SignupBy
 		return nil, nil, errorpkg.WithStack(e)
 	}
 
+	// passwd
+	passwdParam := &bo.PasswordParam{
+		Password:        in.Password,
+		PasswordConfirm: in.PasswordConfirm,
+	}
+	passwdHash, err := passwdParam.ValidateAndEncrypt()
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// user
 	var (
-		dataModel = po.NewUserByPhone(in.Phone)
+		dataModel = po.NewUserByPhone(in.Phone, passwdHash)
 		regModel  = po.NewUserRegPhone(in.Phone)
 	)
 	dataModel.UserId, err = s.idGenerator.NextID()
@@ -275,6 +286,26 @@ func (s *userAuthBiz) SignupByPhone(ctx context.Context, in *resourcev1.SignupBy
 		return nil, nil, errorpkg.WithStack(e)
 	}
 	regModel.UserId = dataModel.UserId
+
+	// 事务
+	tx := s.userDataRepo.NewTransaction(ctx)
+	defer func() {
+		commitErr := tx.CommitAndErrRollback(ctx, err)
+		if commitErr != nil {
+			s.log.WithContext(ctx).Errorw(
+				"mgs", "GetNodeId tx.CommitAndErrRollback failed!",
+				"err", commitErr,
+			)
+		}
+	}()
+	err = s.userDataRepo.CreateWithTransaction(ctx, tx, dataModel)
+	if err != nil {
+		return nil, nil, err
+	}
+	err = s.userRegPhoneDataRepo.CreateWithTransaction(ctx, tx, regModel)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	loginParam := &bo.LoginParam{
 		SkipValidatePassword: true,

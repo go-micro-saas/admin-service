@@ -5,7 +5,9 @@ package data
 import (
 	"bytes"
 	context "context"
+	"database/sql"
 	"github.com/go-kratos/kratos/v2/log"
+	errorv1 "github.com/go-micro-saas/account-service/api/account-service/v1/errors"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/data/po"
 	datarepos "github.com/go-micro-saas/account-service/app/account-service/internal/data/repo"
 	schemas "github.com/go-micro-saas/account-service/app/account-service/internal/data/schema/user_reg_email"
@@ -31,6 +33,10 @@ func NewUserRegEmailDataRepo(logger log.Logger, dbConn *gorm.DB) datarepos.UserR
 	}
 }
 
+func (s *userRegEmailDataRepo) NewTransaction(ctx context.Context, opts ...*sql.TxOptions) gormpkg.TransactionInterface {
+	return gormpkg.NewTransaction(ctx, s.dbConn, opts...)
+}
+
 // =============== 创建 ===============
 
 // create insert one
@@ -53,6 +59,26 @@ func (s *userRegEmailDataRepo) Create(ctx context.Context, dataModel *po.UserReg
 // CreateWithDBConn create
 func (s *userRegEmailDataRepo) CreateWithDBConn(ctx context.Context, dbConn *gorm.DB, dataModel *po.UserRegEmail) error {
 	return s.create(ctx, dbConn, dataModel)
+}
+
+func (s *userRegEmailDataRepo) CreateWithTransaction(ctx context.Context, tx gormpkg.TransactionInterface, dataModel *po.UserRegEmail) (err error) {
+	// 在外部设置即可
+	fc := func(ctx context.Context, tx *gorm.DB) error {
+		return tx.WithContext(ctx).
+			Table(s.UserRegEmailSchema.TableName()).
+			Create(dataModel).Error
+	}
+	err = tx.Do(ctx, fc)
+	if err != nil {
+		if gormpkg.IsErrDuplicatedKey(err) {
+			e := errorv1.DefaultErrorS103UserExist()
+			return errorpkg.Wrap(e, err)
+		} else {
+			e := errorpkg.ErrorInternalServer("")
+			return errorpkg.Wrap(e, err)
+		}
+	}
+	return
 }
 
 // existCreate exist create

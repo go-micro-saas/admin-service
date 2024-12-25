@@ -219,3 +219,51 @@ func ErrorS103InvalidEmail(format string, args ...interface{}) *errors.Error {
 	e.Metadata = map[string]string{"reason": strconv.Itoa(int(ERROR_S103_INVALID_EMAIL.Number()))}
 	return e
 }
+
+// 密码不匹配
+func IsS103PasswordNotMatchConfirm(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ERROR_S103_PASSWORD_NOT_MATCH_CONFIRM.String() && e.Code == 400
+}
+
+// 密码不匹配
+func ErrorS103PasswordNotMatchConfirm(format string, args ...interface{}) *errors.Error {
+	e := errors.New(400, ERROR_S103_PASSWORD_NOT_MATCH_CONFIRM.String(), fmt.Sprintf(format, args...))
+	e.Metadata = map[string]string{"reason": strconv.Itoa(int(ERROR_S103_PASSWORD_NOT_MATCH_CONFIRM.Number()))}
+	return e
+}
+
+// 密码不符合规则
+func IsS103PasswordNotMatchRule(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ERROR_S103_PASSWORD_NOT_MATCH_RULE.String() && e.Code == 400
+}
+
+// 密码不符合规则
+func ErrorS103PasswordNotMatchRule(format string, args ...interface{}) *errors.Error {
+	e := errors.New(400, ERROR_S103_PASSWORD_NOT_MATCH_RULE.String(), fmt.Sprintf(format, args...))
+	e.Metadata = map[string]string{"reason": strconv.Itoa(int(ERROR_S103_PASSWORD_NOT_MATCH_RULE.Number()))}
+	return e
+}
+
+// 密码不正确
+func IsS103PasswordIncorrect(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ERROR_S103_PASSWORD_INCORRECT.String() && e.Code == 400
+}
+
+// 密码不正确
+func ErrorS103PasswordIncorrect(format string, args ...interface{}) *errors.Error {
+	e := errors.New(400, ERROR_S103_PASSWORD_INCORRECT.String(), fmt.Sprintf(format, args...))
+	e.Metadata = map[string]string{"reason": strconv.Itoa(int(ERROR_S103_PASSWORD_INCORRECT.Number()))}
+	return e
+}
