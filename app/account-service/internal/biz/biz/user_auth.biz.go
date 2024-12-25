@@ -23,10 +23,10 @@ type userAuthBiz struct {
 	authRepo    authpkg.AuthRepo
 	idGenerator idpkg.Snowflake
 
-	userDataRepo            datarepos.UserDataRepo
-	userRegEmailDataRepo    datarepos.UserRegEmailDataRepo
-	userRegPhoneDataRepo    datarepos.UserRegPhoneDataRepo
-	userConfirmCodeDataRepo datarepos.UserConfirmCodeDataRepo
+	userDataRepo           datarepos.UserDataRepo
+	userRegEmailDataRepo   datarepos.UserRegEmailDataRepo
+	userRegPhoneDataRepo   datarepos.UserRegPhoneDataRepo
+	userVerifyCodeDataRepo datarepos.UserVerifyCodeDataRepo
 }
 
 // NewUserAuthBiz ...
@@ -38,7 +38,7 @@ func NewUserAuthBiz(
 	userDataRepo datarepos.UserDataRepo,
 	userRegEmailDataRepo datarepos.UserRegEmailDataRepo,
 	userRegPhoneDataRepo datarepos.UserRegPhoneDataRepo,
-	userConfirmCodeDataRepo datarepos.UserConfirmCodeDataRepo,
+	userVerifyCodeDataRepo datarepos.UserVerifyCodeDataRepo,
 ) bizrepos.UserAuthBizRepo {
 	logHelper := log.NewHelper(log.With(logger, "module", "account-service/biz/user_auth"))
 	return &userAuthBiz{
@@ -46,10 +46,10 @@ func NewUserAuthBiz(
 		authRepo:    authRepo,
 		idGenerator: idGenerator,
 
-		userDataRepo:            userDataRepo,
-		userRegEmailDataRepo:    userRegEmailDataRepo,
-		userRegPhoneDataRepo:    userRegPhoneDataRepo,
-		userConfirmCodeDataRepo: userConfirmCodeDataRepo,
+		userDataRepo:           userDataRepo,
+		userRegEmailDataRepo:   userRegEmailDataRepo,
+		userRegPhoneDataRepo:   userRegPhoneDataRepo,
+		userVerifyCodeDataRepo: userVerifyCodeDataRepo,
 	}
 }
 
@@ -312,4 +312,18 @@ func (s *userAuthBiz) SignupByPhone(ctx context.Context, in *resourcev1.SignupBy
 		PlaintextPassword:    in.Password,
 	}
 	return s.LoginByUserID(ctx, dataModel.UserId, loginParam)
+}
+
+func (s *userAuthBiz) SendVerifyCode(ctx context.Context, param *bo.SendVerifyCodeParam) (*bo.SignTokenResp, error) {
+	if err := param.Validate(); err != nil {
+		return nil, err
+	}
+
+	var (
+		code      = po.NewVerifyCode()
+		dataModel = po.NewUserVerifyCode(code)
+	)
+	dataModel.VerifyCode = param.VerifyAccount
+	dataModel.VerifyType = param.VerifyType
+	return nil, nil
 }

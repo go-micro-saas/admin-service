@@ -90,6 +90,14 @@ func (s *userAuth) Ping(ctx context.Context, in *resourcev1.PingReq) (out *resou
 	return out, err
 }
 
+func (s *userAuth) SendPhoneVerifyCode(ctx context.Context, req *resourcev1.SendPhoneVerifyCodeReq) (*resourcev1.SendVerifyCodeResp, error) {
+	return s.UnimplementedSrvUserAuthV1Server.SendPhoneVerifyCode(ctx, req)
+}
+
+func (s *userAuth) SendEmailVerifyCode(ctx context.Context, req *resourcev1.SendEmailVerifyCodeReq) (*resourcev1.SendVerifyCodeResp, error) {
+	return s.UnimplementedSrvUserAuthV1Server.SendEmailVerifyCode(ctx, req)
+}
+
 // SignupByEmail 身份验证-Email注册
 func (s *userAuth) SignupByEmail(ctx context.Context, req *resourcev1.SignupByEmailReq) (*resourcev1.LoginResp, error) {
 	return s.UnimplementedSrvUserAuthV1Server.SignupByEmail(ctx, req)

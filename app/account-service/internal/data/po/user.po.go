@@ -60,7 +60,7 @@ func NewUser() *User {
 		UserNickname:  RandomNickname(),
 		UserAvatar:    "",
 		UserGender:    enumv1.UserGenderEnum_UNSPECIFIED,
-		RegisterType:  enumv1.UserRegisterTypeEnum_PHONE,
+		RegisterType:  enumv1.UserRegisterTypeEnum_UNSPECIFIED,
 		UserStatus:    enumv1.UserStatusEnum_ENABLE,
 		DisableTime:   0,
 		BlacklistTime: 0,
@@ -73,6 +73,7 @@ func NewUserByPhone(phone, passwdHash string) *User {
 	userModel := NewUser()
 	userModel.UserPhone = phone
 	userModel.PasswordHash = passwdHash
+	userModel.RegisterType = enumv1.UserRegisterTypeEnum_PHONE
 	return userModel
 }
 
@@ -80,5 +81,6 @@ func NewUserByEmail(email, passwdHash string) *User {
 	userModel := NewUser()
 	userModel.UserEmail = email
 	userModel.PasswordHash = passwdHash
+	userModel.RegisterType = enumv1.UserRegisterTypeEnum_EMAIL
 	return userModel
 }

@@ -4,9 +4,9 @@ import (
 	"context"
 	schemas "github.com/go-micro-saas/account-service/app/account-service/internal/data/schema"
 	userschemas "github.com/go-micro-saas/account-service/app/account-service/internal/data/schema/user"
-	coceschemas "github.com/go-micro-saas/account-service/app/account-service/internal/data/schema/user_confirm_code"
 	emailschemas "github.com/go-micro-saas/account-service/app/account-service/internal/data/schema/user_reg_email"
 	phoneschemas "github.com/go-micro-saas/account-service/app/account-service/internal/data/schema/user_reg_phone"
+	coceschemas "github.com/go-micro-saas/account-service/app/account-service/internal/data/schema/user_verify_code"
 	migrationpkg "github.com/ikaiguang/go-srv-kit/data/migration"
 	errorpkg "github.com/ikaiguang/go-srv-kit/kratos/error"
 	"gorm.io/gorm"
@@ -52,7 +52,7 @@ func (s *Migrate) Upgrade(ctx context.Context) error {
 		return errorpkg.Wrap(e, err)
 	}
 	// 创建表
-	mr = coceschemas.UserConfirmCodeSchema.CreateTableMigrator(migrator)
+	mr = coceschemas.UserVerifyCodeSchema.CreateTableMigrator(migrator)
 	if err := s.migrateRepo.RunMigratorUp(ctx, mr); err != nil {
 		e := errorpkg.ErrorInternalError("")
 		return errorpkg.Wrap(e, err)

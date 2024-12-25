@@ -1,10 +1,13 @@
 package bo
 
 import (
+	enumv1 "github.com/go-micro-saas/account-service/api/account-service/v1/enums"
 	errorv1 "github.com/go-micro-saas/account-service/api/account-service/v1/errors"
 	passwordpkg "github.com/ikaiguang/go-srv-kit/kit/password"
+	regexpkg "github.com/ikaiguang/go-srv-kit/kit/regex"
 	authpkg "github.com/ikaiguang/go-srv-kit/kratos/auth"
 	errorpkg "github.com/ikaiguang/go-srv-kit/kratos/error"
+	"strings"
 )
 
 type LoginParam struct {
@@ -48,4 +51,36 @@ func (s *PasswordParam) ValidateAndEncrypt() (string, error) {
 		return "", errorpkg.WithStack(e)
 	}
 	return string(hash), nil
+}
+
+type SendVerifyCodeParam struct {
+	VerifyAccount string // 用户标识；手机、邮箱、。。。
+	VerifyType    enumv1.UserConfirmTypeEnum_UserConfirmType
+}
+
+func (s *SendVerifyCodeParam) Validate() error {
+	s.VerifyAccount = strings.TrimSpace(s.VerifyAccount)
+	switch s.VerifyType {
+	default:
+		if s.VerifyAccount == "" {
+			e := errorpkg.ErrorInvalidParameter("account is empty")
+			return errorpkg.WithStack(e)
+		}
+	case enumv1.UserConfirmTypeEnum_PHONE:
+		if !regexpkg.IsPhone(s.VerifyAccount) {
+			e := errorv1.DefaultErrorS103InvalidPhone()
+			return errorpkg.WithStack(e)
+		}
+	case enumv1.UserConfirmTypeEnum_EMAIL:
+		if !regexpkg.IsEmail(s.VerifyAccount) {
+			e := errorv1.DefaultErrorS103InvalidEmail()
+			return errorpkg.WithStack(e)
+		}
+	case enumv1.UserConfirmTypeEnum_PASSWORD:
+		if s.VerifyAccount == "" {
+			e := errorpkg.ErrorInvalidParameter("account is empty")
+			return errorpkg.WithStack(e)
+		}
+	}
+	return nil
 }

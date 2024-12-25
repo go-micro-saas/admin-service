@@ -52,8 +52,8 @@ func exportServices(launcherManager setuputil.LauncherManager, hs *http.Server, 
 	userDataRepo := data.NewUserDataRepo(logger, db)
 	userRegEmailDataRepo := data.NewUserRegEmailDataRepo(logger, db)
 	userRegPhoneDataRepo := data.NewUserRegPhoneDataRepo(logger, db)
-	userConfirmCodeDataRepo := data.NewUserConfirmCodeDataRepo(logger, db)
-	userAuthBizRepo := biz.NewUserAuthBiz(logger, authRepo, snowflake, userDataRepo, userRegEmailDataRepo, userRegPhoneDataRepo, userConfirmCodeDataRepo)
+	userVerifyCodeDataRepo := data.NewUserVerifyCodeRepo(db)
+	userAuthBizRepo := biz.NewUserAuthBiz(logger, authRepo, snowflake, userDataRepo, userRegEmailDataRepo, userRegPhoneDataRepo, userVerifyCodeDataRepo)
 	srvUserAuthV1Server := service.NewUserAuthService(logger, userAuthBizRepo)
 	cleanupManager, err := service.RegisterServices(hs, gs, srvUserAuthV1Server)
 	if err != nil {

@@ -31,7 +31,7 @@ func exportServices(launcherManager setuputil.LauncherManager, hs *http.Server, 
 		data.NewUserDataRepo,
 		data.NewUserRegPhoneDataRepo,
 		data.NewUserRegEmailDataRepo,
-		data.NewUserConfirmCodeDataRepo,
+		data.NewUserVerifyCodeRepo,
 		// biz
 		biz.NewUserAuthBiz,
 		// service
