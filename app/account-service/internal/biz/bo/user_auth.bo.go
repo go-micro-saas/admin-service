@@ -66,19 +66,14 @@ func (s *SendVerifyCodeParam) Validate() error {
 			e := errorpkg.ErrorInvalidParameter("account is empty")
 			return errorpkg.WithStack(e)
 		}
-	case enumv1.UserVerifyTypeEnum_PHONE:
+	case enumv1.UserVerifyTypeEnum_SIGNUP_BY_PHONE:
 		if !regexpkg.IsPhone(s.VerifyAccount) {
 			e := errorv1.DefaultErrorS103InvalidPhone()
 			return errorpkg.WithStack(e)
 		}
-	case enumv1.UserVerifyTypeEnum_EMAIL:
+	case enumv1.UserVerifyTypeEnum_SIGNUP_BY_EMAIL:
 		if !regexpkg.IsEmail(s.VerifyAccount) {
 			e := errorv1.DefaultErrorS103InvalidEmail()
-			return errorpkg.WithStack(e)
-		}
-	case enumv1.UserVerifyTypeEnum_PASSWORD:
-		if s.VerifyAccount == "" {
-			e := errorpkg.ErrorInvalidParameter("account is empty")
 			return errorpkg.WithStack(e)
 		}
 	}

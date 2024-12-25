@@ -67,24 +67,24 @@ func (s *accountDto) ToPbUser(dataModel *po.User) *resourcev1.User {
 	return newDataModel
 }
 
-func (s *accountDto) ToBoSendVerifyCodeParam(req *resourcev1.SendPhoneVerifyCodeReq) *bo.SendVerifyCodeParam {
+func (s *accountDto) ToBoSendVerifyCodeParam(req *resourcev1.SendPhoneSignupCodeReq) *bo.SendVerifyCodeParam {
 	res := &bo.SendVerifyCodeParam{
 		VerifyAccount: req.Phone,
-		VerifyType:    enumv1.UserVerifyTypeEnum_PHONE,
+		VerifyType:    enumv1.UserVerifyTypeEnum_SIGNUP_BY_PHONE,
 	}
 	return res
 }
 
-func (s *accountDto) ToBoSendVerifyCodeParam2(req *resourcev1.SendEmailVerifyCodeReq) *bo.SendVerifyCodeParam {
+func (s *accountDto) ToBoSendVerifyCodeParam2(req *resourcev1.SendEmailSignupCodeReq) *bo.SendVerifyCodeParam {
 	res := &bo.SendVerifyCodeParam{
 		VerifyAccount: req.Email,
-		VerifyType:    enumv1.UserVerifyTypeEnum_EMAIL,
+		VerifyType:    enumv1.UserVerifyTypeEnum_SIGNUP_BY_EMAIL,
 	}
 	return res
 }
 
-func (s *accountDto) ToPbSendVerifyCodeRespData(dataModel *bo.SendVerifyCodeReply) *resourcev1.SendVerifyCodeRespData {
-	res := &resourcev1.SendVerifyCodeRespData{
+func (s *accountDto) ToPbSendSignupCodeRespData(dataModel *bo.SendVerifyCodeReply) *resourcev1.SendSignupCodeRespData {
+	res := &resourcev1.SendSignupCodeRespData{
 		Code: "",
 	}
 	if !dataModel.IsSendSuccess {

@@ -20,17 +20,17 @@ service SrvUserAuthV1 {
       // body:"*" // WARN: GET xxx body should not be declared.
     };
   }
-  // 身份验证-发送手机验证码
-  rpc SendPhoneVerifyCode(resourcev1.SendPhoneVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
+  // 身份验证-发送手机注册码
+  rpc SendPhoneSignupCode(resourcev1.SendPhoneSignupCodeReq) returns (resourcev1.SendSignupCodeResp) {
     option (google.api.http) = {
-      post: "/api/v1/auth/send-phone-verify-code"
+      post: "/api/v1/auth/send-phone-signup-code"
       body: "*"
     };
   }
-  // 身份验证-发送邮箱验证码
-  rpc SendEmailVerifyCode(resourcev1.SendEmailVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
+  // 身份验证-发送邮箱注册码
+  rpc SendEmailSignupCode(resourcev1.SendEmailSignupCodeReq) returns (resourcev1.SendSignupCodeResp) {
     option (google.api.http) = {
-      post: "/api/v1/auth/send-email-verify-code"
+      post: "/api/v1/auth/send-email-signup-code"
       body: "*"
     };
   }

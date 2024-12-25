@@ -29,6 +29,21 @@ func NewUserAuthService(
 	}
 }
 
+// Ping ping pong
+func (s *userAuth) Ping(ctx context.Context, in *resourcev1.PingReq) (out *resourcev1.PingResp, err error) {
+	// 可以解析
+	authClaims, tokenClaimsOK := authpkg.GetAuthClaimsFromContext(ctx)
+	s.log.WithContext(ctx).Infow(
+		"tokenClaimsOK", tokenClaimsOK,
+		"authClaims", authClaims,
+	)
+
+	out = &resourcev1.PingResp{
+		Message: in.Message,
+	}
+	return out, err
+}
+
 // LoginByEmail Email登录
 func (s *userAuth) LoginByEmail(ctx context.Context, in *resourcev1.LoginByEmailReq) (*resourcev1.LoginResp, error) {
 	userModel, signResp, err := s.userAuthBizRepo.LoginByEmail(ctx, in)
@@ -75,42 +90,27 @@ func (s *userAuth) RefreshToken(ctx context.Context, in *resourcev1.RefreshToken
 	return out, nil
 }
 
-// Ping ping pong
-func (s *userAuth) Ping(ctx context.Context, in *resourcev1.PingReq) (out *resourcev1.PingResp, err error) {
-	// 可以解析
-	authClaims, tokenClaimsOK := authpkg.GetAuthClaimsFromContext(ctx)
-	s.log.WithContext(ctx).Infow(
-		"tokenClaimsOK", tokenClaimsOK,
-		"authClaims", authClaims,
-	)
-
-	out = &resourcev1.PingResp{
-		Message: in.Message,
-	}
-	return out, err
-}
-
-func (s *userAuth) SendPhoneVerifyCode(ctx context.Context, req *resourcev1.SendPhoneVerifyCodeReq) (*resourcev1.SendVerifyCodeResp, error) {
+func (s *userAuth) SendPhoneSignupCode(ctx context.Context, req *resourcev1.SendPhoneSignupCodeReq) (*resourcev1.SendSignupCodeResp, error) {
 	param := dto.AccountDto.ToBoSendVerifyCodeParam(req)
 	dataModel, err := s.userAuthBizRepo.SendVerifyCode(ctx, param)
 	if err != nil {
 		return nil, err
 	}
 
-	return &resourcev1.SendVerifyCodeResp{
-		Data: dto.AccountDto.ToPbSendVerifyCodeRespData(dataModel),
+	return &resourcev1.SendSignupCodeResp{
+		Data: dto.AccountDto.ToPbSendSignupCodeRespData(dataModel),
 	}, nil
 }
 
-func (s *userAuth) SendEmailVerifyCode(ctx context.Context, req *resourcev1.SendEmailVerifyCodeReq) (*resourcev1.SendVerifyCodeResp, error) {
+func (s *userAuth) SendEmailSignupCode(ctx context.Context, req *resourcev1.SendEmailSignupCodeReq) (*resourcev1.SendSignupCodeResp, error) {
 	param := dto.AccountDto.ToBoSendVerifyCodeParam2(req)
 	dataModel, err := s.userAuthBizRepo.SendVerifyCode(ctx, param)
 	if err != nil {
 		return nil, err
 	}
 
-	return &resourcev1.SendVerifyCodeResp{
-		Data: dto.AccountDto.ToPbSendVerifyCodeRespData(dataModel),
+	return &resourcev1.SendSignupCodeResp{
+		Data: dto.AccountDto.ToPbSendSignupCodeRespData(dataModel),
 	}, nil
 }
 

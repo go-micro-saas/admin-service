@@ -272,7 +272,7 @@ func (s *userAuthBiz) SignupByPhone(ctx context.Context, in *resourcev1.SignupBy
 	// code
 	verifyParam := &bo.ConfirmVerifyCodeParam{
 		VerifyAccount: in.Phone,
-		VerifyType:    enumv1.UserVerifyTypeEnum_PHONE,
+		VerifyType:    enumv1.UserVerifyTypeEnum_SIGNUP_BY_PHONE,
 		VerifyCode:    in.Code,
 	}
 	err = s.ConfirmVerifyCode(ctx, verifyParam)
@@ -339,7 +339,7 @@ func (s *userAuthBiz) SignupByEmail(ctx context.Context, in *resourcev1.SignupBy
 	// code
 	verifyParam := &bo.ConfirmVerifyCodeParam{
 		VerifyAccount: in.Email,
-		VerifyType:    enumv1.UserVerifyTypeEnum_EMAIL,
+		VerifyType:    enumv1.UserVerifyTypeEnum_SIGNUP_BY_EMAIL,
 		VerifyCode:    in.Code,
 	}
 	err = s.ConfirmVerifyCode(ctx, verifyParam)

@@ -54,10 +54,9 @@ message UserRegisterTypeEnum {
 
 message UserVerifyTypeEnum {
   enum UserVerifyType {
-    UNSPECIFIED = 0;  // 未指定
-    EMAIL       = 1;  // 邮箱
-    PHONE       = 2;  // 手机
-    PASSWORD    = 3;  // 密码
+    UNSPECIFIED     = 0;  // 未指定
+    SIGNUP_BY_EMAIL = 1;  // 邮箱注册
+    SIGNUP_BY_PHONE = 2;  // 手机注册
   }
 }
 
