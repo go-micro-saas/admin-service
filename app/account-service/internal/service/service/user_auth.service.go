@@ -62,6 +62,7 @@ func (s *userAuth) Ping(ctx context.Context, in *resourcev1.PingReq) (out *resou
 // LoginByEmail Email登录
 func (s *userAuth) LoginByEmail(ctx context.Context, in *resourcev1.LoginByEmailReq) (*resourcev1.LoginResp, error) {
 	param := dto.AccountDto.ToBoLoginByEmailParam(in)
+	param.SkipVerifyCode = in.Code == ""
 	userModel, signResp, err := s.userAuthBizRepo.LoginByEmail(ctx, param)
 	if err != nil {
 		return nil, err
@@ -76,6 +77,7 @@ func (s *userAuth) LoginByEmail(ctx context.Context, in *resourcev1.LoginByEmail
 // LoginByPhone 手机登录
 func (s *userAuth) LoginByPhone(ctx context.Context, in *resourcev1.LoginByPhoneReq) (*resourcev1.LoginResp, error) {
 	param := dto.AccountDto.ToBoLoginByPhoneParam(in)
+	param.SkipVerifyCode = in.Code == ""
 	userModel, signResp, err := s.userAuthBizRepo.LoginByPhone(ctx, param)
 	if err != nil {
 		return nil, err

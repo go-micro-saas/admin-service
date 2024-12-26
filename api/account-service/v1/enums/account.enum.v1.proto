@@ -57,6 +57,12 @@ message UserVerifyTypeEnum {
     UNSPECIFIED     = 0;  // 未指定
     SIGNUP_BY_EMAIL = 1;  // 邮箱注册
     SIGNUP_BY_PHONE = 2;  // 手机注册
+    LOGIN_BY_EMAIL  = 3;  // 邮箱登录
+    LOGIN_BY_PHONE  = 4;  // 手机登录
+    RESET_PASSWORD  = 5;  // 重置密码
+    CHANGE_PASSWORD = 6;  // 修改密码
+    CHANGE_PHONE    = 7;  // 更换手机
+    CHANGE_EMAIL    = 8;  // 更换邮箱
   }
 }
 

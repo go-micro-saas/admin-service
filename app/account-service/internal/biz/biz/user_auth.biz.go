@@ -56,7 +56,20 @@ func NewUserAuthBiz(
 
 // LoginByEmail ...
 func (s *userAuthBiz) LoginByEmail(ctx context.Context, in *bo.LoginByEmailParam) (*po.User, *bo.SignTokenResp, error) {
-	// 注册邮箱
+	// code
+	if !in.SkipVerifyCode {
+		verifyParam := &bo.ConfirmVerifyCodeParam{
+			VerifyAccount: in.Email,
+			VerifyType:    enumv1.UserVerifyTypeEnum_SIGNUP_BY_EMAIL,
+			VerifyCode:    in.Code,
+		}
+		err := s.ConfirmVerifyCode(ctx, verifyParam)
+		if err != nil {
+			return nil, nil, err
+		}
+	}
+
+	// 登录
 	regEmailModel, err := s.CheckAndGetByRegisterEmail(ctx, in.Email)
 	if err != nil {
 		return nil, nil, err
@@ -69,6 +82,20 @@ func (s *userAuthBiz) LoginByEmail(ctx context.Context, in *bo.LoginByEmailParam
 
 // LoginByPhone ...
 func (s *userAuthBiz) LoginByPhone(ctx context.Context, in *bo.LoginByPhoneParam) (*po.User, *bo.SignTokenResp, error) {
+	// code
+	if !in.SkipVerifyCode {
+		verifyParam := &bo.ConfirmVerifyCodeParam{
+			VerifyAccount: in.Phone,
+			VerifyType:    enumv1.UserVerifyTypeEnum_SIGNUP_BY_PHONE,
+			VerifyCode:    in.Code,
+		}
+		err := s.ConfirmVerifyCode(ctx, verifyParam)
+		if err != nil {
+			return nil, nil, err
+		}
+	}
+
+	// 登录
 	regPhoneModel, err := s.CheckAndGetByRegisterPhone(ctx, in.Phone)
 	if err != nil {
 		return nil, nil, err
