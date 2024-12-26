@@ -109,7 +109,7 @@ func (s *userAuth) RefreshToken(ctx context.Context, in *resourcev1.RefreshToken
 	return out, nil
 }
 
-func (s *userAuth) SendPhoneSignupCode(ctx context.Context, req *resourcev1.SendPhoneSignupCodeReq) (*resourcev1.SendSignupCodeResp, error) {
+func (s *userAuth) SendPhoneSignupCode(ctx context.Context, req *resourcev1.SendPhoneVerifyCodeReq) (*resourcev1.SendVerifyCodeResp, error) {
 	_, isExist, err := s.userAuthBizRepo.IsExistRegisterPhone(ctx, req.Phone)
 	if err != nil {
 		return nil, err
@@ -118,20 +118,13 @@ func (s *userAuth) SendPhoneSignupCode(ctx context.Context, req *resourcev1.Send
 		return nil, errorpkg.WithStack(errorv1.DefaultErrorS103UserExist())
 	}
 
-	return nil, errorpkg.WithStack(errorpkg.DefaultErrorMethodNotAllowed())
 	// send
-	//param := dto.AccountDto.ToBoSendVerifyCodeParam(req)
-	//dataModel, err := s.userAuthBizRepo.SendVerifyCode(ctx, param)
-	//if err != nil {
-	//	return nil, err
-	//}
-	//
-	//return &resourcev1.SendSignupCodeResp{
-	//	Data: dto.AccountDto.ToPbSendSignupCodeRespData(dataModel),
-	//}, nil
+	param := dto.AccountDto.ToBoSendVerifyCodeParam(req)
+	param.VerifyType = enumv1.UserVerifyTypeEnum_SIGNUP_BY_PHONE
+	return s.sendPhoneCode(ctx, param)
 }
 
-func (s *userAuth) SendEmailSignupCode(ctx context.Context, req *resourcev1.SendEmailSignupCodeReq) (*resourcev1.SendSignupCodeResp, error) {
+func (s *userAuth) SendEmailSignupCode(ctx context.Context, req *resourcev1.SendEmailVerifyCodeReq) (*resourcev1.SendVerifyCodeResp, error) {
 	_, isExist, err := s.userAuthBizRepo.IsExistRegisterEmail(ctx, req.Email)
 	if err != nil {
 		return nil, err
@@ -142,21 +135,8 @@ func (s *userAuth) SendEmailSignupCode(ctx context.Context, req *resourcev1.Send
 
 	// send
 	param := dto.AccountDto.ToBoSendVerifyCodeParam2(req)
-	dataModel, err := s.userAuthBizRepo.SendVerifyCode(ctx, param)
-	if err != nil {
-		return nil, err
-	}
-
-	// mq
-	sendEmailParam := dto.AccountDto.ToBoSendEmailCodeParam(dataModel)
-	if err := s.sendEmailCodeEventRepo.Publish(ctx, sendEmailParam); err != nil {
-		return nil, err
-	}
-	dataModel.IsSendToMQ = true
-
-	return &resourcev1.SendSignupCodeResp{
-		Data: dto.AccountDto.ToPbSendSignupCodeRespData(dataModel),
-	}, nil
+	param.VerifyType = enumv1.UserVerifyTypeEnum_SIGNUP_BY_EMAIL
+	return s.sendEmailCode(ctx, param)
 }
 
 // SignupByEmail 身份验证-Email注册
@@ -313,4 +293,156 @@ func (s *userAuth) StopSendEmailCodeEvent(ctx context.Context, req *resourcev1.S
 			ConsumerCounter: s.isConsumingSendEmailCodeEvent.Load(),
 		},
 	}, nil
+}
+
+func (s *userAuth) sendEmailCode(ctx context.Context, param *bo.SendVerifyCodeParam) (*resourcev1.SendVerifyCodeResp, error) {
+	// send
+	dataModel, err := s.userAuthBizRepo.SendVerifyCode(ctx, param)
+	if err != nil {
+		return nil, err
+	}
+
+	// mq
+	sendEmailParam := dto.AccountDto.ToBoSendEmailCodeParam(dataModel)
+	if err := s.sendEmailCodeEventRepo.Publish(ctx, sendEmailParam); err != nil {
+		return nil, err
+	}
+	dataModel.IsSendToMQ = true
+
+	return &resourcev1.SendVerifyCodeResp{
+		Data: dto.AccountDto.ToPbSendSignupCodeRespData(dataModel),
+	}, nil
+}
+
+func (s *userAuth) sendPhoneCode(ctx context.Context, param *bo.SendVerifyCodeParam) (*resourcev1.SendVerifyCodeResp, error) {
+	return nil, errorpkg.WithStack(errorpkg.DefaultErrorMethodNotAllowed())
+
+	dataModel, err := s.userAuthBizRepo.SendVerifyCode(ctx, param)
+	if err != nil {
+		return nil, err
+	}
+
+	return &resourcev1.SendVerifyCodeResp{
+		Data: dto.AccountDto.ToPbSendSignupCodeRespData(dataModel),
+	}, nil
+}
+
+func (s *userAuth) SendPhoneLoginCode(ctx context.Context, req *resourcev1.SendPhoneVerifyCodeReq) (*resourcev1.SendVerifyCodeResp, error) {
+	_, isExist, err := s.userAuthBizRepo.IsExistRegisterPhone(ctx, req.Phone)
+	if err != nil {
+		return nil, err
+	}
+	if !isExist {
+		return nil, errorpkg.WithStack(errorv1.DefaultErrorS103UserNotExist())
+	}
+
+	// send
+	param := dto.AccountDto.ToBoSendVerifyCodeParam(req)
+	param.VerifyType = enumv1.UserVerifyTypeEnum_LOGIN_BY_PHONE
+	return s.sendPhoneCode(ctx, param)
+}
+
+func (s *userAuth) SendEmailLoginCode(ctx context.Context, req *resourcev1.SendEmailVerifyCodeReq) (*resourcev1.SendVerifyCodeResp, error) {
+	_, isExist, err := s.userAuthBizRepo.IsExistRegisterEmail(ctx, req.Email)
+	if err != nil {
+		return nil, err
+	}
+	if !isExist {
+		return nil, errorpkg.WithStack(errorv1.DefaultErrorS103UserNotExist())
+	}
+
+	// send
+	param := dto.AccountDto.ToBoSendVerifyCodeParam2(req)
+	param.VerifyType = enumv1.UserVerifyTypeEnum_LOGIN_BY_EMAIL
+	return s.sendEmailCode(ctx, param)
+}
+
+func (s *userAuth) SendPhoneForgotPasswdCode(ctx context.Context, req *resourcev1.SendPhoneVerifyCodeReq) (*resourcev1.SendVerifyCodeResp, error) {
+	_, isExist, err := s.userAuthBizRepo.IsExistRegisterPhone(ctx, req.Phone)
+	if err != nil {
+		return nil, err
+	}
+	if !isExist {
+		return nil, errorpkg.WithStack(errorv1.DefaultErrorS103UserNotExist())
+	}
+
+	// send
+	param := dto.AccountDto.ToBoSendVerifyCodeParam(req)
+	param.VerifyType = enumv1.UserVerifyTypeEnum_FORGOT_PASSWORD_BY_PHONE
+	return s.sendPhoneCode(ctx, param)
+}
+
+func (s *userAuth) SendEmailForgotPasswdCode(ctx context.Context, req *resourcev1.SendEmailVerifyCodeReq) (*resourcev1.SendVerifyCodeResp, error) {
+	_, isExist, err := s.userAuthBizRepo.IsExistRegisterEmail(ctx, req.Email)
+	if err != nil {
+		return nil, err
+	}
+	if !isExist {
+		return nil, errorpkg.WithStack(errorv1.DefaultErrorS103UserNotExist())
+	}
+
+	// send
+	param := dto.AccountDto.ToBoSendVerifyCodeParam2(req)
+	param.VerifyType = enumv1.UserVerifyTypeEnum_FORGOT_PASSWORD_BY_EMAIL
+	return s.sendEmailCode(ctx, param)
+}
+
+func (s *userAuth) SendPhoneChangePasswdCode(ctx context.Context, req *resourcev1.SendPhoneVerifyCodeReq) (*resourcev1.SendVerifyCodeResp, error) {
+	_, isExist, err := s.userAuthBizRepo.IsExistRegisterPhone(ctx, req.Phone)
+	if err != nil {
+		return nil, err
+	}
+	if !isExist {
+		return nil, errorpkg.WithStack(errorv1.DefaultErrorS103UserNotExist())
+	}
+
+	// send
+	param := dto.AccountDto.ToBoSendVerifyCodeParam(req)
+	param.VerifyType = enumv1.UserVerifyTypeEnum_CHANGE_PASSWORD_BY_PHONE
+	return s.sendPhoneCode(ctx, param)
+}
+
+func (s *userAuth) SendEmailChangePasswdCode(ctx context.Context, req *resourcev1.SendEmailVerifyCodeReq) (*resourcev1.SendVerifyCodeResp, error) {
+	_, isExist, err := s.userAuthBizRepo.IsExistRegisterEmail(ctx, req.Email)
+	if err != nil {
+		return nil, err
+	}
+	if !isExist {
+		return nil, errorpkg.WithStack(errorv1.DefaultErrorS103UserNotExist())
+	}
+
+	// send
+	param := dto.AccountDto.ToBoSendVerifyCodeParam2(req)
+	param.VerifyType = enumv1.UserVerifyTypeEnum_CHANGE_PASSWORD_BY_EMAIL
+	return s.sendEmailCode(ctx, param)
+}
+
+func (s *userAuth) SendPhoneChangeCode(ctx context.Context, req *resourcev1.SendPhoneVerifyCodeReq) (*resourcev1.SendVerifyCodeResp, error) {
+	_, isExist, err := s.userAuthBizRepo.IsExistRegisterPhone(ctx, req.Phone)
+	if err != nil {
+		return nil, err
+	}
+	if !isExist {
+		return nil, errorpkg.WithStack(errorv1.DefaultErrorS103UserNotExist())
+	}
+
+	// send
+	param := dto.AccountDto.ToBoSendVerifyCodeParam(req)
+	param.VerifyType = enumv1.UserVerifyTypeEnum_CHANGE_PHONE
+	return s.sendPhoneCode(ctx, param)
+}
+
+func (s *userAuth) SendEmailChangeCode(ctx context.Context, req *resourcev1.SendEmailVerifyCodeReq) (*resourcev1.SendVerifyCodeResp, error) {
+	_, isExist, err := s.userAuthBizRepo.IsExistRegisterEmail(ctx, req.Email)
+	if err != nil {
+		return nil, err
+	}
+	if !isExist {
+		return nil, errorpkg.WithStack(errorv1.DefaultErrorS103UserNotExist())
+	}
+
+	// send
+	param := dto.AccountDto.ToBoSendVerifyCodeParam2(req)
+	param.VerifyType = enumv1.UserVerifyTypeEnum_CHANGE_EMAIL
+	return s.sendEmailCode(ctx, param)
 }

@@ -373,7 +373,7 @@ func (x *LoginOrSignupByEmailReq) GetCode() string {
 	return ""
 }
 
-type SendEmailSignupCodeReq struct {
+type SendEmailVerifyCodeReq struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -381,8 +381,8 @@ type SendEmailSignupCodeReq struct {
 	Email string `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
 }
 
-func (x *SendEmailSignupCodeReq) Reset() {
-	*x = SendEmailSignupCodeReq{}
+func (x *SendEmailVerifyCodeReq) Reset() {
+	*x = SendEmailVerifyCodeReq{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -390,13 +390,13 @@ func (x *SendEmailSignupCodeReq) Reset() {
 	}
 }
 
-func (x *SendEmailSignupCodeReq) String() string {
+func (x *SendEmailVerifyCodeReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SendEmailSignupCodeReq) ProtoMessage() {}
+func (*SendEmailVerifyCodeReq) ProtoMessage() {}
 
-func (x *SendEmailSignupCodeReq) ProtoReflect() protoreflect.Message {
+func (x *SendEmailVerifyCodeReq) ProtoReflect() protoreflect.Message {
 	mi := &file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -408,19 +408,19 @@ func (x *SendEmailSignupCodeReq) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SendEmailSignupCodeReq.ProtoReflect.Descriptor instead.
-func (*SendEmailSignupCodeReq) Descriptor() ([]byte, []int) {
+// Deprecated: Use SendEmailVerifyCodeReq.ProtoReflect.Descriptor instead.
+func (*SendEmailVerifyCodeReq) Descriptor() ([]byte, []int) {
 	return file_api_account_service_v1_resources_user_auth_resource_v1_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *SendEmailSignupCodeReq) GetEmail() string {
+func (x *SendEmailVerifyCodeReq) GetEmail() string {
 	if x != nil {
 		return x.Email
 	}
 	return ""
 }
 
-type SendPhoneSignupCodeReq struct {
+type SendPhoneVerifyCodeReq struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -428,8 +428,8 @@ type SendPhoneSignupCodeReq struct {
 	Phone string `protobuf:"bytes,1,opt,name=phone,proto3" json:"phone,omitempty"`
 }
 
-func (x *SendPhoneSignupCodeReq) Reset() {
-	*x = SendPhoneSignupCodeReq{}
+func (x *SendPhoneVerifyCodeReq) Reset() {
+	*x = SendPhoneVerifyCodeReq{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -437,13 +437,13 @@ func (x *SendPhoneSignupCodeReq) Reset() {
 	}
 }
 
-func (x *SendPhoneSignupCodeReq) String() string {
+func (x *SendPhoneVerifyCodeReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SendPhoneSignupCodeReq) ProtoMessage() {}
+func (*SendPhoneVerifyCodeReq) ProtoMessage() {}
 
-func (x *SendPhoneSignupCodeReq) ProtoReflect() protoreflect.Message {
+func (x *SendPhoneVerifyCodeReq) ProtoReflect() protoreflect.Message {
 	mi := &file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -455,19 +455,19 @@ func (x *SendPhoneSignupCodeReq) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SendPhoneSignupCodeReq.ProtoReflect.Descriptor instead.
-func (*SendPhoneSignupCodeReq) Descriptor() ([]byte, []int) {
+// Deprecated: Use SendPhoneVerifyCodeReq.ProtoReflect.Descriptor instead.
+func (*SendPhoneVerifyCodeReq) Descriptor() ([]byte, []int) {
 	return file_api_account_service_v1_resources_user_auth_resource_v1_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *SendPhoneSignupCodeReq) GetPhone() string {
+func (x *SendPhoneVerifyCodeReq) GetPhone() string {
 	if x != nil {
 		return x.Phone
 	}
 	return ""
 }
 
-type SendSignupCodeResp struct {
+type SendVerifyCodeResp struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -476,11 +476,11 @@ type SendSignupCodeResp struct {
 	Reason   string                  `protobuf:"bytes,2,opt,name=reason,proto3" json:"reason,omitempty"`
 	Message  string                  `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
 	Metadata map[string]string       `protobuf:"bytes,4,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
-	Data     *SendSignupCodeRespData `protobuf:"bytes,100,opt,name=data,proto3" json:"data,omitempty"`
+	Data     *SendVerifyCodeRespData `protobuf:"bytes,100,opt,name=data,proto3" json:"data,omitempty"`
 }
 
-func (x *SendSignupCodeResp) Reset() {
-	*x = SendSignupCodeResp{}
+func (x *SendVerifyCodeResp) Reset() {
+	*x = SendVerifyCodeResp{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -488,13 +488,13 @@ func (x *SendSignupCodeResp) Reset() {
 	}
 }
 
-func (x *SendSignupCodeResp) String() string {
+func (x *SendVerifyCodeResp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SendSignupCodeResp) ProtoMessage() {}
+func (*SendVerifyCodeResp) ProtoMessage() {}
 
-func (x *SendSignupCodeResp) ProtoReflect() protoreflect.Message {
+func (x *SendVerifyCodeResp) ProtoReflect() protoreflect.Message {
 	mi := &file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -506,47 +506,47 @@ func (x *SendSignupCodeResp) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SendSignupCodeResp.ProtoReflect.Descriptor instead.
-func (*SendSignupCodeResp) Descriptor() ([]byte, []int) {
+// Deprecated: Use SendVerifyCodeResp.ProtoReflect.Descriptor instead.
+func (*SendVerifyCodeResp) Descriptor() ([]byte, []int) {
 	return file_api_account_service_v1_resources_user_auth_resource_v1_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *SendSignupCodeResp) GetCode() int32 {
+func (x *SendVerifyCodeResp) GetCode() int32 {
 	if x != nil {
 		return x.Code
 	}
 	return 0
 }
 
-func (x *SendSignupCodeResp) GetReason() string {
+func (x *SendVerifyCodeResp) GetReason() string {
 	if x != nil {
 		return x.Reason
 	}
 	return ""
 }
 
-func (x *SendSignupCodeResp) GetMessage() string {
+func (x *SendVerifyCodeResp) GetMessage() string {
 	if x != nil {
 		return x.Message
 	}
 	return ""
 }
 
-func (x *SendSignupCodeResp) GetMetadata() map[string]string {
+func (x *SendVerifyCodeResp) GetMetadata() map[string]string {
 	if x != nil {
 		return x.Metadata
 	}
 	return nil
 }
 
-func (x *SendSignupCodeResp) GetData() *SendSignupCodeRespData {
+func (x *SendVerifyCodeResp) GetData() *SendVerifyCodeRespData {
 	if x != nil {
 		return x.Data
 	}
 	return nil
 }
 
-type SendSignupCodeRespData struct {
+type SendVerifyCodeRespData struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -554,8 +554,8 @@ type SendSignupCodeRespData struct {
 	Code string `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
 }
 
-func (x *SendSignupCodeRespData) Reset() {
-	*x = SendSignupCodeRespData{}
+func (x *SendVerifyCodeRespData) Reset() {
+	*x = SendVerifyCodeRespData{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -563,13 +563,13 @@ func (x *SendSignupCodeRespData) Reset() {
 	}
 }
 
-func (x *SendSignupCodeRespData) String() string {
+func (x *SendVerifyCodeRespData) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SendSignupCodeRespData) ProtoMessage() {}
+func (*SendVerifyCodeRespData) ProtoMessage() {}
 
-func (x *SendSignupCodeRespData) ProtoReflect() protoreflect.Message {
+func (x *SendVerifyCodeRespData) ProtoReflect() protoreflect.Message {
 	mi := &file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -581,12 +581,12 @@ func (x *SendSignupCodeRespData) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SendSignupCodeRespData.ProtoReflect.Descriptor instead.
-func (*SendSignupCodeRespData) Descriptor() ([]byte, []int) {
+// Deprecated: Use SendVerifyCodeRespData.ProtoReflect.Descriptor instead.
+func (*SendVerifyCodeRespData) Descriptor() ([]byte, []int) {
 	return file_api_account_service_v1_resources_user_auth_resource_v1_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *SendSignupCodeRespData) GetCode() string {
+func (x *SendVerifyCodeRespData) GetCode() string {
 	if x != nil {
 		return x.Code
 	}
@@ -2520,15 +2520,15 @@ var file_api_account_service_v1_resources_user_auth_resource_v1_proto_rawDesc = 
 	0x09, 0x42, 0x07, 0xfa, 0x42, 0x04, 0x72, 0x02, 0x60, 0x01, 0x52, 0x05, 0x65, 0x6d, 0x61, 0x69,
 	0x6c, 0x12, 0x1c, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x42,
 	0x08, 0xfa, 0x42, 0x05, 0x72, 0x03, 0x18, 0x80, 0x08, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x22,
-	0x37, 0x0a, 0x16, 0x53, 0x65, 0x6e, 0x64, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x53, 0x69, 0x67, 0x6e,
-	0x75, 0x70, 0x43, 0x6f, 0x64, 0x65, 0x52, 0x65, 0x71, 0x12, 0x1d, 0x0a, 0x05, 0x65, 0x6d, 0x61,
+	0x37, 0x0a, 0x16, 0x53, 0x65, 0x6e, 0x64, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x56, 0x65, 0x72, 0x69,
+	0x66, 0x79, 0x43, 0x6f, 0x64, 0x65, 0x52, 0x65, 0x71, 0x12, 0x1d, 0x0a, 0x05, 0x65, 0x6d, 0x61,
 	0x69, 0x6c, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x07, 0xfa, 0x42, 0x04, 0x72, 0x02, 0x60,
 	0x01, 0x52, 0x05, 0x65, 0x6d, 0x61, 0x69, 0x6c, 0x22, 0x44, 0x0a, 0x16, 0x53, 0x65, 0x6e, 0x64,
-	0x50, 0x68, 0x6f, 0x6e, 0x65, 0x53, 0x69, 0x67, 0x6e, 0x75, 0x70, 0x43, 0x6f, 0x64, 0x65, 0x52,
+	0x50, 0x68, 0x6f, 0x6e, 0x65, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x43, 0x6f, 0x64, 0x65, 0x52,
 	0x65, 0x71, 0x12, 0x2a, 0x0a, 0x05, 0x70, 0x68, 0x6f, 0x6e, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28,
 	0x09, 0x42, 0x14, 0xfa, 0x42, 0x11, 0x72, 0x0f, 0x32, 0x0d, 0x5e, 0x31, 0x5b, 0x31, 0x2d, 0x39,
 	0x5d, 0x5c, 0x64, 0x7b, 0x39, 0x7d, 0x24, 0x52, 0x05, 0x70, 0x68, 0x6f, 0x6e, 0x65, 0x22, 0xbb,
-	0x02, 0x0a, 0x12, 0x53, 0x65, 0x6e, 0x64, 0x53, 0x69, 0x67, 0x6e, 0x75, 0x70, 0x43, 0x6f, 0x64,
+	0x02, 0x0a, 0x12, 0x53, 0x65, 0x6e, 0x64, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x43, 0x6f, 0x64,
 	0x65, 0x52, 0x65, 0x73, 0x70, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20,
 	0x01, 0x28, 0x05, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x72, 0x65, 0x61,
 	0x73, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x72, 0x65, 0x61, 0x73, 0x6f,
@@ -2537,18 +2537,18 @@ var file_api_account_service_v1_resources_user_auth_resource_v1_proto_rawDesc = 
 	0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x3d, 0x2e,
 	0x73, 0x61, 0x61, 0x73, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74,
 	0x2e, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x76, 0x31, 0x2e, 0x53, 0x65, 0x6e, 0x64,
-	0x53, 0x69, 0x67, 0x6e, 0x75, 0x70, 0x43, 0x6f, 0x64, 0x65, 0x52, 0x65, 0x73, 0x70, 0x2e, 0x4d,
+	0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x43, 0x6f, 0x64, 0x65, 0x52, 0x65, 0x73, 0x70, 0x2e, 0x4d,
 	0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x08, 0x6d, 0x65,
 	0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x12, 0x47, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x61, 0x18, 0x64,
 	0x20, 0x01, 0x28, 0x0b, 0x32, 0x33, 0x2e, 0x73, 0x61, 0x61, 0x73, 0x2e, 0x61, 0x70, 0x69, 0x2e,
 	0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x2e, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65,
-	0x76, 0x31, 0x2e, 0x53, 0x65, 0x6e, 0x64, 0x53, 0x69, 0x67, 0x6e, 0x75, 0x70, 0x43, 0x6f, 0x64,
+	0x76, 0x31, 0x2e, 0x53, 0x65, 0x6e, 0x64, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x43, 0x6f, 0x64,
 	0x65, 0x52, 0x65, 0x73, 0x70, 0x44, 0x61, 0x74, 0x61, 0x52, 0x04, 0x64, 0x61, 0x74, 0x61, 0x1a,
 	0x3b, 0x0a, 0x0d, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x45, 0x6e, 0x74, 0x72, 0x79,
 	0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b,
 	0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28,
 	0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0x2c, 0x0a, 0x16,
-	0x53, 0x65, 0x6e, 0x64, 0x53, 0x69, 0x67, 0x6e, 0x75, 0x70, 0x43, 0x6f, 0x64, 0x65, 0x52, 0x65,
+	0x53, 0x65, 0x6e, 0x64, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x43, 0x6f, 0x64, 0x65, 0x52, 0x65,
 	0x73, 0x70, 0x44, 0x61, 0x74, 0x61, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01,
 	0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x22, 0xc3, 0x01, 0x0a, 0x10, 0x53,
 	0x69, 0x67, 0x6e, 0x75, 0x70, 0x42, 0x79, 0x50, 0x68, 0x6f, 0x6e, 0x65, 0x52, 0x65, 0x71, 0x12,
@@ -2893,10 +2893,10 @@ var file_api_account_service_v1_resources_user_auth_resource_v1_proto_goTypes = 
 	(*UserInfo)(nil),                            // 3: saas.api.account.resourcev1.UserInfo
 	(*LoginOrSignupByPhoneReq)(nil),             // 4: saas.api.account.resourcev1.LoginOrSignupByPhoneReq
 	(*LoginOrSignupByEmailReq)(nil),             // 5: saas.api.account.resourcev1.LoginOrSignupByEmailReq
-	(*SendEmailSignupCodeReq)(nil),              // 6: saas.api.account.resourcev1.SendEmailSignupCodeReq
-	(*SendPhoneSignupCodeReq)(nil),              // 7: saas.api.account.resourcev1.SendPhoneSignupCodeReq
-	(*SendSignupCodeResp)(nil),                  // 8: saas.api.account.resourcev1.SendSignupCodeResp
-	(*SendSignupCodeRespData)(nil),              // 9: saas.api.account.resourcev1.SendSignupCodeRespData
+	(*SendEmailVerifyCodeReq)(nil),              // 6: saas.api.account.resourcev1.SendEmailVerifyCodeReq
+	(*SendPhoneVerifyCodeReq)(nil),              // 7: saas.api.account.resourcev1.SendPhoneVerifyCodeReq
+	(*SendVerifyCodeResp)(nil),                  // 8: saas.api.account.resourcev1.SendVerifyCodeResp
+	(*SendVerifyCodeRespData)(nil),              // 9: saas.api.account.resourcev1.SendVerifyCodeRespData
 	(*SignupByPhoneReq)(nil),                    // 10: saas.api.account.resourcev1.SignupByPhoneReq
 	(*SignupByEmailReq)(nil),                    // 11: saas.api.account.resourcev1.SignupByEmailReq
 	(*LoginByPhoneReq)(nil),                     // 12: saas.api.account.resourcev1.LoginByPhoneReq
@@ -2930,7 +2930,7 @@ var file_api_account_service_v1_resources_user_auth_resource_v1_proto_goTypes = 
 	(*StopSendEmailCodeEventResp)(nil),          // 40: saas.api.account.resourcev1.StopSendEmailCodeEventResp
 	(*StopSendEmailCodeEventRespData)(nil),      // 41: saas.api.account.resourcev1.StopSendEmailCodeEventRespData
 	nil,                                         // 42: saas.api.account.resourcev1.PingResp.MetadataEntry
-	nil,                                         // 43: saas.api.account.resourcev1.SendSignupCodeResp.MetadataEntry
+	nil,                                         // 43: saas.api.account.resourcev1.SendVerifyCodeResp.MetadataEntry
 	nil,                                         // 44: saas.api.account.resourcev1.LoginResp.MetadataEntry
 	nil,                                         // 45: saas.api.account.resourcev1.ChangePasswordResp.MetadataEntry
 	nil,                                         // 46: saas.api.account.resourcev1.ChangeAvatarResp.MetadataEntry
@@ -2945,8 +2945,8 @@ var file_api_account_service_v1_resources_user_auth_resource_v1_proto_goTypes = 
 var file_api_account_service_v1_resources_user_auth_resource_v1_proto_depIdxs = []int32{
 	42, // 0: saas.api.account.resourcev1.PingResp.metadata:type_name -> saas.api.account.resourcev1.PingResp.MetadataEntry
 	2,  // 1: saas.api.account.resourcev1.PingResp.data:type_name -> saas.api.account.resourcev1.PingRespData
-	43, // 2: saas.api.account.resourcev1.SendSignupCodeResp.metadata:type_name -> saas.api.account.resourcev1.SendSignupCodeResp.MetadataEntry
-	9,  // 3: saas.api.account.resourcev1.SendSignupCodeResp.data:type_name -> saas.api.account.resourcev1.SendSignupCodeRespData
+	43, // 2: saas.api.account.resourcev1.SendVerifyCodeResp.metadata:type_name -> saas.api.account.resourcev1.SendVerifyCodeResp.MetadataEntry
+	9,  // 3: saas.api.account.resourcev1.SendVerifyCodeResp.data:type_name -> saas.api.account.resourcev1.SendVerifyCodeRespData
 	44, // 4: saas.api.account.resourcev1.LoginResp.metadata:type_name -> saas.api.account.resourcev1.LoginResp.MetadataEntry
 	16, // 5: saas.api.account.resourcev1.LoginResp.data:type_name -> saas.api.account.resourcev1.LoginRespData
 	3,  // 6: saas.api.account.resourcev1.LoginRespData.user_info:type_name -> saas.api.account.resourcev1.UserInfo
@@ -3053,7 +3053,7 @@ func file_api_account_service_v1_resources_user_auth_resource_v1_proto_init() {
 			}
 		}
 		file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[6].Exporter = func(v any, i int) any {
-			switch v := v.(*SendEmailSignupCodeReq); i {
+			switch v := v.(*SendEmailVerifyCodeReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3065,7 +3065,7 @@ func file_api_account_service_v1_resources_user_auth_resource_v1_proto_init() {
 			}
 		}
 		file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[7].Exporter = func(v any, i int) any {
-			switch v := v.(*SendPhoneSignupCodeReq); i {
+			switch v := v.(*SendPhoneVerifyCodeReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3077,7 +3077,7 @@ func file_api_account_service_v1_resources_user_auth_resource_v1_proto_init() {
 			}
 		}
 		file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[8].Exporter = func(v any, i int) any {
-			switch v := v.(*SendSignupCodeResp); i {
+			switch v := v.(*SendVerifyCodeResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3089,7 +3089,7 @@ func file_api_account_service_v1_resources_user_auth_resource_v1_proto_init() {
 			}
 		}
 		file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[9].Exporter = func(v any, i int) any {
-			switch v := v.(*SendSignupCodeRespData); i {
+			switch v := v.(*SendVerifyCodeRespData); i {
 			case 0:
 				return &v.state
 			case 1:

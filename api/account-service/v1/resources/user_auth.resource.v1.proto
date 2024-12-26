@@ -49,23 +49,21 @@ message LoginOrSignupByEmailReq {
   string code  = 5 [(validate.rules).string = { max_len: 1024 }];
 }
 
-message SendEmailSignupCodeReq {
+message SendEmailVerifyCodeReq {
   string email = 1 [(validate.rules).string = { email: true }];
 }
-
-message SendPhoneSignupCodeReq {
+message SendPhoneVerifyCodeReq {
   string phone = 1 [(validate.rules).string = { pattern: "^1[1-9]\\d{9}$" }];
 }
-
-message SendSignupCodeResp {
+message SendVerifyCodeResp {
   int32 code                   = 1;
   string reason                = 2;
   string message               = 3;
   map<string, string> metadata = 4;
 
-  SendSignupCodeRespData data = 100;
+  SendVerifyCodeRespData data = 100;
 }
-message SendSignupCodeRespData {
+message SendVerifyCodeRespData {
   string code = 1;
 }
 

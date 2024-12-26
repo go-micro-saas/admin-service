@@ -21,14 +21,14 @@ service SrvUserAuthV1 {
     };
   }
   // 身份验证-发送手机注册码
-  rpc SendPhoneSignupCode(resourcev1.SendPhoneSignupCodeReq) returns (resourcev1.SendSignupCodeResp) {
+  rpc SendPhoneSignupCode(resourcev1.SendPhoneVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
     option (google.api.http) = {
       post: "/api/v1/auth/send-phone-signup-code"
       body: "*"
     };
   }
   // 身份验证-发送邮箱注册码
-  rpc SendEmailSignupCode(resourcev1.SendEmailSignupCodeReq) returns (resourcev1.SendSignupCodeResp) {
+  rpc SendEmailSignupCode(resourcev1.SendEmailVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
     option (google.api.http) = {
       post: "/api/v1/auth/send-email-signup-code"
       body: "*"
@@ -87,6 +87,64 @@ service SrvUserAuthV1 {
   rpc LoginByOpenApi(resourcev1.LoginByOpenApiReq) returns (resourcev1.LoginResp) {
     option (google.api.http) = {
       post: "/api/v1/open-api/auth/login"
+      body: "*"
+    };
+  }
+
+  // 身份验证-发送邮箱登录码
+  rpc SendEmailLoginCode(resourcev1.SendEmailVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/send-email-login-code"
+      body: "*"
+    };
+  }
+  // 身份验证-发送手机登录码
+  rpc SendPhoneLoginCode(resourcev1.SendPhoneVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/send-phone-login-code"
+      body: "*"
+    };
+  }
+  // 身份验证-发送邮箱验证码(忘记密码)
+  rpc SendEmailForgotPasswdCode(resourcev1.SendEmailVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/send-email-forgot-passwd-code"
+      body: "*"
+    };
+  }
+  // 身份验证-发送手机验证码(忘记密码)
+  rpc SendPhoneForgotPasswdCode(resourcev1.SendPhoneVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/send-phone-forgot-passwd-code"
+      body: "*"
+    };
+  }
+
+  // 身份验证-发送邮箱验证码(修改密码)
+  rpc SendEmailChangePasswdCode(resourcev1.SendEmailVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/send-email-change-passwd-code"
+      body: "*"
+    };
+  }
+  // 身份验证-发送手机验证码(修改密码)
+  rpc SendPhoneChangePasswdCode(resourcev1.SendPhoneVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/send-phone-change-passwd-code"
+      body: "*"
+    };
+  }
+  // 身份验证-发送邮箱变更码
+  rpc SendEmailChangeCode(resourcev1.SendEmailVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/send-email-change-code"
+      body: "*"
+    };
+  }
+  // 身份验证-发送手机变更码
+  rpc SendPhoneChangeCode(resourcev1.SendPhoneVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/send-phone-change-code"
       body: "*"
     };
   }
