@@ -5,7 +5,6 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	enumv1 "github.com/go-micro-saas/account-service/api/account-service/v1/enums"
 	errorv1 "github.com/go-micro-saas/account-service/api/account-service/v1/errors"
-	resourcev1 "github.com/go-micro-saas/account-service/api/account-service/v1/resources"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/biz/bo"
 	bizrepos "github.com/go-micro-saas/account-service/app/account-service/internal/biz/repo"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/data/po"
@@ -56,7 +55,7 @@ func NewUserAuthBiz(
 }
 
 // LoginByEmail ...
-func (s *userAuthBiz) LoginByEmail(ctx context.Context, in *resourcev1.LoginByEmailReq) (*po.User, *bo.SignTokenResp, error) {
+func (s *userAuthBiz) LoginByEmail(ctx context.Context, in *bo.LoginByEmailParam) (*po.User, *bo.SignTokenResp, error) {
 	// 注册邮箱
 	regEmailModel, err := s.CheckAndGetByRegisterEmail(ctx, in.Email)
 	if err != nil {
@@ -69,7 +68,7 @@ func (s *userAuthBiz) LoginByEmail(ctx context.Context, in *resourcev1.LoginByEm
 }
 
 // LoginByPhone ...
-func (s *userAuthBiz) LoginByPhone(ctx context.Context, in *resourcev1.LoginByPhoneReq) (*po.User, *bo.SignTokenResp, error) {
+func (s *userAuthBiz) LoginByPhone(ctx context.Context, in *bo.LoginByPhoneParam) (*po.User, *bo.SignTokenResp, error) {
 	regPhoneModel, err := s.CheckAndGetByRegisterPhone(ctx, in.Phone)
 	if err != nil {
 		return nil, nil, err
@@ -270,7 +269,7 @@ func (s *userAuthBiz) RefreshToken(ctx context.Context, refreshToken string) (*b
 	return res, nil
 }
 
-func (s *userAuthBiz) SignupByPhone(ctx context.Context, in *resourcev1.SignupByPhoneReq) (*po.User, *bo.SignTokenResp, error) {
+func (s *userAuthBiz) SignupByPhone(ctx context.Context, in *bo.SignupByPhoneParam) (*po.User, *bo.SignTokenResp, error) {
 	if regexpkg.IsPhone(in.Phone) == false {
 		e := errorv1.ErrorS103InvalidPhone("无效的手机号")
 		return nil, nil, errorpkg.WithStack(e)
@@ -288,14 +287,16 @@ func (s *userAuthBiz) SignupByPhone(ctx context.Context, in *resourcev1.SignupBy
 	}
 
 	// code
-	verifyParam := &bo.ConfirmVerifyCodeParam{
-		VerifyAccount: in.Phone,
-		VerifyType:    enumv1.UserVerifyTypeEnum_SIGNUP_BY_PHONE,
-		VerifyCode:    in.Code,
-	}
-	err = s.ConfirmVerifyCode(ctx, verifyParam)
-	if err != nil {
-		return nil, nil, err
+	if !in.SkipVerifyCode {
+		verifyParam := &bo.ConfirmVerifyCodeParam{
+			VerifyAccount: in.Phone,
+			VerifyType:    enumv1.UserVerifyTypeEnum_SIGNUP_BY_PHONE,
+			VerifyCode:    in.Code,
+		}
+		err = s.ConfirmVerifyCode(ctx, verifyParam)
+		if err != nil {
+			return nil, nil, err
+		}
 	}
 
 	// exist?
@@ -337,7 +338,7 @@ func (s *userAuthBiz) SignupByPhone(ctx context.Context, in *resourcev1.SignupBy
 	return s.LoginByUserID(ctx, dataModel.UserId, loginParam)
 }
 
-func (s *userAuthBiz) SignupByEmail(ctx context.Context, in *resourcev1.SignupByEmailReq) (*po.User, *bo.SignTokenResp, error) {
+func (s *userAuthBiz) SignupByEmail(ctx context.Context, in *bo.SignupByEmailParam) (*po.User, *bo.SignTokenResp, error) {
 	if regexpkg.IsEmail(in.Email) == false {
 		e := errorv1.ErrorS103InvalidEmail("无效的邮箱")
 		return nil, nil, errorpkg.WithStack(e)
@@ -355,14 +356,16 @@ func (s *userAuthBiz) SignupByEmail(ctx context.Context, in *resourcev1.SignupBy
 	}
 
 	// code
-	verifyParam := &bo.ConfirmVerifyCodeParam{
-		VerifyAccount: in.Email,
-		VerifyType:    enumv1.UserVerifyTypeEnum_SIGNUP_BY_EMAIL,
-		VerifyCode:    in.Code,
-	}
-	err = s.ConfirmVerifyCode(ctx, verifyParam)
-	if err != nil {
-		return nil, nil, err
+	if !in.SkipVerifyCode {
+		verifyParam := &bo.ConfirmVerifyCodeParam{
+			VerifyAccount: in.Email,
+			VerifyType:    enumv1.UserVerifyTypeEnum_SIGNUP_BY_EMAIL,
+			VerifyCode:    in.Code,
+		}
+		err = s.ConfirmVerifyCode(ctx, verifyParam)
+		if err != nil {
+			return nil, nil, err
+		}
 	}
 
 	// exist?

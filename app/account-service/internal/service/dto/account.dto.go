@@ -100,3 +100,45 @@ func (s *accountDto) ToBoSendEmailCodeParam(dataModel *bo.SendVerifyCodeReply) *
 	}
 	return res
 }
+
+func (s *accountDto) ToBoSignupByPhoneParam(req *resourcev1.SignupByPhoneReq) *bo.SignupByPhoneParam {
+	res := &bo.SignupByPhoneParam{
+		Phone:           req.Phone,
+		Password:        req.Password,
+		PasswordConfirm: req.PasswordConfirm,
+		Code:            req.Code,
+		SkipVerifyCode:  false,
+	}
+	return res
+}
+
+func (s *accountDto) ToBoSignupByEmailParam(req *resourcev1.SignupByEmailReq) *bo.SignupByEmailParam {
+	res := &bo.SignupByEmailParam{
+		Email:           req.Email,
+		Password:        req.Password,
+		PasswordConfirm: req.PasswordConfirm,
+		Code:            req.Code,
+		SkipVerifyCode:  false,
+	}
+	return res
+}
+
+func (s *accountDto) ToBoLoginByPhoneParam(req *resourcev1.LoginByPhoneReq) *bo.LoginByPhoneParam {
+	res := &bo.LoginByPhoneParam{
+		Phone:          req.Phone,
+		Password:       req.Password,
+		Code:           req.Code,
+		SkipVerifyCode: false,
+	}
+	return res
+}
+
+func (s *accountDto) ToBoLoginByEmailParam(req *resourcev1.LoginByEmailReq) *bo.LoginByEmailParam {
+	res := &bo.LoginByEmailParam{
+		Email:          req.Email,
+		Password:       req.Password,
+		Code:           req.Code,
+		SkipVerifyCode: false,
+	}
+	return res
+}

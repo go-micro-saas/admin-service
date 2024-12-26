@@ -32,6 +32,36 @@ func (s *SignTokenResp) SetByAuthTokenResponse(authResp *authpkg.TokenResponse) 
 	s.TokenResponse = *authResp
 }
 
+type SignupByPhoneParam struct {
+	Phone           string
+	Password        string
+	PasswordConfirm string
+	Code            string
+	SkipVerifyCode  bool
+}
+
+type SignupByEmailParam struct {
+	Email           string
+	Password        string
+	PasswordConfirm string
+	Code            string
+	SkipVerifyCode  bool
+}
+
+type LoginByPhoneParam struct {
+	Phone          string
+	Password       string
+	Code           string
+	SkipVerifyCode bool
+}
+
+type LoginByEmailParam struct {
+	Email          string
+	Password       string
+	Code           string
+	SkipVerifyCode bool
+}
+
 type PasswordParam struct {
 	Password        string
 	PasswordConfirm string

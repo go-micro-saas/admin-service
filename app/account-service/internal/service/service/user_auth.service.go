@@ -3,10 +3,13 @@ package service
 import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
+	enumv1 "github.com/go-micro-saas/account-service/api/account-service/v1/enums"
 	errorv1 "github.com/go-micro-saas/account-service/api/account-service/v1/errors"
 	resourcev1 "github.com/go-micro-saas/account-service/api/account-service/v1/resources"
 	servicev1 "github.com/go-micro-saas/account-service/api/account-service/v1/services"
+	"github.com/go-micro-saas/account-service/app/account-service/internal/biz/bo"
 	bizrepos "github.com/go-micro-saas/account-service/app/account-service/internal/biz/repo"
+	"github.com/go-micro-saas/account-service/app/account-service/internal/data/po"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/service/dto"
 	authpkg "github.com/ikaiguang/go-srv-kit/kratos/auth"
 	errorpkg "github.com/ikaiguang/go-srv-kit/kratos/error"
@@ -58,7 +61,8 @@ func (s *userAuth) Ping(ctx context.Context, in *resourcev1.PingReq) (out *resou
 
 // LoginByEmail Email登录
 func (s *userAuth) LoginByEmail(ctx context.Context, in *resourcev1.LoginByEmailReq) (*resourcev1.LoginResp, error) {
-	userModel, signResp, err := s.userAuthBizRepo.LoginByEmail(ctx, in)
+	param := dto.AccountDto.ToBoLoginByEmailParam(in)
+	userModel, signResp, err := s.userAuthBizRepo.LoginByEmail(ctx, param)
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +75,8 @@ func (s *userAuth) LoginByEmail(ctx context.Context, in *resourcev1.LoginByEmail
 
 // LoginByPhone 手机登录
 func (s *userAuth) LoginByPhone(ctx context.Context, in *resourcev1.LoginByPhoneReq) (*resourcev1.LoginResp, error) {
-	userModel, signResp, err := s.userAuthBizRepo.LoginByPhone(ctx, in)
+	param := dto.AccountDto.ToBoLoginByPhoneParam(in)
+	userModel, signResp, err := s.userAuthBizRepo.LoginByPhone(ctx, param)
 	if err != nil {
 		return nil, err
 	}
@@ -154,7 +159,8 @@ func (s *userAuth) SendEmailSignupCode(ctx context.Context, req *resourcev1.Send
 
 // SignupByEmail 身份验证-Email注册
 func (s *userAuth) SignupByEmail(ctx context.Context, req *resourcev1.SignupByEmailReq) (*resourcev1.LoginResp, error) {
-	userModel, signResp, err := s.userAuthBizRepo.SignupByEmail(ctx, req)
+	param := dto.AccountDto.ToBoSignupByEmailParam(req)
+	userModel, signResp, err := s.userAuthBizRepo.SignupByEmail(ctx, param)
 	if err != nil {
 		return nil, err
 	}
@@ -167,7 +173,8 @@ func (s *userAuth) SignupByEmail(ctx context.Context, req *resourcev1.SignupByEm
 
 // SignupByPhone 身份验证-手机注册
 func (s *userAuth) SignupByPhone(ctx context.Context, req *resourcev1.SignupByPhoneReq) (*resourcev1.LoginResp, error) {
-	userModel, signResp, err := s.userAuthBizRepo.SignupByPhone(ctx, req)
+	param := dto.AccountDto.ToBoSignupByPhoneParam(req)
+	userModel, signResp, err := s.userAuthBizRepo.SignupByPhone(ctx, param)
 	if err != nil {
 		return nil, err
 	}
@@ -179,11 +186,96 @@ func (s *userAuth) SignupByPhone(ctx context.Context, req *resourcev1.SignupByPh
 }
 
 func (s *userAuth) LoginOrSignupByPhone(ctx context.Context, req *resourcev1.LoginOrSignupByPhoneReq) (*resourcev1.LoginResp, error) {
-	return s.UnimplementedSrvUserAuthV1Server.LoginOrSignupByPhone(ctx, req)
+	verifyParam := &bo.ConfirmVerifyCodeParam{
+		VerifyAccount: req.Phone,
+		VerifyType:    enumv1.UserVerifyTypeEnum_SIGNUP_BY_PHONE,
+		VerifyCode:    req.Code,
+	}
+	err := s.userAuthBizRepo.ConfirmVerifyCode(ctx, verifyParam)
+	if err != nil {
+		return nil, err
+	}
+
+	// exist
+	regModel, isExist, err := s.userAuthBizRepo.IsExistRegisterPhone(ctx, req.Phone)
+	if err != nil {
+		return nil, err
+	}
+	if isExist {
+		return s.loginByUserID(ctx, regModel.UserId)
+	}
+
+	// signup
+	passwd := po.RandomPassword()
+	param := &bo.SignupByPhoneParam{
+		Phone:           req.Phone,
+		Password:        passwd,
+		PasswordConfirm: passwd,
+		Code:            req.Code,
+		SkipVerifyCode:  true,
+	}
+	userModel, signResp, err := s.userAuthBizRepo.SignupByPhone(ctx, param)
+	if err != nil {
+		return nil, err
+	}
+	out := &resourcev1.LoginResp{
+		Data: dto.AccountDto.ToPbLoginRespData(userModel, signResp),
+	}
+	return out, nil
 }
 
 func (s *userAuth) LoginOrSignupByEmail(ctx context.Context, req *resourcev1.LoginOrSignupByEmailReq) (*resourcev1.LoginResp, error) {
-	return s.UnimplementedSrvUserAuthV1Server.LoginOrSignupByEmail(ctx, req)
+	verifyParam := &bo.ConfirmVerifyCodeParam{
+		VerifyAccount: req.Email,
+		VerifyType:    enumv1.UserVerifyTypeEnum_SIGNUP_BY_EMAIL,
+		VerifyCode:    req.Code,
+	}
+	err := s.userAuthBizRepo.ConfirmVerifyCode(ctx, verifyParam)
+	if err != nil {
+		return nil, err
+	}
+
+	// exist
+	regModel, isExist, err := s.userAuthBizRepo.IsExistRegisterEmail(ctx, req.Email)
+	if err != nil {
+		return nil, err
+	}
+	if isExist {
+		return s.loginByUserID(ctx, regModel.UserId)
+	}
+
+	// signup
+	passwd := po.RandomPassword()
+	param := &bo.SignupByEmailParam{
+		Email:           req.Email,
+		Password:        passwd,
+		PasswordConfirm: passwd,
+		Code:            req.Code,
+		SkipVerifyCode:  true,
+	}
+	userModel, signResp, err := s.userAuthBizRepo.SignupByEmail(ctx, param)
+	if err != nil {
+		return nil, err
+	}
+	out := &resourcev1.LoginResp{
+		Data: dto.AccountDto.ToPbLoginRespData(userModel, signResp),
+	}
+	return out, nil
+}
+
+func (s *userAuth) loginByUserID(ctx context.Context, userID uint64) (*resourcev1.LoginResp, error) {
+	param := &bo.LoginParam{
+		SkipValidatePassword: true,
+	}
+	userModel, signResp, err := s.userAuthBizRepo.LoginByUserID(ctx, userID, param)
+	if err != nil {
+		return nil, err
+	}
+
+	out := &resourcev1.LoginResp{
+		Data: dto.AccountDto.ToPbLoginRespData(userModel, signResp),
+	}
+	return out, nil
 }
 
 func (s *userAuth) LoginByOpenApi(ctx context.Context, req *resourcev1.LoginByOpenApiReq) (*resourcev1.LoginResp, error) {

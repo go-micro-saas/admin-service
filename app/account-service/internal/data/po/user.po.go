@@ -4,6 +4,7 @@ package po
 
 import (
 	enumv1 "github.com/go-micro-saas/account-service/api/account-service/v1/enums"
+	randompkg "github.com/ikaiguang/go-srv-kit/kit/random"
 	datatypes "gorm.io/datatypes"
 	"strconv"
 	time "time"
@@ -43,6 +44,10 @@ func (s *User) IsValidStatus() bool {
 
 func RandomNickname() string {
 	return "u_" + strconv.FormatInt(time.Now().UnixNano(), 36)
+}
+
+func RandomPassword() string {
+	return randompkg.AlphabetLower(32)
 }
 
 func NewUser() *User {
