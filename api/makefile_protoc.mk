@@ -8,7 +8,10 @@ SAAS_SERVICE_PROTO_FILES := $(shell find ./$(REL_PROJECT_PATH) -name "*.proto")
 # protoc :-->: generate services api protobuf
 protoc-api-protobuf:
 	@echo "# generate services api protobuf"
-	$(call protoc_protobuf,$(SAAS_SERVICE_PROTO_FILES))
+	$(MAKE) protoc-testing-protobuf
+	$(MAKE) protoc-testing-v1-protobuf
+	$(MAKE) protoc-account-protobuf
+	$(MAKE) protoc-account-v1-protobuf
 
 # specified server
 SAAS_SERVICE_SPECIFIED_FILES := $(shell find ./$(REL_PROJECT_PATH)/${service} -name "*.proto")
