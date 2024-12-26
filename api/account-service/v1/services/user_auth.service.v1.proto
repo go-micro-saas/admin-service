@@ -16,70 +16,70 @@ service SrvUserAuthV1 {
   // 身份验证-Ping测试
   rpc Ping(resourcev1.PingReq) returns (resourcev1.PingResp) {
     option (google.api.http) = {
-      get: "/api/v1/auth/ping"
+      get: "/api/v1/account/auth/ping"
       // body:"*" // WARN: GET xxx body should not be declared.
     };
   }
   // 身份验证-发送手机注册码
   rpc SendPhoneSignupCode(resourcev1.SendPhoneVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
     option (google.api.http) = {
-      post: "/api/v1/auth/send-phone-signup-code"
+      post: "/api/v1/account/auth/send-phone-signup-code"
       body: "*"
     };
   }
   // 身份验证-发送邮箱注册码
   rpc SendEmailSignupCode(resourcev1.SendEmailVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
     option (google.api.http) = {
-      post: "/api/v1/auth/send-email-signup-code"
+      post: "/api/v1/account/auth/send-email-signup-code"
       body: "*"
     };
   }
   // 身份验证-Email注册
   rpc SignupByEmail(resourcev1.SignupByEmailReq) returns (resourcev1.LoginResp) {
     option (google.api.http) = {
-      post: "/api/v1/auth/signup-by-email"
+      post: "/api/v1/account/auth/signup-by-email"
       body: "*"
     };
   }
   // 身份验证-手机注册
   rpc SignupByPhone(resourcev1.SignupByPhoneReq) returns (resourcev1.LoginResp) {
     option (google.api.http) = {
-      post: "/api/v1/auth/signup-by-phone"
+      post: "/api/v1/account/auth/signup-by-phone"
       body: "*"
     };
   }
   // 身份验证-手机登陆(自动注册)
   rpc LoginOrSignupByPhone(resourcev1.LoginOrSignupByPhoneReq) returns (resourcev1.LoginResp) {
     option (google.api.http) = {
-      post: "/api/v1/auth/login-or-signup-by-phone"
+      post: "/api/v1/account/auth/login-or-signup-by-phone"
       body: "*"
     };
   }
   // 身份验证-邮箱登陆(自动注册)
   rpc LoginOrSignupByEmail(resourcev1.LoginOrSignupByEmailReq) returns (resourcev1.LoginResp) {
     option (google.api.http) = {
-      post: "/api/v1/auth/login-or-signup-by-email"
+      post: "/api/v1/account/auth/login-or-signup-by-email"
       body: "*"
     };
   }
   // 身份验证-刷新Token
   rpc RefreshToken(resourcev1.RefreshTokenReq) returns (resourcev1.LoginResp) {
     option (google.api.http) = {
-      post: "/api/v1/auth/refresh-token"
+      post: "/api/v1/account/auth/refresh-token"
       body: "*"
     };
   }
   // 身份验证-Email登录
   rpc LoginByEmail(resourcev1.LoginByEmailReq) returns (resourcev1.LoginResp) {
     option (google.api.http) = {
-      post: "/api/v1/auth/login-by-email"
+      post: "/api/v1/account/auth/login-by-email"
       body: "*"
     };
   }
   // 身份验证-手机登录
   rpc LoginByPhone(resourcev1.LoginByPhoneReq) returns (resourcev1.LoginResp) {
     option (google.api.http) = {
-      post: "/api/v1/auth/login-by-phone"
+      post: "/api/v1/account/auth/login-by-phone"
       body: "*"
     };
   }
@@ -94,28 +94,28 @@ service SrvUserAuthV1 {
   // 身份验证-发送邮箱登录码
   rpc SendEmailLoginCode(resourcev1.SendEmailVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
     option (google.api.http) = {
-      post: "/api/v1/auth/send-email-login-code"
+      post: "/api/v1/account/auth/send-email-login-code"
       body: "*"
     };
   }
   // 身份验证-发送手机登录码
   rpc SendPhoneLoginCode(resourcev1.SendPhoneVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
     option (google.api.http) = {
-      post: "/api/v1/auth/send-phone-login-code"
+      post: "/api/v1/account/auth/send-phone-login-code"
       body: "*"
     };
   }
   // 身份验证-发送邮箱验证码(忘记密码)
   rpc SendEmailForgotPasswdCode(resourcev1.SendEmailVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
     option (google.api.http) = {
-      post: "/api/v1/auth/send-email-forgot-passwd-code"
+      post: "/api/v1/account/auth/send-email-forgot-passwd-code"
       body: "*"
     };
   }
   // 身份验证-发送手机验证码(忘记密码)
   rpc SendPhoneForgotPasswdCode(resourcev1.SendPhoneVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
     option (google.api.http) = {
-      post: "/api/v1/auth/send-phone-forgot-passwd-code"
+      post: "/api/v1/account/auth/send-phone-forgot-passwd-code"
       body: "*"
     };
   }
@@ -123,28 +123,28 @@ service SrvUserAuthV1 {
   // 身份验证-发送邮箱验证码(修改密码)
   rpc SendEmailChangePasswdCode(resourcev1.SendEmailVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
     option (google.api.http) = {
-      post: "/api/v1/auth/send-email-change-passwd-code"
+      post: "/api/v1/account/auth/send-email-change-passwd-code"
       body: "*"
     };
   }
   // 身份验证-发送手机验证码(修改密码)
   rpc SendPhoneChangePasswdCode(resourcev1.SendPhoneVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
     option (google.api.http) = {
-      post: "/api/v1/auth/send-phone-change-passwd-code"
+      post: "/api/v1/account/auth/send-phone-change-passwd-code"
       body: "*"
     };
   }
   // 身份验证-发送邮箱变更码
   rpc SendEmailChangeCode(resourcev1.SendEmailVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
     option (google.api.http) = {
-      post: "/api/v1/auth/send-email-change-code"
+      post: "/api/v1/account/auth/send-email-change-code"
       body: "*"
     };
   }
   // 身份验证-发送手机变更码
   rpc SendPhoneChangeCode(resourcev1.SendPhoneVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
     option (google.api.http) = {
-      post: "/api/v1/auth/send-phone-change-code"
+      post: "/api/v1/account/auth/send-phone-change-code"
       body: "*"
     };
   }

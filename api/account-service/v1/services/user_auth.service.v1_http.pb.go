@@ -83,25 +83,25 @@ type SrvUserAuthV1HTTPServer interface {
 
 func RegisterSrvUserAuthV1HTTPServer(s *http.Server, srv SrvUserAuthV1HTTPServer) {
 	r := s.Route("/")
-	r.GET("/api/v1/auth/ping", _SrvUserAuthV1_Ping0_HTTP_Handler(srv))
-	r.POST("/api/v1/auth/send-phone-signup-code", _SrvUserAuthV1_SendPhoneSignupCode0_HTTP_Handler(srv))
-	r.POST("/api/v1/auth/send-email-signup-code", _SrvUserAuthV1_SendEmailSignupCode0_HTTP_Handler(srv))
-	r.POST("/api/v1/auth/signup-by-email", _SrvUserAuthV1_SignupByEmail0_HTTP_Handler(srv))
-	r.POST("/api/v1/auth/signup-by-phone", _SrvUserAuthV1_SignupByPhone0_HTTP_Handler(srv))
-	r.POST("/api/v1/auth/login-or-signup-by-phone", _SrvUserAuthV1_LoginOrSignupByPhone0_HTTP_Handler(srv))
-	r.POST("/api/v1/auth/login-or-signup-by-email", _SrvUserAuthV1_LoginOrSignupByEmail0_HTTP_Handler(srv))
-	r.POST("/api/v1/auth/refresh-token", _SrvUserAuthV1_RefreshToken0_HTTP_Handler(srv))
-	r.POST("/api/v1/auth/login-by-email", _SrvUserAuthV1_LoginByEmail0_HTTP_Handler(srv))
-	r.POST("/api/v1/auth/login-by-phone", _SrvUserAuthV1_LoginByPhone0_HTTP_Handler(srv))
+	r.GET("/api/v1/account/auth/ping", _SrvUserAuthV1_Ping0_HTTP_Handler(srv))
+	r.POST("/api/v1/account/auth/send-phone-signup-code", _SrvUserAuthV1_SendPhoneSignupCode0_HTTP_Handler(srv))
+	r.POST("/api/v1/account/auth/send-email-signup-code", _SrvUserAuthV1_SendEmailSignupCode0_HTTP_Handler(srv))
+	r.POST("/api/v1/account/auth/signup-by-email", _SrvUserAuthV1_SignupByEmail0_HTTP_Handler(srv))
+	r.POST("/api/v1/account/auth/signup-by-phone", _SrvUserAuthV1_SignupByPhone0_HTTP_Handler(srv))
+	r.POST("/api/v1/account/auth/login-or-signup-by-phone", _SrvUserAuthV1_LoginOrSignupByPhone0_HTTP_Handler(srv))
+	r.POST("/api/v1/account/auth/login-or-signup-by-email", _SrvUserAuthV1_LoginOrSignupByEmail0_HTTP_Handler(srv))
+	r.POST("/api/v1/account/auth/refresh-token", _SrvUserAuthV1_RefreshToken0_HTTP_Handler(srv))
+	r.POST("/api/v1/account/auth/login-by-email", _SrvUserAuthV1_LoginByEmail0_HTTP_Handler(srv))
+	r.POST("/api/v1/account/auth/login-by-phone", _SrvUserAuthV1_LoginByPhone0_HTTP_Handler(srv))
 	r.POST("/api/v1/open-api/auth/login", _SrvUserAuthV1_LoginByOpenApi0_HTTP_Handler(srv))
-	r.POST("/api/v1/auth/send-email-login-code", _SrvUserAuthV1_SendEmailLoginCode0_HTTP_Handler(srv))
-	r.POST("/api/v1/auth/send-phone-login-code", _SrvUserAuthV1_SendPhoneLoginCode0_HTTP_Handler(srv))
-	r.POST("/api/v1/auth/send-email-forgot-passwd-code", _SrvUserAuthV1_SendEmailForgotPasswdCode0_HTTP_Handler(srv))
-	r.POST("/api/v1/auth/send-phone-forgot-passwd-code", _SrvUserAuthV1_SendPhoneForgotPasswdCode0_HTTP_Handler(srv))
-	r.POST("/api/v1/auth/send-email-change-passwd-code", _SrvUserAuthV1_SendEmailChangePasswdCode0_HTTP_Handler(srv))
-	r.POST("/api/v1/auth/send-phone-change-passwd-code", _SrvUserAuthV1_SendPhoneChangePasswdCode0_HTTP_Handler(srv))
-	r.POST("/api/v1/auth/send-email-change-code", _SrvUserAuthV1_SendEmailChangeCode0_HTTP_Handler(srv))
-	r.POST("/api/v1/auth/send-phone-change-code", _SrvUserAuthV1_SendPhoneChangeCode0_HTTP_Handler(srv))
+	r.POST("/api/v1/account/auth/send-email-login-code", _SrvUserAuthV1_SendEmailLoginCode0_HTTP_Handler(srv))
+	r.POST("/api/v1/account/auth/send-phone-login-code", _SrvUserAuthV1_SendPhoneLoginCode0_HTTP_Handler(srv))
+	r.POST("/api/v1/account/auth/send-email-forgot-passwd-code", _SrvUserAuthV1_SendEmailForgotPasswdCode0_HTTP_Handler(srv))
+	r.POST("/api/v1/account/auth/send-phone-forgot-passwd-code", _SrvUserAuthV1_SendPhoneForgotPasswdCode0_HTTP_Handler(srv))
+	r.POST("/api/v1/account/auth/send-email-change-passwd-code", _SrvUserAuthV1_SendEmailChangePasswdCode0_HTTP_Handler(srv))
+	r.POST("/api/v1/account/auth/send-phone-change-passwd-code", _SrvUserAuthV1_SendPhoneChangePasswdCode0_HTTP_Handler(srv))
+	r.POST("/api/v1/account/auth/send-email-change-code", _SrvUserAuthV1_SendEmailChangeCode0_HTTP_Handler(srv))
+	r.POST("/api/v1/account/auth/send-phone-change-code", _SrvUserAuthV1_SendPhoneChangeCode0_HTTP_Handler(srv))
 }
 
 func _SrvUserAuthV1_Ping0_HTTP_Handler(srv SrvUserAuthV1HTTPServer) func(ctx http.Context) error {
@@ -551,7 +551,7 @@ func NewSrvUserAuthV1HTTPClient(client *http.Client) SrvUserAuthV1HTTPClient {
 
 func (c *SrvUserAuthV1HTTPClientImpl) LoginByEmail(ctx context.Context, in *resources.LoginByEmailReq, opts ...http.CallOption) (*resources.LoginResp, error) {
 	var out resources.LoginResp
-	pattern := "/api/v1/auth/login-by-email"
+	pattern := "/api/v1/account/auth/login-by-email"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationSrvUserAuthV1LoginByEmail))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -577,7 +577,7 @@ func (c *SrvUserAuthV1HTTPClientImpl) LoginByOpenApi(ctx context.Context, in *re
 
 func (c *SrvUserAuthV1HTTPClientImpl) LoginByPhone(ctx context.Context, in *resources.LoginByPhoneReq, opts ...http.CallOption) (*resources.LoginResp, error) {
 	var out resources.LoginResp
-	pattern := "/api/v1/auth/login-by-phone"
+	pattern := "/api/v1/account/auth/login-by-phone"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationSrvUserAuthV1LoginByPhone))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -590,7 +590,7 @@ func (c *SrvUserAuthV1HTTPClientImpl) LoginByPhone(ctx context.Context, in *reso
 
 func (c *SrvUserAuthV1HTTPClientImpl) LoginOrSignupByEmail(ctx context.Context, in *resources.LoginOrSignupByEmailReq, opts ...http.CallOption) (*resources.LoginResp, error) {
 	var out resources.LoginResp
-	pattern := "/api/v1/auth/login-or-signup-by-email"
+	pattern := "/api/v1/account/auth/login-or-signup-by-email"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationSrvUserAuthV1LoginOrSignupByEmail))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -603,7 +603,7 @@ func (c *SrvUserAuthV1HTTPClientImpl) LoginOrSignupByEmail(ctx context.Context, 
 
 func (c *SrvUserAuthV1HTTPClientImpl) LoginOrSignupByPhone(ctx context.Context, in *resources.LoginOrSignupByPhoneReq, opts ...http.CallOption) (*resources.LoginResp, error) {
 	var out resources.LoginResp
-	pattern := "/api/v1/auth/login-or-signup-by-phone"
+	pattern := "/api/v1/account/auth/login-or-signup-by-phone"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationSrvUserAuthV1LoginOrSignupByPhone))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -616,7 +616,7 @@ func (c *SrvUserAuthV1HTTPClientImpl) LoginOrSignupByPhone(ctx context.Context, 
 
 func (c *SrvUserAuthV1HTTPClientImpl) Ping(ctx context.Context, in *resources.PingReq, opts ...http.CallOption) (*resources.PingResp, error) {
 	var out resources.PingResp
-	pattern := "/api/v1/auth/ping"
+	pattern := "/api/v1/account/auth/ping"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationSrvUserAuthV1Ping))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -629,7 +629,7 @@ func (c *SrvUserAuthV1HTTPClientImpl) Ping(ctx context.Context, in *resources.Pi
 
 func (c *SrvUserAuthV1HTTPClientImpl) RefreshToken(ctx context.Context, in *resources.RefreshTokenReq, opts ...http.CallOption) (*resources.LoginResp, error) {
 	var out resources.LoginResp
-	pattern := "/api/v1/auth/refresh-token"
+	pattern := "/api/v1/account/auth/refresh-token"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationSrvUserAuthV1RefreshToken))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -642,7 +642,7 @@ func (c *SrvUserAuthV1HTTPClientImpl) RefreshToken(ctx context.Context, in *reso
 
 func (c *SrvUserAuthV1HTTPClientImpl) SendEmailChangeCode(ctx context.Context, in *resources.SendEmailVerifyCodeReq, opts ...http.CallOption) (*resources.SendVerifyCodeResp, error) {
 	var out resources.SendVerifyCodeResp
-	pattern := "/api/v1/auth/send-email-change-code"
+	pattern := "/api/v1/account/auth/send-email-change-code"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationSrvUserAuthV1SendEmailChangeCode))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -655,7 +655,7 @@ func (c *SrvUserAuthV1HTTPClientImpl) SendEmailChangeCode(ctx context.Context, i
 
 func (c *SrvUserAuthV1HTTPClientImpl) SendEmailChangePasswdCode(ctx context.Context, in *resources.SendEmailVerifyCodeReq, opts ...http.CallOption) (*resources.SendVerifyCodeResp, error) {
 	var out resources.SendVerifyCodeResp
-	pattern := "/api/v1/auth/send-email-change-passwd-code"
+	pattern := "/api/v1/account/auth/send-email-change-passwd-code"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationSrvUserAuthV1SendEmailChangePasswdCode))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -668,7 +668,7 @@ func (c *SrvUserAuthV1HTTPClientImpl) SendEmailChangePasswdCode(ctx context.Cont
 
 func (c *SrvUserAuthV1HTTPClientImpl) SendEmailForgotPasswdCode(ctx context.Context, in *resources.SendEmailVerifyCodeReq, opts ...http.CallOption) (*resources.SendVerifyCodeResp, error) {
 	var out resources.SendVerifyCodeResp
-	pattern := "/api/v1/auth/send-email-forgot-passwd-code"
+	pattern := "/api/v1/account/auth/send-email-forgot-passwd-code"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationSrvUserAuthV1SendEmailForgotPasswdCode))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -681,7 +681,7 @@ func (c *SrvUserAuthV1HTTPClientImpl) SendEmailForgotPasswdCode(ctx context.Cont
 
 func (c *SrvUserAuthV1HTTPClientImpl) SendEmailLoginCode(ctx context.Context, in *resources.SendEmailVerifyCodeReq, opts ...http.CallOption) (*resources.SendVerifyCodeResp, error) {
 	var out resources.SendVerifyCodeResp
-	pattern := "/api/v1/auth/send-email-login-code"
+	pattern := "/api/v1/account/auth/send-email-login-code"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationSrvUserAuthV1SendEmailLoginCode))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -694,7 +694,7 @@ func (c *SrvUserAuthV1HTTPClientImpl) SendEmailLoginCode(ctx context.Context, in
 
 func (c *SrvUserAuthV1HTTPClientImpl) SendEmailSignupCode(ctx context.Context, in *resources.SendEmailVerifyCodeReq, opts ...http.CallOption) (*resources.SendVerifyCodeResp, error) {
 	var out resources.SendVerifyCodeResp
-	pattern := "/api/v1/auth/send-email-signup-code"
+	pattern := "/api/v1/account/auth/send-email-signup-code"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationSrvUserAuthV1SendEmailSignupCode))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -707,7 +707,7 @@ func (c *SrvUserAuthV1HTTPClientImpl) SendEmailSignupCode(ctx context.Context, i
 
 func (c *SrvUserAuthV1HTTPClientImpl) SendPhoneChangeCode(ctx context.Context, in *resources.SendPhoneVerifyCodeReq, opts ...http.CallOption) (*resources.SendVerifyCodeResp, error) {
 	var out resources.SendVerifyCodeResp
-	pattern := "/api/v1/auth/send-phone-change-code"
+	pattern := "/api/v1/account/auth/send-phone-change-code"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationSrvUserAuthV1SendPhoneChangeCode))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -720,7 +720,7 @@ func (c *SrvUserAuthV1HTTPClientImpl) SendPhoneChangeCode(ctx context.Context, i
 
 func (c *SrvUserAuthV1HTTPClientImpl) SendPhoneChangePasswdCode(ctx context.Context, in *resources.SendPhoneVerifyCodeReq, opts ...http.CallOption) (*resources.SendVerifyCodeResp, error) {
 	var out resources.SendVerifyCodeResp
-	pattern := "/api/v1/auth/send-phone-change-passwd-code"
+	pattern := "/api/v1/account/auth/send-phone-change-passwd-code"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationSrvUserAuthV1SendPhoneChangePasswdCode))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -733,7 +733,7 @@ func (c *SrvUserAuthV1HTTPClientImpl) SendPhoneChangePasswdCode(ctx context.Cont
 
 func (c *SrvUserAuthV1HTTPClientImpl) SendPhoneForgotPasswdCode(ctx context.Context, in *resources.SendPhoneVerifyCodeReq, opts ...http.CallOption) (*resources.SendVerifyCodeResp, error) {
 	var out resources.SendVerifyCodeResp
-	pattern := "/api/v1/auth/send-phone-forgot-passwd-code"
+	pattern := "/api/v1/account/auth/send-phone-forgot-passwd-code"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationSrvUserAuthV1SendPhoneForgotPasswdCode))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -746,7 +746,7 @@ func (c *SrvUserAuthV1HTTPClientImpl) SendPhoneForgotPasswdCode(ctx context.Cont
 
 func (c *SrvUserAuthV1HTTPClientImpl) SendPhoneLoginCode(ctx context.Context, in *resources.SendPhoneVerifyCodeReq, opts ...http.CallOption) (*resources.SendVerifyCodeResp, error) {
 	var out resources.SendVerifyCodeResp
-	pattern := "/api/v1/auth/send-phone-login-code"
+	pattern := "/api/v1/account/auth/send-phone-login-code"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationSrvUserAuthV1SendPhoneLoginCode))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -759,7 +759,7 @@ func (c *SrvUserAuthV1HTTPClientImpl) SendPhoneLoginCode(ctx context.Context, in
 
 func (c *SrvUserAuthV1HTTPClientImpl) SendPhoneSignupCode(ctx context.Context, in *resources.SendPhoneVerifyCodeReq, opts ...http.CallOption) (*resources.SendVerifyCodeResp, error) {
 	var out resources.SendVerifyCodeResp
-	pattern := "/api/v1/auth/send-phone-signup-code"
+	pattern := "/api/v1/account/auth/send-phone-signup-code"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationSrvUserAuthV1SendPhoneSignupCode))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -772,7 +772,7 @@ func (c *SrvUserAuthV1HTTPClientImpl) SendPhoneSignupCode(ctx context.Context, i
 
 func (c *SrvUserAuthV1HTTPClientImpl) SignupByEmail(ctx context.Context, in *resources.SignupByEmailReq, opts ...http.CallOption) (*resources.LoginResp, error) {
 	var out resources.LoginResp
-	pattern := "/api/v1/auth/signup-by-email"
+	pattern := "/api/v1/account/auth/signup-by-email"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationSrvUserAuthV1SignupByEmail))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -785,7 +785,7 @@ func (c *SrvUserAuthV1HTTPClientImpl) SignupByEmail(ctx context.Context, in *res
 
 func (c *SrvUserAuthV1HTTPClientImpl) SignupByPhone(ctx context.Context, in *resources.SignupByPhoneReq, opts ...http.CallOption) (*resources.LoginResp, error) {
 	var out resources.LoginResp
-	pattern := "/api/v1/auth/signup-by-phone"
+	pattern := "/api/v1/account/auth/signup-by-phone"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationSrvUserAuthV1SignupByPhone))
 	opts = append(opts, http.PathTemplate(pattern))
