@@ -88,7 +88,15 @@ func (s *accountDto) ToPbSendSignupCodeRespData(dataModel *bo.SendVerifyCodeRepl
 		Code: "",
 	}
 	if !dataModel.IsSendToMQ {
-		res.Code = dataModel.Code
+		res.Code = dataModel.VerifyCode
+	}
+	return res
+}
+
+func (s *accountDto) ToBoSendEmailCodeParam(dataModel *bo.SendVerifyCodeReply) *bo.SendEmailCodeParam {
+	res := &bo.SendEmailCodeParam{
+		VerifyAccount: dataModel.VerifyAccount,
+		VerifyCode:    dataModel.VerifyCode,
 	}
 	return res
 }

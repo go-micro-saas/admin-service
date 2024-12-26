@@ -121,6 +121,13 @@ func (s *userAuth) SendEmailSignupCode(ctx context.Context, req *resourcev1.Send
 		return nil, err
 	}
 
+	// mq
+	sendEmailParam := dto.AccountDto.ToBoSendEmailCodeParam(dataModel)
+	if err := s.sendEmailCodeEventRepo.Publish(ctx, sendEmailParam); err != nil {
+		return nil, err
+	}
+	dataModel.IsSendToMQ = true
+
 	return &resourcev1.SendSignupCodeResp{
 		Data: dto.AccountDto.ToPbSendSignupCodeRespData(dataModel),
 	}, nil

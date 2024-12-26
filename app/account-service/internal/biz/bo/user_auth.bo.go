@@ -82,14 +82,15 @@ func (s *SendVerifyCodeParam) Validate() error {
 }
 
 type SendVerifyCodeReply struct {
-	IsSendToMQ bool   // 是否发送队列
-	Code       string // code
+	IsSendToMQ    bool   // 是否发送队列
+	VerifyAccount string // 用户标识；手机、邮箱、。。。
+	VerifyType    enumv1.UserVerifyTypeEnum_UserVerifyType
+	VerifyCode    string // code
 }
 
 type SendEmailCodeParam struct {
-	VerifyAccount string                                   // 用户标识；手机、邮箱、。。。
-	VerifyType    enumv1.UserVerifyTypeEnum_UserVerifyType //
-	VerifyCode    string                                   // 验证码
+	VerifyAccount string `json:"verify_account"` // 用户标识；手机、邮箱、。。。
+	VerifyCode    string `json:"verify_code"`    // 验证码
 }
 
 func (s *SendEmailCodeParam) MarshalToJSON() ([]byte, error) {
