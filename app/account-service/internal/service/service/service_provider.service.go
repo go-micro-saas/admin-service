@@ -1,9 +1,12 @@
 package service
 
 import (
+	"context"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
+	resourcev1 "github.com/go-micro-saas/account-service/api/account-service/v1/resources"
 	servicev1 "github.com/go-micro-saas/account-service/api/account-service/v1/services"
+	logpkg "github.com/ikaiguang/go-srv-kit/kratos/log"
 	cleanuputil "github.com/ikaiguang/go-srv-kit/service/cleanup"
 	stdlog "log"
 )
@@ -36,6 +39,20 @@ func RegisterServices(
 
 		//cleanupManager.Append(cleanup)
 	}
+
+	// event
+	stdlog.Println("|*** REGISTER_EVENT：SUBSCRIBE : SendEmailCodeEvent")
+	_, err := userAuthV1Service.SubscribeSendEmailCodeEvent(context.Background(), &resourcev1.SubscribeSendEmailCodeEventReq{})
+	if err != nil {
+		return nil, err
+	}
+	cleanupManager.Append(func() {
+		logpkg.Infow("msg", "StopSendEmailCodedEvent ...")
+		_, err := userAuthV1Service.StopSendEmailCodedEvent(context.Background(), &resourcev1.StopSendEmailCodeEventReq{})
+		if err != nil {
+			logpkg.Warnw("msg", "StopSendEmailCodedEvent failed", "err", err)
+		}
+	})
 
 	return cleanupManager, nil
 }

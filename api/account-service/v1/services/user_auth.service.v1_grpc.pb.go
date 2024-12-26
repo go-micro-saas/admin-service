@@ -20,17 +20,19 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	SrvUserAuthV1_Ping_FullMethodName                 = "/saas.api.account.servicev1.SrvUserAuthV1/Ping"
-	SrvUserAuthV1_SendPhoneSignupCode_FullMethodName  = "/saas.api.account.servicev1.SrvUserAuthV1/SendPhoneSignupCode"
-	SrvUserAuthV1_SendEmailSignupCode_FullMethodName  = "/saas.api.account.servicev1.SrvUserAuthV1/SendEmailSignupCode"
-	SrvUserAuthV1_SignupByEmail_FullMethodName        = "/saas.api.account.servicev1.SrvUserAuthV1/SignupByEmail"
-	SrvUserAuthV1_SignupByPhone_FullMethodName        = "/saas.api.account.servicev1.SrvUserAuthV1/SignupByPhone"
-	SrvUserAuthV1_LoginOrSignupByPhone_FullMethodName = "/saas.api.account.servicev1.SrvUserAuthV1/LoginOrSignupByPhone"
-	SrvUserAuthV1_LoginOrSignupByEmail_FullMethodName = "/saas.api.account.servicev1.SrvUserAuthV1/LoginOrSignupByEmail"
-	SrvUserAuthV1_RefreshToken_FullMethodName         = "/saas.api.account.servicev1.SrvUserAuthV1/RefreshToken"
-	SrvUserAuthV1_LoginByEmail_FullMethodName         = "/saas.api.account.servicev1.SrvUserAuthV1/LoginByEmail"
-	SrvUserAuthV1_LoginByPhone_FullMethodName         = "/saas.api.account.servicev1.SrvUserAuthV1/LoginByPhone"
-	SrvUserAuthV1_LoginByOpenApi_FullMethodName       = "/saas.api.account.servicev1.SrvUserAuthV1/LoginByOpenApi"
+	SrvUserAuthV1_Ping_FullMethodName                        = "/saas.api.account.servicev1.SrvUserAuthV1/Ping"
+	SrvUserAuthV1_SendPhoneSignupCode_FullMethodName         = "/saas.api.account.servicev1.SrvUserAuthV1/SendPhoneSignupCode"
+	SrvUserAuthV1_SendEmailSignupCode_FullMethodName         = "/saas.api.account.servicev1.SrvUserAuthV1/SendEmailSignupCode"
+	SrvUserAuthV1_SignupByEmail_FullMethodName               = "/saas.api.account.servicev1.SrvUserAuthV1/SignupByEmail"
+	SrvUserAuthV1_SignupByPhone_FullMethodName               = "/saas.api.account.servicev1.SrvUserAuthV1/SignupByPhone"
+	SrvUserAuthV1_LoginOrSignupByPhone_FullMethodName        = "/saas.api.account.servicev1.SrvUserAuthV1/LoginOrSignupByPhone"
+	SrvUserAuthV1_LoginOrSignupByEmail_FullMethodName        = "/saas.api.account.servicev1.SrvUserAuthV1/LoginOrSignupByEmail"
+	SrvUserAuthV1_RefreshToken_FullMethodName                = "/saas.api.account.servicev1.SrvUserAuthV1/RefreshToken"
+	SrvUserAuthV1_LoginByEmail_FullMethodName                = "/saas.api.account.servicev1.SrvUserAuthV1/LoginByEmail"
+	SrvUserAuthV1_LoginByPhone_FullMethodName                = "/saas.api.account.servicev1.SrvUserAuthV1/LoginByPhone"
+	SrvUserAuthV1_LoginByOpenApi_FullMethodName              = "/saas.api.account.servicev1.SrvUserAuthV1/LoginByOpenApi"
+	SrvUserAuthV1_SubscribeSendEmailCodeEvent_FullMethodName = "/saas.api.account.servicev1.SrvUserAuthV1/SubscribeSendEmailCodeEvent"
+	SrvUserAuthV1_StopSendEmailCodedEvent_FullMethodName     = "/saas.api.account.servicev1.SrvUserAuthV1/StopSendEmailCodedEvent"
 )
 
 // SrvUserAuthV1Client is the client API for SrvUserAuthV1 service.
@@ -59,6 +61,10 @@ type SrvUserAuthV1Client interface {
 	LoginByPhone(ctx context.Context, in *resources.LoginByPhoneReq, opts ...grpc.CallOption) (*resources.LoginResp, error)
 	// 身份验证-开发平台登录
 	LoginByOpenApi(ctx context.Context, in *resources.LoginByOpenApiReq, opts ...grpc.CallOption) (*resources.LoginResp, error)
+	// 身份验证 - 订阅发送邮件验证码事件
+	SubscribeSendEmailCodeEvent(ctx context.Context, in *resources.SubscribeSendEmailCodeEventReq, opts ...grpc.CallOption) (*resources.SubscribeSendEmailCodeEventResp, error)
+	// 身份验证 - 停止发送邮件验证码事件
+	StopSendEmailCodedEvent(ctx context.Context, in *resources.StopSendEmailCodeEventReq, opts ...grpc.CallOption) (*resources.StopSendEmailCodeEventResp, error)
 }
 
 type srvUserAuthV1Client struct {
@@ -168,6 +174,24 @@ func (c *srvUserAuthV1Client) LoginByOpenApi(ctx context.Context, in *resources.
 	return out, nil
 }
 
+func (c *srvUserAuthV1Client) SubscribeSendEmailCodeEvent(ctx context.Context, in *resources.SubscribeSendEmailCodeEventReq, opts ...grpc.CallOption) (*resources.SubscribeSendEmailCodeEventResp, error) {
+	out := new(resources.SubscribeSendEmailCodeEventResp)
+	err := c.cc.Invoke(ctx, SrvUserAuthV1_SubscribeSendEmailCodeEvent_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *srvUserAuthV1Client) StopSendEmailCodedEvent(ctx context.Context, in *resources.StopSendEmailCodeEventReq, opts ...grpc.CallOption) (*resources.StopSendEmailCodeEventResp, error) {
+	out := new(resources.StopSendEmailCodeEventResp)
+	err := c.cc.Invoke(ctx, SrvUserAuthV1_StopSendEmailCodedEvent_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SrvUserAuthV1Server is the server API for SrvUserAuthV1 service.
 // All implementations must embed UnimplementedSrvUserAuthV1Server
 // for forward compatibility
@@ -194,6 +218,10 @@ type SrvUserAuthV1Server interface {
 	LoginByPhone(context.Context, *resources.LoginByPhoneReq) (*resources.LoginResp, error)
 	// 身份验证-开发平台登录
 	LoginByOpenApi(context.Context, *resources.LoginByOpenApiReq) (*resources.LoginResp, error)
+	// 身份验证 - 订阅发送邮件验证码事件
+	SubscribeSendEmailCodeEvent(context.Context, *resources.SubscribeSendEmailCodeEventReq) (*resources.SubscribeSendEmailCodeEventResp, error)
+	// 身份验证 - 停止发送邮件验证码事件
+	StopSendEmailCodedEvent(context.Context, *resources.StopSendEmailCodeEventReq) (*resources.StopSendEmailCodeEventResp, error)
 	mustEmbedUnimplementedSrvUserAuthV1Server()
 }
 
@@ -233,6 +261,12 @@ func (UnimplementedSrvUserAuthV1Server) LoginByPhone(context.Context, *resources
 }
 func (UnimplementedSrvUserAuthV1Server) LoginByOpenApi(context.Context, *resources.LoginByOpenApiReq) (*resources.LoginResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoginByOpenApi not implemented")
+}
+func (UnimplementedSrvUserAuthV1Server) SubscribeSendEmailCodeEvent(context.Context, *resources.SubscribeSendEmailCodeEventReq) (*resources.SubscribeSendEmailCodeEventResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubscribeSendEmailCodeEvent not implemented")
+}
+func (UnimplementedSrvUserAuthV1Server) StopSendEmailCodedEvent(context.Context, *resources.StopSendEmailCodeEventReq) (*resources.StopSendEmailCodeEventResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StopSendEmailCodedEvent not implemented")
 }
 func (UnimplementedSrvUserAuthV1Server) mustEmbedUnimplementedSrvUserAuthV1Server() {}
 
@@ -445,6 +479,42 @@ func _SrvUserAuthV1_LoginByOpenApi_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SrvUserAuthV1_SubscribeSendEmailCodeEvent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(resources.SubscribeSendEmailCodeEventReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SrvUserAuthV1Server).SubscribeSendEmailCodeEvent(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SrvUserAuthV1_SubscribeSendEmailCodeEvent_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SrvUserAuthV1Server).SubscribeSendEmailCodeEvent(ctx, req.(*resources.SubscribeSendEmailCodeEventReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SrvUserAuthV1_StopSendEmailCodedEvent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(resources.StopSendEmailCodeEventReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SrvUserAuthV1Server).StopSendEmailCodedEvent(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SrvUserAuthV1_StopSendEmailCodedEvent_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SrvUserAuthV1Server).StopSendEmailCodedEvent(ctx, req.(*resources.StopSendEmailCodeEventReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SrvUserAuthV1_ServiceDesc is the grpc.ServiceDesc for SrvUserAuthV1 service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -495,6 +565,14 @@ var SrvUserAuthV1_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LoginByOpenApi",
 			Handler:    _SrvUserAuthV1_LoginByOpenApi_Handler,
+		},
+		{
+			MethodName: "SubscribeSendEmailCodeEvent",
+			Handler:    _SrvUserAuthV1_SubscribeSendEmailCodeEvent_Handler,
+		},
+		{
+			MethodName: "StopSendEmailCodedEvent",
+			Handler:    _SrvUserAuthV1_StopSendEmailCodedEvent_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

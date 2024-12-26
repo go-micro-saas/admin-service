@@ -209,3 +209,31 @@ message ChangeGenderResp {
 }
 message ChangeGenderRespData {
 }
+
+message SubscribeSendEmailCodeEventReq {
+}
+message SubscribeSendEmailCodeEventResp {
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  SubscribeSendEmailCodeEventRespData data = 100;
+}
+message SubscribeSendEmailCodeEventRespData {
+  int64 consumer_counter = 1;
+}
+
+message StopSendEmailCodeEventReq {
+}
+message StopSendEmailCodeEventResp {
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  StopSendEmailCodeEventRespData data = 100;
+}
+message StopSendEmailCodeEventRespData {
+  int64 consumer_counter = 1;
+}

@@ -90,4 +90,11 @@ service SrvUserAuthV1 {
       body: "*"
     };
   }
+
+  // 身份验证 - 订阅发送邮件验证码事件
+  rpc SubscribeSendEmailCodeEvent(resourcev1.SubscribeSendEmailCodeEventReq) returns (resourcev1.SubscribeSendEmailCodeEventResp) {
+  }
+  // 身份验证 - 停止发送邮件验证码事件
+  rpc StopSendEmailCodedEvent(resourcev1.StopSendEmailCodeEventReq) returns (resourcev1.StopSendEmailCodeEventResp) {
+  }
 }

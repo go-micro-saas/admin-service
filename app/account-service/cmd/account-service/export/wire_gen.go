@@ -10,6 +10,7 @@ import (
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/biz/biz"
+	"github.com/go-micro-saas/account-service/app/account-service/internal/biz/event"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/conf"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/data/data"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/service/dto"
@@ -64,7 +65,14 @@ func exportServices(launcherManager setuputil.LauncherManager, hs *http.Server, 
 		cleanup()
 		return nil, nil, err
 	}
-	srvUserAuthV1Server := service.NewUserAuthService(logger, userAuthBizRepo, sendEmailCodeBizRepo)
+	connectionWrapper, err := setuputil.GetRabbitmqConn(launcherManager)
+	if err != nil {
+		cleanup2()
+		cleanup()
+		return nil, nil, err
+	}
+	sendEmailCodeEventRepo := events.NewSendEmailCodeEventRepo(logger, connectionWrapper)
+	srvUserAuthV1Server := service.NewUserAuthService(logger, userAuthBizRepo, sendEmailCodeBizRepo, sendEmailCodeEventRepo)
 	cleanupManager, err := service.RegisterServices(hs, gs, srvUserAuthV1Server)
 	if err != nil {
 		cleanup2()

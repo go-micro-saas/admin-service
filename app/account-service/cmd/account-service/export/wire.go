@@ -7,6 +7,7 @@ import (
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/biz/biz"
+	events "github.com/go-micro-saas/account-service/app/account-service/internal/biz/event"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/conf"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/data/data"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/service/dto"
@@ -23,6 +24,7 @@ func exportServices(launcherManager setuputil.LauncherManager, hs *http.Server, 
 		setuputil.GetRecommendDBConn,
 		setuputil.GetAuthManager,
 		setuputil.GetServiceAPIManager,
+		setuputil.GetRabbitmqConn,
 		// conf
 		conf.GetServiceConfig,
 		dto.ToPbGetNodeIdReq,
@@ -37,6 +39,8 @@ func exportServices(launcherManager setuputil.LauncherManager, hs *http.Server, 
 		// biz
 		biz.NewUserAuthBiz,
 		biz.NewSendEmailCodeBiz,
+		// event
+		events.NewSendEmailCodeEventRepo,
 		// service
 		service.NewUserAuthService,
 		// register services

@@ -9,15 +9,20 @@ import (
 	"github.com/go-micro-saas/account-service/app/account-service/internal/service/dto"
 	authpkg "github.com/ikaiguang/go-srv-kit/kratos/auth"
 	errorpkg "github.com/ikaiguang/go-srv-kit/kratos/error"
+	threadpkg "github.com/ikaiguang/go-srv-kit/kratos/thread"
+	"sync/atomic"
 )
 
 // userAuth ...
 type userAuth struct {
 	servicev1.UnimplementedSrvUserAuthV1Server
 
-	log                  *log.Helper
-	userAuthBizRepo      bizrepos.UserAuthBizRepo
-	sendEmailCodeBizRepo bizrepos.SendEmailCodeBizRepo
+	log                    *log.Helper
+	userAuthBizRepo        bizrepos.UserAuthBizRepo
+	sendEmailCodeBizRepo   bizrepos.SendEmailCodeBizRepo
+	sendEmailCodeEventRepo bizrepos.SendEmailCodeEventRepo
+
+	isConsumingSendEmailCodeEvent atomic.Int64
 }
 
 // NewUserAuthService ...
@@ -25,11 +30,13 @@ func NewUserAuthService(
 	logger log.Logger,
 	userAuthBizRepo bizrepos.UserAuthBizRepo,
 	sendEmailCodeBizRepo bizrepos.SendEmailCodeBizRepo,
+	sendEmailCodeEventRepo bizrepos.SendEmailCodeEventRepo,
 ) servicev1.SrvUserAuthV1Server {
 	return &userAuth{
-		log:                  log.NewHelper(log.With(logger, "module", "account-service/service/user_auth")),
-		userAuthBizRepo:      userAuthBizRepo,
-		sendEmailCodeBizRepo: sendEmailCodeBizRepo,
+		log:                    log.NewHelper(log.With(logger, "module", "account-service/service/user_auth")),
+		userAuthBizRepo:        userAuthBizRepo,
+		sendEmailCodeBizRepo:   sendEmailCodeBizRepo,
+		sendEmailCodeEventRepo: sendEmailCodeEventRepo,
 	}
 }
 
@@ -151,4 +158,39 @@ func (s *userAuth) LoginOrSignupByPhone(ctx context.Context, req *resourcev1.Log
 
 func (s *userAuth) LoginOrSignupByEmail(ctx context.Context, req *resourcev1.LoginOrSignupByEmailReq) (*resourcev1.LoginResp, error) {
 	return s.UnimplementedSrvUserAuthV1Server.LoginOrSignupByEmail(ctx, req)
+}
+
+func (s *userAuth) LoginByOpenApi(ctx context.Context, req *resourcev1.LoginByOpenApiReq) (*resourcev1.LoginResp, error) {
+	return s.UnimplementedSrvUserAuthV1Server.LoginByOpenApi(ctx, req)
+}
+
+func (s *userAuth) SubscribeSendEmailCodeEvent(ctx context.Context, req *resourcev1.SubscribeSendEmailCodeEventReq) (*resourcev1.SubscribeSendEmailCodeEventResp, error) {
+	if s.isConsumingSendEmailCodeEvent.Load() < 1 {
+		threadpkg.GoSafe(func() {
+			s.isConsumingSendEmailCodeEvent.Add(1)
+			defer func() { s.isConsumingSendEmailCodeEvent.Add(-1) }()
+			err := s.sendEmailCodeEventRepo.Consume(ctx, s.sendEmailCodeBizRepo.SendEmailCode)
+			if err != nil {
+				s.log.WithContext(ctx).Errorw("msg", "SubscribeSendEmailCodeEvent failed!", "err", err)
+			}
+		})
+	}
+	return &resourcev1.SubscribeSendEmailCodeEventResp{
+		Data: &resourcev1.SubscribeSendEmailCodeEventRespData{
+			ConsumerCounter: s.isConsumingSendEmailCodeEvent.Load(),
+		},
+	}, nil
+}
+
+func (s *userAuth) StopSendEmailCodeEvent(ctx context.Context, req *resourcev1.StopSendEmailCodeEventReq) (*resourcev1.StopSendEmailCodeEventResp, error) {
+	err := s.sendEmailCodeEventRepo.Close(ctx)
+	if err != nil {
+		s.log.WithContext(ctx).Errorw("msg", "run StopSendEmailCodeEvent failed!", "err", err)
+		return nil, err
+	}
+	return &resourcev1.StopSendEmailCodeEventResp{
+		Data: &resourcev1.StopSendEmailCodeEventRespData{
+			ConsumerCounter: s.isConsumingSendEmailCodeEvent.Load(),
+		},
+	}, nil
 }
