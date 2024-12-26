@@ -235,7 +235,7 @@ func (s *userAuthBiz) GenSignTokenRequestByUserModel(ctx context.Context, userMo
 		LoginPlatform: authpkg.LoginPlatformEnum_UNSPECIFIED,
 		LoginType:     authpkg.LoginTypeEnum_UNSPECIFIED,
 		LoginLimit:    authpkg.LoginLimitEnum_UNLIMITED,
-		TokenType:     authpkg.TokenTypeEnum_USER,
+		TokenType:     authpkg.TokenTypeEnum_ADMIN,
 	}
 	res := &bo.SignTokenReq{
 		Claims: *authpkg.GenAuthClaimsByAuthPayload(payload, authpkg.AccessTokenExpire),
