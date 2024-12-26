@@ -26,6 +26,8 @@ type UserAuthBizRepo interface {
 	CheckAndGetByRegisterEmail(ctx context.Context, email string) (*po.UserRegEmail, error)
 	CheckAndGetByRegisterPhone(ctx context.Context, phone string) (*po.UserRegPhone, error)
 	CheckAndGetUserByUserId(ctx context.Context, userId uint64) (*po.User, error)
+	IsExistRegisterEmail(ctx context.Context, email string) (*po.UserRegEmail, bool, error)
+	IsExistRegisterPhone(ctx context.Context, phone string) (*po.UserRegPhone, bool, error)
 	ValidateLoginUser(userModel *po.User, loginParam *bo.LoginParam) error
 	ComparePassword(hashPassword, plaintextPassword string) error
 }

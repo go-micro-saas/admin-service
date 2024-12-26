@@ -142,6 +142,24 @@ func (s *userAuthBiz) CheckAndGetByRegisterPhone(ctx context.Context, phone stri
 	return regModel, nil
 }
 
+func (s *userAuthBiz) IsExistRegisterEmail(ctx context.Context, email string) (*po.UserRegEmail, bool, error) {
+	// 注册邮箱
+	regModel, isNotFound, err := s.userRegEmailDataRepo.QueryOneByUserEmail(ctx, email)
+	if err != nil {
+		return nil, false, err
+	}
+	return regModel, !isNotFound, err
+}
+
+func (s *userAuthBiz) IsExistRegisterPhone(ctx context.Context, phone string) (*po.UserRegPhone, bool, error) {
+	// 注册手机
+	regModel, isNotFound, err := s.userRegPhoneDataRepo.QueryOneByUserPhone(ctx, phone)
+	if err != nil {
+		return nil, false, err
+	}
+	return regModel, !isNotFound, nil
+}
+
 // CheckAndGetUserByUserId 用户是否存在
 func (s *userAuthBiz) CheckAndGetUserByUserId(ctx context.Context, userId uint64) (*po.User, error) {
 	userModel, isNotFound, err := s.userDataRepo.QueryOneByUserId(ctx, userId)

@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
+	errorv1 "github.com/go-micro-saas/account-service/api/account-service/v1/errors"
 	resourcev1 "github.com/go-micro-saas/account-service/api/account-service/v1/resources"
 	servicev1 "github.com/go-micro-saas/account-service/api/account-service/v1/services"
 	bizrepos "github.com/go-micro-saas/account-service/app/account-service/internal/biz/repo"
@@ -102,7 +103,16 @@ func (s *userAuth) RefreshToken(ctx context.Context, in *resourcev1.RefreshToken
 }
 
 func (s *userAuth) SendPhoneSignupCode(ctx context.Context, req *resourcev1.SendPhoneSignupCodeReq) (*resourcev1.SendSignupCodeResp, error) {
+	_, isExist, err := s.userAuthBizRepo.IsExistRegisterPhone(ctx, req.Phone)
+	if err != nil {
+		return nil, err
+	}
+	if isExist {
+		return nil, errorpkg.WithStack(errorv1.DefaultErrorS103UserExist())
+	}
+
 	return nil, errorpkg.WithStack(errorpkg.DefaultErrorMethodNotAllowed())
+	// send
 	//param := dto.AccountDto.ToBoSendVerifyCodeParam(req)
 	//dataModel, err := s.userAuthBizRepo.SendVerifyCode(ctx, param)
 	//if err != nil {
@@ -115,6 +125,15 @@ func (s *userAuth) SendPhoneSignupCode(ctx context.Context, req *resourcev1.Send
 }
 
 func (s *userAuth) SendEmailSignupCode(ctx context.Context, req *resourcev1.SendEmailSignupCodeReq) (*resourcev1.SendSignupCodeResp, error) {
+	_, isExist, err := s.userAuthBizRepo.IsExistRegisterEmail(ctx, req.Email)
+	if err != nil {
+		return nil, err
+	}
+	if isExist {
+		return nil, errorpkg.WithStack(errorv1.DefaultErrorS103UserExist())
+	}
+
+	// send
 	param := dto.AccountDto.ToBoSendVerifyCodeParam2(req)
 	dataModel, err := s.userAuthBizRepo.SendVerifyCode(ctx, param)
 	if err != nil {
