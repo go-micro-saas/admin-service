@@ -54,13 +54,25 @@ func exportServices(launcherManager setuputil.LauncherManager, hs *http.Server, 
 	userRegPhoneDataRepo := data.NewUserRegPhoneDataRepo(logger, db)
 	userVerifyCodeDataRepo := data.NewUserVerifyCodeRepo(db)
 	userAuthBizRepo := biz.NewUserAuthBiz(logger, authRepo, snowflake, userDataRepo, userRegEmailDataRepo, userRegPhoneDataRepo, userVerifyCodeDataRepo)
-	srvUserAuthV1Server := service.NewUserAuthService(logger, userAuthBizRepo)
-	cleanupManager, err := service.RegisterServices(hs, gs, srvUserAuthV1Server)
+	sendEmailCodeConfig, err := dto.ToBoSendEmailCodeConfig(serviceConfig)
 	if err != nil {
 		cleanup()
 		return nil, nil, err
 	}
+	sendEmailCodeBizRepo, cleanup2, err := biz.NewSendEmailCodeBiz(logger, sendEmailCodeConfig)
+	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
+	srvUserAuthV1Server := service.NewUserAuthService(logger, userAuthBizRepo, sendEmailCodeBizRepo)
+	cleanupManager, err := service.RegisterServices(hs, gs, srvUserAuthV1Server)
+	if err != nil {
+		cleanup2()
+		cleanup()
+		return nil, nil, err
+	}
 	return cleanupManager, func() {
+		cleanup2()
 		cleanup()
 	}, nil
 }

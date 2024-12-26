@@ -435,10 +435,10 @@ func (s *userAuthBiz) SendVerifyCode(ctx context.Context, param *bo.SendVerifyCo
 	}
 
 	resp := &bo.SendVerifyCodeReply{
-		IsSendSuccess: false,
-		Code:          dataModel.VerifyCode,
+		IsSendToMQ: false,
+		Code:       dataModel.VerifyCode,
 	}
-	if resp.IsSendSuccess {
+	if resp.IsSendToMQ {
 		resp.Code = ""
 	}
 	return resp, nil

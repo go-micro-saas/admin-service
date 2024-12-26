@@ -62,7 +62,7 @@ func (s *sendEmailCodeEvent) getPublisherSubscriber() (message.Publisher, messag
 	return s.pub, s.sub, nil
 }
 
-func (s *sendEmailCodeEvent) Publish(ctx context.Context, param *bo.SendVerifyCodeEventParam) error {
+func (s *sendEmailCodeEvent) Publish(ctx context.Context, param *bo.SendEmailCodeParam) error {
 	publisher, _, err := s.getPublisherSubscriber()
 	if err != nil {
 		return err
@@ -95,10 +95,10 @@ func (s *sendEmailCodeEvent) Consume(ctx context.Context, handler bizrepos.SendE
 			s.receiveCounter++
 			{
 				s.log.WithContext(ctx).Infow("msg", "SendEmailCodeEvent.Consume Received message", "receiveCounter", s.receiveCounter, "msg.payload", string(msg.Payload))
-				param := &bo.SendVerifyCodeEventParam{}
+				param := &bo.SendEmailCodeParam{}
 				err := param.UnmarshalFromJSON(msg.Payload)
 				if err != nil {
-					s.log.WithContext(ctx).Errorw("msg", "SendEmailCodeEvent.Consume SendVerifyCodeEventParam UnmarshalFromJSON failed",
+					s.log.WithContext(ctx).Errorw("msg", "SendEmailCodeEvent.Consume SendEmailCodeParam UnmarshalFromJSON failed",
 						"err", err, "payload", string(msg.Payload))
 					msg.Ack()
 					continue

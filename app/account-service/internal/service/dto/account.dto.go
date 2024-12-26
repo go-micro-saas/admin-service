@@ -87,7 +87,7 @@ func (s *accountDto) ToPbSendSignupCodeRespData(dataModel *bo.SendVerifyCodeRepl
 	res := &resourcev1.SendSignupCodeRespData{
 		Code: "",
 	}
-	if !dataModel.IsSendSuccess {
+	if !dataModel.IsSendToMQ {
 		res.Code = dataModel.Code
 	}
 	return res

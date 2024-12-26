@@ -17,9 +17,19 @@ message ServiceConfig {
       string instance_name         = 2;
       map<string, string> metadata = 3;
     }
+    // SendEmailCode 发送邮件验证码
+    message SendEmailCode {
+      string issuer   = 1 [(validate.rules).string = { min_len: 1 }];
+      string subject  = 2 [(validate.rules).string = { min_len: 1 }];
+      string host     = 3 [(validate.rules).string = { min_len: 1 }];
+      int32 port      = 4 [(validate.rules).int32 = { gte: 1, lte: 65535 }];
+      string username = 5;
+      string password = 6;
+      string from     = 7 [(validate.rules).string = { min_len: 1 }];
+    }
 
-    string key          = 1 [(validate.rules).string = { ignore_empty: true }];
-    Snowflake snowflake = 2;
+    Snowflake snowflake           = 1;
+    SendEmailCode send_email_code = 2;
   }
   AccountService account_service = 1;
 }

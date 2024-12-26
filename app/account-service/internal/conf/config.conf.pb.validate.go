@@ -186,10 +186,6 @@ func (m *ServiceConfig_AccountService) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetKey() != "" {
-
-	}
-
 	if all {
 		switch v := interface{}(m.GetSnowflake()).(type) {
 		case interface{ ValidateAll() error }:
@@ -213,6 +209,35 @@ func (m *ServiceConfig_AccountService) validate(all bool) error {
 		if err := v.Validate(); err != nil {
 			return ServiceConfig_AccountServiceValidationError{
 				field:  "Snowflake",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetSendEmailCode()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ServiceConfig_AccountServiceValidationError{
+					field:  "SendEmailCode",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ServiceConfig_AccountServiceValidationError{
+					field:  "SendEmailCode",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetSendEmailCode()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ServiceConfig_AccountServiceValidationError{
+				field:  "SendEmailCode",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
@@ -420,3 +445,168 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ServiceConfig_AccountService_SnowflakeValidationError{}
+
+// Validate checks the field values on
+// ServiceConfig_AccountService_SendEmailCode with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *ServiceConfig_AccountService_SendEmailCode) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// ServiceConfig_AccountService_SendEmailCode with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in
+// ServiceConfig_AccountService_SendEmailCodeMultiError, or nil if none found.
+func (m *ServiceConfig_AccountService_SendEmailCode) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ServiceConfig_AccountService_SendEmailCode) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if utf8.RuneCountInString(m.GetIssuer()) < 1 {
+		err := ServiceConfig_AccountService_SendEmailCodeValidationError{
+			field:  "Issuer",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetSubject()) < 1 {
+		err := ServiceConfig_AccountService_SendEmailCodeValidationError{
+			field:  "Subject",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetHost()) < 1 {
+		err := ServiceConfig_AccountService_SendEmailCodeValidationError{
+			field:  "Host",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if val := m.GetPort(); val < 1 || val > 65535 {
+		err := ServiceConfig_AccountService_SendEmailCodeValidationError{
+			field:  "Port",
+			reason: "value must be inside range [1, 65535]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for Username
+
+	// no validation rules for Password
+
+	if utf8.RuneCountInString(m.GetFrom()) < 1 {
+		err := ServiceConfig_AccountService_SendEmailCodeValidationError{
+			field:  "From",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return ServiceConfig_AccountService_SendEmailCodeMultiError(errors)
+	}
+
+	return nil
+}
+
+// ServiceConfig_AccountService_SendEmailCodeMultiError is an error wrapping
+// multiple validation errors returned by
+// ServiceConfig_AccountService_SendEmailCode.ValidateAll() if the designated
+// constraints aren't met.
+type ServiceConfig_AccountService_SendEmailCodeMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ServiceConfig_AccountService_SendEmailCodeMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ServiceConfig_AccountService_SendEmailCodeMultiError) AllErrors() []error { return m }
+
+// ServiceConfig_AccountService_SendEmailCodeValidationError is the validation
+// error returned by ServiceConfig_AccountService_SendEmailCode.Validate if
+// the designated constraints aren't met.
+type ServiceConfig_AccountService_SendEmailCodeValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ServiceConfig_AccountService_SendEmailCodeValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ServiceConfig_AccountService_SendEmailCodeValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ServiceConfig_AccountService_SendEmailCodeValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ServiceConfig_AccountService_SendEmailCodeValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ServiceConfig_AccountService_SendEmailCodeValidationError) ErrorName() string {
+	return "ServiceConfig_AccountService_SendEmailCodeValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ServiceConfig_AccountService_SendEmailCodeValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sServiceConfig_AccountService_SendEmailCode.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ServiceConfig_AccountService_SendEmailCodeValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ServiceConfig_AccountService_SendEmailCodeValidationError{}

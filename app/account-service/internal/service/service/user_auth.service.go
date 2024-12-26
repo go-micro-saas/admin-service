@@ -8,24 +8,28 @@ import (
 	bizrepos "github.com/go-micro-saas/account-service/app/account-service/internal/biz/repo"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/service/dto"
 	authpkg "github.com/ikaiguang/go-srv-kit/kratos/auth"
+	errorpkg "github.com/ikaiguang/go-srv-kit/kratos/error"
 )
 
 // userAuth ...
 type userAuth struct {
 	servicev1.UnimplementedSrvUserAuthV1Server
 
-	log             *log.Helper
-	userAuthBizRepo bizrepos.UserAuthBizRepo
+	log                  *log.Helper
+	userAuthBizRepo      bizrepos.UserAuthBizRepo
+	sendEmailCodeBizRepo bizrepos.SendEmailCodeBizRepo
 }
 
 // NewUserAuthService ...
 func NewUserAuthService(
 	logger log.Logger,
 	userAuthBizRepo bizrepos.UserAuthBizRepo,
+	sendEmailCodeBizRepo bizrepos.SendEmailCodeBizRepo,
 ) servicev1.SrvUserAuthV1Server {
 	return &userAuth{
-		log:             log.NewHelper(log.With(logger, "module", "account-service/service/user_auth")),
-		userAuthBizRepo: userAuthBizRepo,
+		log:                  log.NewHelper(log.With(logger, "module", "account-service/service/user_auth")),
+		userAuthBizRepo:      userAuthBizRepo,
+		sendEmailCodeBizRepo: sendEmailCodeBizRepo,
 	}
 }
 
@@ -91,15 +95,16 @@ func (s *userAuth) RefreshToken(ctx context.Context, in *resourcev1.RefreshToken
 }
 
 func (s *userAuth) SendPhoneSignupCode(ctx context.Context, req *resourcev1.SendPhoneSignupCodeReq) (*resourcev1.SendSignupCodeResp, error) {
-	param := dto.AccountDto.ToBoSendVerifyCodeParam(req)
-	dataModel, err := s.userAuthBizRepo.SendVerifyCode(ctx, param)
-	if err != nil {
-		return nil, err
-	}
-
-	return &resourcev1.SendSignupCodeResp{
-		Data: dto.AccountDto.ToPbSendSignupCodeRespData(dataModel),
-	}, nil
+	return nil, errorpkg.WithStack(errorpkg.DefaultErrorMethodNotAllowed())
+	//param := dto.AccountDto.ToBoSendVerifyCodeParam(req)
+	//dataModel, err := s.userAuthBizRepo.SendVerifyCode(ctx, param)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//
+	//return &resourcev1.SendSignupCodeResp{
+	//	Data: dto.AccountDto.ToPbSendSignupCodeRespData(dataModel),
+	//}, nil
 }
 
 func (s *userAuth) SendEmailSignupCode(ctx context.Context, req *resourcev1.SendEmailSignupCodeReq) (*resourcev1.SendSignupCodeResp, error) {

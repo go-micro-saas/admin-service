@@ -25,8 +25,10 @@ func exportServices(launcherManager setuputil.LauncherManager, hs *http.Server, 
 		setuputil.GetServiceAPIManager,
 		// conf
 		conf.GetServiceConfig,
+		dto.ToPbGetNodeIdReq,
+		dto.ToBoSendEmailCodeConfig,
 		// idGenerator
-		dto.ToPbGetNodeIdReq, snowflakeapi.DefaultOptions, snowflakeapi.GetSingletonIDGeneratorByHTTPAPI,
+		snowflakeapi.DefaultOptions, snowflakeapi.GetSingletonIDGeneratorByHTTPAPI,
 		// data
 		data.NewUserDataRepo,
 		data.NewUserRegPhoneDataRepo,
@@ -34,6 +36,7 @@ func exportServices(launcherManager setuputil.LauncherManager, hs *http.Server, 
 		data.NewUserVerifyCodeRepo,
 		// biz
 		biz.NewUserAuthBiz,
+		biz.NewSendEmailCodeBiz,
 		// service
 		service.NewUserAuthService,
 		// register services
