@@ -19,13 +19,14 @@ message ServiceConfig {
     }
     // SendEmailCode 发送邮件验证码
     message SendEmailCode {
-      string issuer   = 1 [(validate.rules).string = { min_len: 1 }];
-      string subject  = 2 [(validate.rules).string = { min_len: 1 }];
-      string host     = 3 [(validate.rules).string = { min_len: 1 }];
-      int32 port      = 4 [(validate.rules).int32 = { gte: 1, lte: 65535 }];
-      string username = 5;
-      string password = 6;
-      string from     = 7 [(validate.rules).string = { min_len: 1 }];
+      bool enable     = 1;
+      string issuer   = 2 [(validate.rules).string = { min_len: 1 }];
+      string subject  = 3 [(validate.rules).string = { min_len: 1 }];
+      string host     = 4 [(validate.rules).string = { min_len: 1 }];
+      int32 port      = 5 [(validate.rules).int32 = { gte: 1, lte: 65535 }];
+      string username = 6;
+      string password = 7;
+      string from     = 8 [(validate.rules).string = { min_len: 1 }];
     }
 
     Snowflake snowflake           = 1;

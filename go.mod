@@ -9,7 +9,7 @@ require (
 	github.com/go-micro-saas/service-api v0.0.16
 	github.com/google/wire v0.6.0
 	github.com/gorilla/websocket v1.5.3
-	github.com/ikaiguang/go-srv-kit v0.3.33
+	github.com/ikaiguang/go-srv-kit v0.3.34
 	github.com/stretchr/testify v1.10.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20241104194629-dd2ea8efbc28
 	google.golang.org/grpc v1.67.1

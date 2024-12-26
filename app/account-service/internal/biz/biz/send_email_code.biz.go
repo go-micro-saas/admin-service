@@ -23,22 +23,41 @@ func NewSendEmailCodeBiz(
 	cfg *bo.SendEmailCodeConfig,
 ) (bizrepos.SendEmailCodeBizRepo, func(), error) {
 	logHelper := log.NewHelper(log.With(logger, "module", "account-service/biz/send_email_code"))
-	emailClient, err := emailpkg.NewClient(*cfg.Sender)
+	emailClient, cleanup, err := initEmailClient(cfg, logHelper)
 	if err != nil {
-		e := errorpkg.ErrorInternalError(err.Error())
-		return nil, nil, errorpkg.WithStack(e)
-	}
-	cleanup := func() {
-		cErr := emailClient.Close()
-		if cErr != nil {
-			logHelper.Errorw("msg", "close email client error", "error", cErr)
-		}
+		return nil, nil, err
 	}
 	return &sendEmailCodeBiz{
 		log:            logHelper,
 		emailClient:    emailClient,
 		messageExample: cfg.Message,
 	}, cleanup, nil
+}
+
+func initEmailClient(cfg *bo.SendEmailCodeConfig, logHelper *log.Helper) (emailpkg.Client, func(), error) {
+	if cfg.Enable {
+		emailClient, err := emailpkg.NewClient(*cfg.Sender)
+		if err != nil {
+			e := errorpkg.ErrorInternalError(err.Error())
+			return nil, nil, errorpkg.WithStack(e)
+		}
+		cleanup := func() {
+			cErr := emailClient.Close()
+			if cErr != nil {
+				logHelper.Errorw("msg", "close email client error", "error", cErr)
+			}
+		}
+		return emailClient, cleanup, nil
+	}
+
+	// default
+	client, err := emailpkg.DefaultClient(*cfg.Sender)
+	if err != nil {
+		e := errorpkg.ErrorInternalError(err.Error())
+		return nil, nil, errorpkg.WithStack(e)
+	}
+	cleanup := func() {}
+	return client, cleanup, nil
 }
 
 func (s *sendEmailCodeBiz) SendEmailCode(ctx context.Context, param *bo.SendEmailCodeParam) (*bo.SendEmailCodeReply, error) {

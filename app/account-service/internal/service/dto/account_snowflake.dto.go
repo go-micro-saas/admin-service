@@ -27,6 +27,9 @@ func ToPbGetNodeIdReq(cfg *conf.ServiceConfig) (*nodeidresourcev1.GetNodeIdReq, 
 }
 
 func ToBoSendEmailCodeConfig(cfg *conf.ServiceConfig) (*bo.SendEmailCodeConfig, error) {
+	if !cfg.GetAccountService().GetSendEmailCode().GetEnable() {
+		return &bo.SendEmailCodeConfig{}, nil
+	}
 	emailConf := cfg.GetAccountService().GetSendEmailCode()
 	if emailConf == nil {
 		e := errorpkg.ErrorInvalidParameter("send_email_code config is nil")
@@ -44,12 +47,13 @@ func ToBoSendEmailCodeConfig(cfg *conf.ServiceConfig) (*bo.SendEmailCodeConfig, 
 		Password: emailConf.GetPassword(),
 	}
 	res := &bo.SendEmailCodeConfig{
+		Enable: emailConf.GetEnable(),
 		Sender: sender,
 		Message: emailpkg.Message{
-			From:    emailConf.From,
+			From:    emailConf.GetFrom(),
 			To:      nil,
 			Cc:      "",
-			Subject: emailConf.Subject,
+			Subject: emailConf.GetSubject(),
 			Body:    "",
 		},
 	}

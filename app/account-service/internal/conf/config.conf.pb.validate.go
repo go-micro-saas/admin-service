@@ -470,6 +470,8 @@ func (m *ServiceConfig_AccountService_SendEmailCode) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for Enable
+
 	if utf8.RuneCountInString(m.GetIssuer()) < 1 {
 		err := ServiceConfig_AccountService_SendEmailCodeValidationError{
 			field:  "Issuer",
