@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package saas.api.account.errorv1;
+
+// 多语言特定包名，用于源代码引用
+option go_package           = "github.com/go-micro-saas/admin-service/api/admin-service/v1/errors;errorv1";
+option java_multiple_files  = true;
+option java_package         = "saas.api.account.errorv1";
+option java_outer_classname = "SaasApiAccountErrorV1";
+
+import "errors/errors.proto";
+
+// ERROR user error
+enum ERROR {
+  option (errors.default_code) = 500;
+
+  UNKNOWN                         = 0 [(errors.code) = 500];          // 未知错误
+  S103_USER_NOT_EXIST             = 103000001 [(errors.code) = 400];  // 用户不存在
+  S103_USER_EXIST                 = 103000002 [(errors.code) = 400];  // 用户已存在
+  S103_USER_NAME_INVALID          = 103000003 [(errors.code) = 400];  // 用户名不合法
+  S103_USER_NAME_EXIST            = 103000004 [(errors.code) = 400];  // 用户名已存在
+  S103_USER_PASSWORD_INVALID      = 103000005 [(errors.code) = 400];  // 用户密码不合法
+  S103_USER_PASSWORD_INCORRECT    = 103000006 [(errors.code) = 400];  // 用户密码不正确
+  S103_USER_TOKEN_INVALID         = 103000007 [(errors.code) = 400];  // 令牌已失效
+  S103_USER_ACCOUNT_EXPIRE        = 103000008 [(errors.code) = 400];  // 账户已过期
+  S103_USER_STATUS_NOT_ALLOW      = 103000009 [(errors.code) = 400];  // 无效的登录状态
+  S103_USER_ACTIVE_TIME_INVALID   = 103000010 [(errors.code) = 400];  // 不在有效的激活期间
+  S103_INVALID_PHONE              = 103000011 [(errors.code) = 400];  // 无效的手机号
+  S103_INVALID_EMAIL              = 103000012 [(errors.code) = 400];  // 无效的邮箱
+  S103_PASSWORD_NOT_MATCH_CONFIRM = 103000013 [(errors.code) = 400];  // 密码不匹配
+  S103_PASSWORD_NOT_MATCH_RULE    = 103000014 [(errors.code) = 400];  // 密码不符合规则
+  S103_PASSWORD_INCORRECT         = 103000015 [(errors.code) = 400];  // 密码不正确
+  S103_VERIFY_CODE_INCORRECT      = 103000016 [(errors.code) = 400];  // 验证码不正确
+}
