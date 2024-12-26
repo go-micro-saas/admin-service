@@ -39,16 +39,15 @@ func ToBoSendEmailCodeConfig(cfg *conf.ServiceConfig) (*bo.SendEmailCodeConfig, 
 		e := errorpkg.ErrorInvalidParameter(err.Error())
 		return nil, errorpkg.WithStack(e)
 	}
-	sender := &emailpkg.Sender{
-		Issuer:   emailConf.GetIssuer(),
-		Host:     emailConf.GetHost(),
-		Port:     int(emailConf.GetPort()),
-		Username: emailConf.GetUsername(),
-		Password: emailConf.GetPassword(),
-	}
 	res := &bo.SendEmailCodeConfig{
 		Enable: emailConf.GetEnable(),
-		Sender: sender,
+		Sender: emailpkg.Sender{
+			Issuer:   emailConf.GetIssuer(),
+			Host:     emailConf.GetHost(),
+			Port:     int(emailConf.GetPort()),
+			Username: emailConf.GetUsername(),
+			Password: emailConf.GetPassword(),
+		},
 		Message: emailpkg.Message{
 			From:    emailConf.GetFrom(),
 			To:      nil,

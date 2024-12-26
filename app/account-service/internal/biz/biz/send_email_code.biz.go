@@ -36,7 +36,7 @@ func NewSendEmailCodeBiz(
 
 func initEmailClient(cfg *bo.SendEmailCodeConfig, logHelper *log.Helper) (emailpkg.Client, func(), error) {
 	if cfg.Enable {
-		emailClient, err := emailpkg.NewClient(*cfg.Sender)
+		emailClient, err := emailpkg.NewClient(cfg.Sender)
 		if err != nil {
 			e := errorpkg.ErrorInternalError(err.Error())
 			return nil, nil, errorpkg.WithStack(e)
@@ -51,7 +51,7 @@ func initEmailClient(cfg *bo.SendEmailCodeConfig, logHelper *log.Helper) (emailp
 	}
 
 	// default
-	client, err := emailpkg.DefaultClient(*cfg.Sender)
+	client, err := emailpkg.DefaultClient(cfg.Sender)
 	if err != nil {
 		e := errorpkg.ErrorInternalError(err.Error())
 		return nil, nil, errorpkg.WithStack(e)
