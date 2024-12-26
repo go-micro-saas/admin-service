@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package saas.api.admin.resourcev1;
+
+// 多语言特定包名，用于源代码引用
+option go_package           = "github.com/go-micro-saas/admin-service/api/admin-service/v1/resources;resourcev1";
+option java_multiple_files  = true;
+option java_package         = "saas.api.admin.resourcev1";
+option java_outer_classname = "SaasApiAdminResourceV1";
+
+// UserRegPhone 用户_注册_手机
+message UserRegPhone {
+  // id ID
+  uint64 id = 1;
+  // created_time 创建时间
+  string created_time = 2;
+  // updated_time 最后修改时间
+  string updated_time = 3;
+  // deleted_time 删除时间
+  uint64 deleted_time = 4;
+  // user_id uid
+  uint64 user_id = 5;
+  // user_phone 手机
+  string user_phone = 6;
+}
