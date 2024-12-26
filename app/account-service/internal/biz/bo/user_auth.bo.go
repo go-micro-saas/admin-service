@@ -1,6 +1,7 @@
 package bo
 
 import (
+	"encoding/json"
 	enumv1 "github.com/go-micro-saas/account-service/api/account-service/v1/enums"
 	errorv1 "github.com/go-micro-saas/account-service/api/account-service/v1/errors"
 	passwordpkg "github.com/ikaiguang/go-srv-kit/kit/password"
@@ -83,6 +84,28 @@ func (s *SendVerifyCodeParam) Validate() error {
 type SendVerifyCodeReply struct {
 	IsSendSuccess bool   // 是否发送成功
 	Code          string // code
+}
+
+type SendVerifyCodeEventParam struct {
+	VerifyAccount string                                   // 用户标识；手机、邮箱、。。。
+	VerifyType    enumv1.UserVerifyTypeEnum_UserVerifyType //
+	VerifyCode    string                                   // 验证码
+}
+
+func (s *SendVerifyCodeEventParam) MarshalToJSON() ([]byte, error) {
+	buf, err := json.Marshal(s)
+	if err != nil {
+		return nil, errorpkg.WithStack(errorpkg.ErrorInternalServer(err.Error()))
+	}
+	return buf, nil
+}
+
+func (s *SendVerifyCodeEventParam) UnmarshalFromJSON(buf []byte) error {
+	err := json.Unmarshal(buf, s)
+	if err != nil {
+		return errorpkg.WithStack(errorpkg.ErrorInternalServer(err.Error()))
+	}
+	return nil
 }
 
 type ConfirmVerifyCodeParam struct {

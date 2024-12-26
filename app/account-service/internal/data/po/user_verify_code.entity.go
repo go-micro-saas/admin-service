@@ -11,7 +11,7 @@ import (
 	time "time"
 )
 
-var DefaultVerifyCodeExpiredTime = time.Minute * 5
+var DefaultVerifyCodeExpiredTime = time.Minute * 10
 
 var _ = time.Time{}
 

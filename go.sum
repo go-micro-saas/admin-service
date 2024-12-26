@@ -191,6 +191,8 @@ github.com/hashicorp/serf v0.10.1 h1:Z1H2J60yRKvfDYAOZLd2MU0ND4AH/WDz7xYHDWQsIPY
 github.com/hashicorp/serf v0.10.1/go.mod h1:yL2t6BqATOLGc5HF7qbFkTfXoPIY0WZdWHfEvMqbG+4=
 github.com/ikaiguang/go-srv-kit v0.3.32 h1:mNtVEObF5P7RPYWi5/BDZ5gXhnEr6g1HcdF8vidfea4=
 github.com/ikaiguang/go-srv-kit v0.3.32/go.mod h1:JvB1nISbJ1+GwGrbGtpPVfHwWGQ53Xx89aSndQr2rLQ=
+github.com/ikaiguang/go-srv-kit v0.3.33 h1:urVibxI3S45M+msLguQqGbs9V0MHpSMeJaCBaWDY1CM=
+github.com/ikaiguang/go-srv-kit v0.3.33/go.mod h1:FTXhY4liJhfNb25n/AfOZDPURqsWGNPh655jWRlGYbA=
 github.com/jackc/pgpassfile v1.0.0 h1:/6Hmqy13Ss2zCq62VdNG8tM1wchn8zjSGOBJ6icpsIM=
 github.com/jackc/pgpassfile v1.0.0/go.mod h1:CEx0iS5ambNFdcRtxPj5JhEz+xB6uRky5eyVu/W2HEg=
 github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 h1:iCEnooe7UlwOQYpKFhBabPMi4aNAfoODPEFNiAnClxo=
