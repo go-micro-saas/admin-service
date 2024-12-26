@@ -1,0 +1,17 @@
+account_service:
+  snowflake:
+    instance_id: "${app.project_name}/${app.server_name}/${app.server_env}/${app.server_version}"
+    instance_name: "account-service"
+    metadata:
+      service: account-service
+  send_email_code:
+    enable: true
+    issuer: UUFFF
+    subject: UUFFF.COM
+    host: smtp.qiye.aliyun.com
+    port: 465
+    username: testdata
+    password: testdata
+    from: noreply@uufff.com
+
+

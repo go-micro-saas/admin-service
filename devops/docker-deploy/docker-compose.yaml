@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  my-account-service:
+    image: account-service:latest
+    container_name: my-account-service
+    ports:
+      - "20301:20301"
+      - "20302:20302"
+    networks:
+      - my-network
+    volumes:
+      - my_account_service_data:/myworkspace/golang/src/workspace/runtime
+      - ./configs:/myworkspace/golang/src/workspace/configs
+    environment:
+      TZ: Asia/Shanghai
+    #entrypoint: ["/bin/bash"]
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:20301/api/v1/auth/ping" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+networks:
+  my-network: # 已有的网络的名称
+    external: true  # 标记为外部网络，表示这是已存在的网络
+
+volumes:
+  my_account_service_data:
+    driver: local
