@@ -3,10 +3,10 @@ server:
   http:
     enable: true
     network:
-    addr: 0.0.0.0:20301
+    addr: 0.0.0.0:20401
     timeout: 60s
   grpc:
     enable: true
     network:
-    addr: 0.0.0.0:20302
+    addr: 0.0.0.0:20402
     timeout: 60s

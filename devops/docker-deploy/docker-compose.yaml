@@ -5,8 +5,8 @@ services:
     image: admin-service:latest
     container_name: my-admin-service
     ports:
-      - "20301:20301"
-      - "20302:20302"
+      - "20401:20401"
+      - "20402:20402"
     networks:
       - my-network
     volumes:
@@ -16,7 +16,7 @@ services:
       TZ: Asia/Shanghai
     #entrypoint: ["/bin/bash"]
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:20301/api/v1/admin/auth/ping" ]
+      test: [ "CMD", "curl", "-f", "http://localhost:20401/api/v1/admin/auth/ping" ]
       interval: 30s
       timeout: 5s
       retries: 3
