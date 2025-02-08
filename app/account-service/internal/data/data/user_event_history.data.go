@@ -6,6 +6,7 @@ import (
 	"bytes"
 	context "context"
 	"database/sql"
+	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/data/po"
 	datarepos "github.com/go-micro-saas/account-service/app/account-service/internal/data/repo"
 	schemas "github.com/go-micro-saas/account-service/app/account-service/internal/data/schema/user_event_history"
@@ -17,13 +18,16 @@ import (
 
 // userEventHistoryRepo repo
 type userEventHistoryRepo struct {
+	log                    *log.Helper
 	dbConn                 *gorm.DB                 // *gorm.DB
 	UserEventHistorySchema schemas.UserEventHistory // UserEventHistory
 }
 
 // NewUserEventHistoryRepo new data repo
-func NewUserEventHistoryRepo(dbConn *gorm.DB) datarepos.UserEventHistoryRepo {
+func NewUserEventHistoryRepo(logger log.Logger, dbConn *gorm.DB) datarepos.UserEventHistoryRepo {
+	logHelper := log.NewHelper(log.With(logger, "module", "account-service/data/user_event_history"))
 	return &userEventHistoryRepo{
+		log:    logHelper,
 		dbConn: dbConn,
 	}
 }

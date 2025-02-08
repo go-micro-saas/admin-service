@@ -317,14 +317,14 @@ func (s *userAuth) sendEmailCode(ctx context.Context, param *bo.SendVerifyCodePa
 func (s *userAuth) sendPhoneCode(ctx context.Context, param *bo.SendVerifyCodeParam) (*resourcev1.SendVerifyCodeResp, error) {
 	return nil, errorpkg.WithStack(errorpkg.DefaultErrorMethodNotAllowed())
 
-	dataModel, err := s.userAuthBizRepo.SendVerifyCode(ctx, param)
-	if err != nil {
-		return nil, err
-	}
-
-	return &resourcev1.SendVerifyCodeResp{
-		Data: dto.AccountDto.ToPbSendSignupCodeRespData(dataModel),
-	}, nil
+	//dataModel, err := s.userAuthBizRepo.SendVerifyCode(ctx, param)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//
+	//return &resourcev1.SendVerifyCodeResp{
+	//	Data: dto.AccountDto.ToPbSendSignupCodeRespData(dataModel),
+	//}, nil
 }
 
 func (s *userAuth) SendPhoneLoginCode(ctx context.Context, req *resourcev1.SendPhoneVerifyCodeReq) (*resourcev1.SendVerifyCodeResp, error) {
