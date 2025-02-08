@@ -297,6 +297,11 @@ func (s *userAuthBiz) RefreshToken(ctx context.Context, refreshToken string) (*b
 }
 
 func (s *userAuthBiz) SignupByPhone(ctx context.Context, in *bo.SignupByPhoneParam) (*po.User, *bo.SignTokenResp, error) {
+	return nil, nil, errorpkg.WithStack(errorpkg.ErrorForbidden(""))
+	//return s.signupByPhone(ctx, in)
+}
+
+func (s *userAuthBiz) signupByPhone(ctx context.Context, in *bo.SignupByPhoneParam) (*po.User, *bo.SignTokenResp, error) {
 	if regexpkg.IsPhone(in.Phone) == false {
 		e := errorv1.ErrorS104InvalidPhone("无效的手机号")
 		return nil, nil, errorpkg.WithStack(e)
@@ -366,6 +371,11 @@ func (s *userAuthBiz) SignupByPhone(ctx context.Context, in *bo.SignupByPhonePar
 }
 
 func (s *userAuthBiz) SignupByEmail(ctx context.Context, in *bo.SignupByEmailParam) (*po.User, *bo.SignTokenResp, error) {
+	return nil, nil, errorpkg.WithStack(errorpkg.ErrorForbidden(""))
+	//return s.signupByEmail(ctx, in)
+}
+
+func (s *userAuthBiz) signupByEmail(ctx context.Context, in *bo.SignupByEmailParam) (*po.User, *bo.SignTokenResp, error) {
 	if regexpkg.IsEmail(in.Email) == false {
 		e := errorv1.ErrorS104InvalidEmail("无效的邮箱")
 		return nil, nil, errorpkg.WithStack(e)
