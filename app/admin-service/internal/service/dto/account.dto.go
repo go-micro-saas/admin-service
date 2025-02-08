@@ -96,6 +96,7 @@ func (s *accountDto) ToPbSendSignupCodeRespData(dataModel *bo.SendVerifyCodeRepl
 func (s *accountDto) ToBoSendEmailCodeParam(dataModel *bo.SendVerifyCodeReply) *bo.SendEmailCodeParam {
 	res := &bo.SendEmailCodeParam{
 		VerifyAccount: dataModel.VerifyAccount,
+		VerifyType:    dataModel.VerifyType,
 		VerifyCode:    dataModel.VerifyCode,
 	}
 	return res

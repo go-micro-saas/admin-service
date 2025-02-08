@@ -77,3 +77,14 @@ message UserVerifyStatusEnum {
     CANCELLED   = 4;  // 已取消
   }
 }
+
+message UserEventStatusEnum {
+  enum UserEventStatus {
+    UNSPECIFIED   = 0;  // 未指定
+    SUCCESS       = 1;  // 成功
+    FAILED        = 2;  // 失败的状态
+    TRYING        = 3;  // 重试中
+    RETRY_SUCCESS = 4;  // 重试成功
+    RETRY_FAILED  = 5;  // 重试失败
+  }
+}

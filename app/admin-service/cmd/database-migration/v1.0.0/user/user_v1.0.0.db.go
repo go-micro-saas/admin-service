@@ -3,6 +3,7 @@ package dbv1_0_0_user
 import (
 	"context"
 	schemas "github.com/go-micro-saas/admin-service/app/admin-service/internal/data/schema"
+	eventschemas "github.com/go-micro-saas/admin-service/app/admin-service/internal/data/schema/admin_event_history"
 	userschemas "github.com/go-micro-saas/admin-service/app/admin-service/internal/data/schema/user"
 	emailschemas "github.com/go-micro-saas/admin-service/app/admin-service/internal/data/schema/user_reg_email"
 	phoneschemas "github.com/go-micro-saas/admin-service/app/admin-service/internal/data/schema/user_reg_phone"
@@ -53,6 +54,12 @@ func (s *Migrate) Upgrade(ctx context.Context) error {
 	}
 	// 创建表
 	mr = coceschemas.UserVerifyCodeSchema.CreateTableMigrator(migrator)
+	if err := s.migrateRepo.RunMigratorUp(ctx, mr); err != nil {
+		e := errorpkg.ErrorInternalError("")
+		return errorpkg.Wrap(e, err)
+	}
+	// 创建表
+	mr = eventschemas.AdminEventHistorySchema.CreateTableMigrator(migrator)
 	if err := s.migrateRepo.RunMigratorUp(ctx, mr); err != nil {
 		e := errorpkg.ErrorInternalError("")
 		return errorpkg.Wrap(e, err)
