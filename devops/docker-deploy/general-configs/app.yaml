@@ -4,7 +4,7 @@ app:
   server_name: example-service
   # 开发环境；值：develop、testing、preview、production
   server_env: testing
-  server_version: v1.0.0
+  server_version: latest
   # ID: apputil.ID 服务唯一标识; 也用于服务注册发现
   id: "${app.project_name}:${app.server_name}:${app.server_env}:${app.server_version}"
   # 配置方式；值：local、consul
