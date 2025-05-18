@@ -1,5 +1,6 @@
 account_service:
   snowflake:
+    enable: true
     instance_id: "${app.project_name}/${app.server_name}/${app.server_env}/${app.server_version}"
     instance_name: "account-service"
     metadata:
@@ -10,8 +11,8 @@ account_service:
     subject: UUFFF.COM
     host: smtp.qiye.aliyun.com
     port: 465
-    username: testdata
-    password: testdata
+    username: noreply@uufff.com
+    password: NaeTQxpmLzb56O8H
     from: noreply@uufff.com
 
 

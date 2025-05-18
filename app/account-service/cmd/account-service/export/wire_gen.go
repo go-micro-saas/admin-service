@@ -40,7 +40,7 @@ func exportServices(launcherManager setuputil.LauncherManager, hs *http.Server, 
 	if err != nil {
 		return nil, nil, err
 	}
-	v := snowflakeapi.DefaultOptions(logger)
+	v := dto.GetNodeIDOptions(logger, serviceConfig)
 	snowflake, cleanup, err := snowflakeapi.GetSingletonIDGeneratorByHTTPAPI(serviceAPIManager, getNodeIdReq, v...)
 	if err != nil {
 		return nil, nil, err

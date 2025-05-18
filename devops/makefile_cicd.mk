@@ -52,7 +52,7 @@ deploy-service-config:
 	go run ./app/account-service/cmd/store-configuration/... \
       -conf=./app/account-service/configs \
       -source_dir ./devops/docker-deploy/service-configs \
-      -store_dir go-micro-saas/account-service/testing/v1.0.0
+      -store_dir go-micro-saas/account-service/testing/latest
 
 .PHONY: deploy-database-migration
 # deploy :-->: database migration

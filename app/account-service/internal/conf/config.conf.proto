@@ -13,9 +13,10 @@ message ServiceConfig {
   message AccountService {
     // Snowflake nodeid for snowflake
     message Snowflake {
-      string instance_id           = 1 [(validate.rules).string = { min_len: 1 }];
-      string instance_name         = 2;
-      map<string, string> metadata = 3;
+      bool enable                  = 1;
+      string instance_id           = 2 [(validate.rules).string = { min_len: 1 }];
+      string instance_name         = 3;
+      map<string, string> metadata = 4;
     }
     // SendEmailCode 发送邮件验证码
     message SendEmailCode {

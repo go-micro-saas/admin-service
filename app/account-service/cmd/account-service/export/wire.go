@@ -27,10 +27,9 @@ func exportServices(launcherManager setuputil.LauncherManager, hs *http.Server, 
 		setuputil.GetRabbitmqConn,
 		// conf
 		conf.GetServiceConfig,
-		dto.ToPbGetNodeIdReq,
 		dto.ToBoSendEmailCodeConfig,
 		// idGenerator
-		snowflakeapi.DefaultOptions, snowflakeapi.GetSingletonIDGeneratorByHTTPAPI,
+		dto.ToPbGetNodeIdReq, dto.GetNodeIDOptions, snowflakeapi.GetSingletonIDGeneratorByHTTPAPI,
 		// data
 		data.NewUserDataRepo,
 		data.NewUserRegPhoneDataRepo,
