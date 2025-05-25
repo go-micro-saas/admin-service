@@ -64,21 +64,25 @@ func (s *userRegEmailDataRepo) CreateWithDBConn(ctx context.Context, dbConn *gor
 func (s *userRegEmailDataRepo) CreateWithTransaction(ctx context.Context, tx gormpkg.TransactionInterface, dataModel *po.UserRegEmail) (err error) {
 	// 在外部设置即可
 	fc := func(ctx context.Context, tx *gorm.DB) error {
-		return tx.WithContext(ctx).
+		err = tx.WithContext(ctx).
 			Table(s.UserRegEmailSchema.TableName()).
 			Create(dataModel).Error
+		if err != nil {
+			if gormpkg.IsErrDuplicatedKey(err) {
+				e := errorv1.DefaultErrorS103UserExist()
+				return errorpkg.Wrap(e, err)
+			} else {
+				e := errorpkg.ErrorInternalServer("")
+				return errorpkg.Wrap(e, err)
+			}
+		}
+		return nil
 	}
 	err = tx.Do(ctx, fc)
 	if err != nil {
-		if gormpkg.IsErrDuplicatedKey(err) {
-			e := errorv1.DefaultErrorS103UserExist()
-			return errorpkg.Wrap(e, err)
-		} else {
-			e := errorpkg.ErrorInternalServer("")
-			return errorpkg.Wrap(e, err)
-		}
+		return err
 	}
-	return
+	return err
 }
 
 // existCreate exist create
