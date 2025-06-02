@@ -599,8 +599,8 @@ type SignupByPhoneReq struct {
 	unknownFields protoimpl.UnknownFields
 
 	Phone           string `protobuf:"bytes,1,opt,name=phone,proto3" json:"phone,omitempty"`
-	Password        string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
-	PasswordConfirm string `protobuf:"bytes,3,opt,name=password_confirm,json=passwordConfirm,proto3" json:"password_confirm,omitempty"`
+	Password        string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`                                      // md5(密码)
+	PasswordConfirm string `protobuf:"bytes,3,opt,name=password_confirm,json=passwordConfirm,proto3" json:"password_confirm,omitempty"` // md5(密码)
 	Code            string `protobuf:"bytes,4,opt,name=code,proto3" json:"code,omitempty"`
 }
 
@@ -670,8 +670,8 @@ type SignupByEmailReq struct {
 	unknownFields protoimpl.UnknownFields
 
 	Email           string `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
-	Password        string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
-	PasswordConfirm string `protobuf:"bytes,3,opt,name=password_confirm,json=passwordConfirm,proto3" json:"password_confirm,omitempty"`
+	Password        string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`                                      // md5(密码)
+	PasswordConfirm string `protobuf:"bytes,3,opt,name=password_confirm,json=passwordConfirm,proto3" json:"password_confirm,omitempty"` // md5(密码)
 	Code            string `protobuf:"bytes,4,opt,name=code,proto3" json:"code,omitempty"`
 }
 
@@ -741,7 +741,7 @@ type LoginByPhoneReq struct {
 	unknownFields protoimpl.UnknownFields
 
 	Phone    string `protobuf:"bytes,1,opt,name=phone,proto3" json:"phone,omitempty"`
-	Password string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	Password string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"` // md5(密码)
 	Code     string `protobuf:"bytes,3,opt,name=code,proto3" json:"code,omitempty"`
 }
 
@@ -804,7 +804,7 @@ type LoginByEmailReq struct {
 	unknownFields protoimpl.UnknownFields
 
 	Email    string `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
-	Password string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	Password string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"` // md5(密码)
 	Code     string `protobuf:"bytes,3,opt,name=code,proto3" json:"code,omitempty"`
 }
 
@@ -1126,9 +1126,9 @@ type ChangePasswordReq struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	OldPassword        string `protobuf:"bytes,1,opt,name=old_password,json=oldPassword,proto3" json:"old_password,omitempty"`
-	NewPassword        string `protobuf:"bytes,2,opt,name=new_password,json=newPassword,proto3" json:"new_password,omitempty"`
-	NewPasswordConfirm string `protobuf:"bytes,3,opt,name=new_password_confirm,json=newPasswordConfirm,proto3" json:"new_password_confirm,omitempty"`
+	OldPassword        string `protobuf:"bytes,1,opt,name=old_password,json=oldPassword,proto3" json:"old_password,omitempty"`                        // md5(密码)
+	NewPassword        string `protobuf:"bytes,2,opt,name=new_password,json=newPassword,proto3" json:"new_password,omitempty"`                        // md5(密码)
+	NewPasswordConfirm string `protobuf:"bytes,3,opt,name=new_password_confirm,json=newPasswordConfirm,proto3" json:"new_password_confirm,omitempty"` // md5(密码)
 }
 
 func (x *ChangePasswordReq) Reset() {

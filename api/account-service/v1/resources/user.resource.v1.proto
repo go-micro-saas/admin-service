@@ -46,14 +46,38 @@ message User {
   //  string password_hash = 15;
 }
 
-// UserIdReq id
-message UserIdReq {
-  int64 user_id = 1 [(validate.rules).int64 = { gt: 0 }];
+message GetUserInfoReq {
+  uint64 user_id = 1 [(validate.rules).uint64 = { gt: 0 }];
+}
+message GetUserInfoResp {
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  AccountInfo data = 100;
+}
+message AccountInfo {
+  string created_time                          = 2;   // 创建时间
+  uint64 user_id                               = 5;   // uid
+  string user_phone                            = 6;   // 手机
+  string user_email                            = 7;   // 邮箱
+  string user_nickname                         = 8;   // 昵称
+  string user_avatar                           = 9;   // 头像
+  enumv1.UserGenderEnum.UserGender user_gender = 10;  // 性别；0：INIT，1：MALE，2：FEMALE，3：SECRET
+  enumv1.UserStatusEnum.UserStatus user_status = 12;  // 状态；0：INIT，1：ENABLE，2：DISABLE，3：WHITELIST，4：BLACKLIST，5：DELETED
 }
 
-// UserIdsReq ids
-message UserIdsReq {
-  repeated int64 user_ids = 1 [(validate.rules).repeated = { min_items: 1 }];
+message GetUserListReq {
+  repeated uint64 user_id = 1 [(validate.rules).repeated = { min_items: 1 }];
+}
+message GetUserListResp {
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  repeated AccountInfo data = 100;
 }
 
 // UserListReq list
@@ -76,4 +100,38 @@ message UserListRespData {
 // UserProcessResult process result
 message UserProcessResult {
   bool is_success = 1;
+}
+
+message CreateUserReq {
+  string user_phone                            = 1 [(validate.rules).string = { pattern: "^1[1-9]\\d{9}$" }];  // 电话
+  string user_email                            = 2 [(validate.rules).string = { email: true }];                // 邮箱
+  string user_nickname                         = 3 [(validate.rules).string = { ignore_empty: true }];         // 昵称
+  string user_avatar                           = 4 [(validate.rules).string = { ignore_empty: true }];         // 头像
+  enumv1.UserGenderEnum.UserGender user_gender = 5 [(validate.rules).enum = { not_in: [ 0 ] }];                // 性别；0：INIT，1：MALE，2：FEMALE，3：SECRET
+  enumv1.UserStatusEnum.UserStatus user_status = 6 [(validate.rules).enum = { not_in: [ 0 ] }];                // 状态；0：INIT，1：ENABLE，2：DISABLE，3：WHITELIST，4：BLACKLIST，5：DELETED
+  string password                              = 7 [(validate.rules).string = { pattern: "^.{6,}$" }];         // md5(密码)
+}
+message CreateUserByEmailReq {
+  string user_email                            = 2 [(validate.rules).string = { email: true }];         // 邮箱
+  string user_nickname                         = 3 [(validate.rules).string = { ignore_empty: true }];  // 昵称
+  string user_avatar                           = 4 [(validate.rules).string = { ignore_empty: true }];  // 头像
+  enumv1.UserGenderEnum.UserGender user_gender = 5 [(validate.rules).enum = { not_in: [ 0 ] }];         // 性别；0：INIT，1：MALE，2：FEMALE，3：SECRET
+  enumv1.UserStatusEnum.UserStatus user_status = 6 [(validate.rules).enum = { not_in: [ 0 ] }];         // 状态；0：INIT，1：ENABLE，2：DISABLE，3：WHITELIST，4：BLACKLIST，5：DELETED
+  string password                              = 7 [(validate.rules).string = { pattern: "^.{6,}$" }];  // md5(密码)
+}
+message CreateUserByPhoneReq {
+  string user_phone                            = 2 [(validate.rules).string = { pattern: "^1[1-9]\\d{9}$" }];  // 电话
+  string user_nickname                         = 3 [(validate.rules).string = { ignore_empty: true }];         // 昵称
+  string user_avatar                           = 4 [(validate.rules).string = { ignore_empty: true }];         // 头像
+  enumv1.UserGenderEnum.UserGender user_gender = 5 [(validate.rules).enum = { not_in: [ 0 ] }];                // 性别；0：INIT，1：MALE，2：FEMALE，3：SECRET
+  enumv1.UserStatusEnum.UserStatus user_status = 6 [(validate.rules).enum = { not_in: [ 0 ] }];                // 状态；0：INIT，1：ENABLE，2：DISABLE，3：WHITELIST，4：BLACKLIST，5：DELETED
+  string password                              = 7 [(validate.rules).string = { pattern: "^.{6,}$" }];         // md5(密码)
+}
+message CreateUserResp {
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  AccountInfo data = 100;
 }

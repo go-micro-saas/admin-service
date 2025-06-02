@@ -69,27 +69,27 @@ message SendVerifyCodeRespData {
 
 message SignupByPhoneReq {
   string phone            = 1 [(validate.rules).string = { pattern: "^1[1-9]\\d{9}$" }];
-  string password         = 2 [(validate.rules).string = { pattern: "^.{6,}$" }];
-  string password_confirm = 3 [(validate.rules).string = { pattern: "^.{6,}$" }];
+  string password         = 2 [(validate.rules).string = { pattern: "^.{6,}$" }];  // md5(密码)
+  string password_confirm = 3 [(validate.rules).string = { pattern: "^.{6,}$" }];  // md5(密码)
   string code             = 4 [(validate.rules).string = { max_len: 1024 }];
 }
 
 message SignupByEmailReq {
   string email            = 1 [(validate.rules).string = { email: true }];
-  string password         = 2 [(validate.rules).string = { pattern: "^.{6,}$" }];
-  string password_confirm = 3 [(validate.rules).string = { pattern: "^.{6,}$" }];
+  string password         = 2 [(validate.rules).string = { pattern: "^.{6,}$" }];  // md5(密码)
+  string password_confirm = 3 [(validate.rules).string = { pattern: "^.{6,}$" }];  // md5(密码)
   string code             = 4 [(validate.rules).string = { max_len: 1024 }];
 }
 
 message LoginByPhoneReq {
   string phone    = 1 [(validate.rules).string = { pattern: "^1[1-9]\\d{9}$" }];
-  string password = 2 [(validate.rules).string = { pattern: "^.{6,}$" }];
+  string password = 2 [(validate.rules).string = { pattern: "^.{6,}$" }];  // md5(密码)
   string code     = 3 [(validate.rules).string = { max_len: 1024 }];
 }
 
 message LoginByEmailReq {
   string email    = 1 [(validate.rules).string = { email: true }];
-  string password = 2 [(validate.rules).string = { pattern: "^.{6,}$" }];
+  string password = 2 [(validate.rules).string = { pattern: "^.{6,}$" }];  // md5(密码)
   string code     = 3 [(validate.rules).string = { max_len: 1024 }];
 }
 
@@ -121,9 +121,9 @@ message RefreshTokenReq {
 }
 
 message ChangePasswordReq {
-  string old_password         = 1 [(validate.rules).string = { pattern: "^.{6,}$" }];
-  string new_password         = 2 [(validate.rules).string = { pattern: "^.{6,}$" }];
-  string new_password_confirm = 3 [(validate.rules).string = { pattern: "^.{6,}$" }];
+  string old_password         = 1 [(validate.rules).string = { pattern: "^.{6,}$" }];  // md5(密码)
+  string new_password         = 2 [(validate.rules).string = { pattern: "^.{6,}$" }];  // md5(密码)
+  string new_password_confirm = 3 [(validate.rules).string = { pattern: "^.{6,}$" }];  // md5(密码)
 }
 message ChangePasswordResp {
   int32 code                   = 1;
