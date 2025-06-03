@@ -167,3 +167,42 @@ func (s *accountDto) ToPbAccountInfo(dataModel *po.User) *resourcev1.AccountInfo
 	}
 	return newDataModel
 }
+
+func (s *accountDto) ToBoCreateUserParam(req *resourcev1.CreateUserReq) *bo.CreateUserParam {
+	res := &bo.CreateUserParam{
+		UserPhone:    req.UserPhone,
+		UserEmail:    req.UserEmail,
+		UserNickname: req.UserNickname,
+		UserAvatar:   req.UserAvatar,
+		UserGender:   req.UserGender,
+		UserStatus:   req.UserStatus,
+		Password:     req.Password,
+	}
+	return res
+}
+
+func (s *accountDto) ToBoCreateUserParam2(req *resourcev1.CreateUserByEmailReq) *bo.CreateUserParam {
+	res := &bo.CreateUserParam{
+		//UserPhone:    req.UserPhone,
+		UserEmail:    req.UserEmail,
+		UserNickname: req.UserNickname,
+		UserAvatar:   req.UserAvatar,
+		UserGender:   req.UserGender,
+		UserStatus:   req.UserStatus,
+		Password:     req.Password,
+	}
+	return res
+}
+
+func (s *accountDto) ToBoCreateUserParam3(req *resourcev1.CreateUserByPhoneReq) *bo.CreateUserParam {
+	res := &bo.CreateUserParam{
+		//UserEmail:    req.UserEmail,
+		UserPhone:    req.UserPhone,
+		UserNickname: req.UserNickname,
+		UserAvatar:   req.UserAvatar,
+		UserGender:   req.UserGender,
+		UserStatus:   req.UserStatus,
+		Password:     req.Password,
+	}
+	return res
+}

@@ -300,7 +300,6 @@ func (s *userAuthBiz) SignupByPhone(ctx context.Context, in *bo.SignupByPhonePar
 	if regexpkg.IsPhone(in.Phone) == false {
 		e := errorv1.ErrorS103InvalidPhone("无效的手机号")
 		return nil, nil, errorpkg.WithStack(e)
-
 	}
 
 	// passwd
@@ -369,7 +368,6 @@ func (s *userAuthBiz) SignupByEmail(ctx context.Context, in *bo.SignupByEmailPar
 	if regexpkg.IsEmail(in.Email) == false {
 		e := errorv1.ErrorS103InvalidEmail("无效的邮箱")
 		return nil, nil, errorpkg.WithStack(e)
-
 	}
 
 	// passwd

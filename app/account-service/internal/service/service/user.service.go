@@ -55,21 +55,34 @@ func (s *accountService) GetUserInfoList(ctx context.Context, req *resourcev1.Ge
 }
 
 func (s *accountService) CreateUser(ctx context.Context, req *resourcev1.CreateUserReq) (*resourcev1.CreateUserResp, error) {
-	//TODO implement me
-	panic("implement me")
+	param := dto.AccountDto.ToBoCreateUserParam(req)
+	userModel, err := s.userBizRepo.CreateUserByPhone(ctx, param)
+	if err != nil {
+		return nil, err
+	}
+	return &resourcev1.CreateUserResp{
+		Data: dto.AccountDto.ToPbAccountInfo(userModel),
+	}, nil
 }
 
 func (s *accountService) CreateUserByPhone(ctx context.Context, req *resourcev1.CreateUserByPhoneReq) (*resourcev1.CreateUserResp, error) {
-	//TODO implement me
-	panic("implement me")
+	param := dto.AccountDto.ToBoCreateUserParam3(req)
+	userModel, err := s.userBizRepo.CreateUserByPhone(ctx, param)
+	if err != nil {
+		return nil, err
+	}
+	return &resourcev1.CreateUserResp{
+		Data: dto.AccountDto.ToPbAccountInfo(userModel),
+	}, nil
 }
 
 func (s *accountService) CreateUserByEmail(ctx context.Context, req *resourcev1.CreateUserByEmailReq) (*resourcev1.CreateUserResp, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (s *accountService) mustEmbedUnimplementedSrvAccountV1Server() {
-	//TODO implement me
-	panic("implement me")
+	param := dto.AccountDto.ToBoCreateUserParam2(req)
+	userModel, err := s.userBizRepo.CreateUserByEmail(ctx, param)
+	if err != nil {
+		return nil, err
+	}
+	return &resourcev1.CreateUserResp{
+		Data: dto.AccountDto.ToPbAccountInfo(userModel),
+	}, nil
 }

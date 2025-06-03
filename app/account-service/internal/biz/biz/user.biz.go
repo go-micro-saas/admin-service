@@ -4,10 +4,12 @@ import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
 	errorv1 "github.com/go-micro-saas/account-service/api/account-service/v1/errors"
+	"github.com/go-micro-saas/account-service/app/account-service/internal/biz/bo"
 	bizrepos "github.com/go-micro-saas/account-service/app/account-service/internal/biz/repo"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/data/po"
 	datarepos "github.com/go-micro-saas/account-service/app/account-service/internal/data/repo"
 	idpkg "github.com/ikaiguang/go-srv-kit/kit/id"
+	regexpkg "github.com/ikaiguang/go-srv-kit/kit/regex"
 	errorpkg "github.com/ikaiguang/go-srv-kit/kratos/error"
 )
 
@@ -42,7 +44,7 @@ func NewAccountBiz(
 	}
 }
 
-func (s accountBiz) GetUserByUid(ctx context.Context, uid uint64) (*po.User, error) {
+func (s *accountBiz) GetUserByUid(ctx context.Context, uid uint64) (*po.User, error) {
 	userModel, isNotFound, err := s.userDataRepo.QueryOneByUserId(ctx, uid)
 	if err != nil {
 		return nil, err
@@ -54,10 +56,215 @@ func (s accountBiz) GetUserByUid(ctx context.Context, uid uint64) (*po.User, err
 	return userModel, nil
 }
 
-func (s accountBiz) GetUsersByUidList(ctx context.Context, uidList []uint64) ([]*po.User, error) {
+func (s *accountBiz) GetUsersByUidList(ctx context.Context, uidList []uint64) ([]*po.User, error) {
 	userModels, err := s.userDataRepo.QueryByUserIdList(ctx, uidList)
 	if err != nil {
 		return nil, err
 	}
 	return userModels, nil
+}
+
+func (s *accountBiz) CreateUser(ctx context.Context, param *bo.CreateUserParam) (*po.User, error) {
+	if regexpkg.IsPhone(param.UserPhone) == false {
+		e := errorv1.ErrorS103InvalidPhone("无效的手机号")
+		return nil, errorpkg.WithStack(e)
+	}
+	if regexpkg.IsEmail(param.UserEmail) == false {
+		e := errorv1.ErrorS103InvalidEmail("无效的邮箱")
+		return nil, errorpkg.WithStack(e)
+	}
+	// passwd
+	passwdParam := &bo.PasswordParam{
+		Password:        param.Password,
+		PasswordConfirm: param.Password,
+	}
+	passwdHash, err := passwdParam.ValidateAndEncrypt()
+	if err != nil {
+		return nil, err
+	}
+
+	// exist email?
+	_, isNotFound, err := s.userRegEmailDataRepo.QueryOneByUserEmail(ctx, param.UserEmail)
+	if err != nil {
+		return nil, err
+	}
+	if !isNotFound {
+		e := errorv1.ErrorS103UserExist("用户已存在")
+		return nil, errorpkg.WithStack(e)
+	}
+	// exist phone?
+	_, isNotFound, err = s.userRegPhoneDataRepo.QueryOneByUserPhone(ctx, param.UserPhone)
+	if err != nil {
+		return nil, err
+	}
+	if !isNotFound {
+		e := errorv1.ErrorS103UserExist("用户已存在")
+		return nil, errorpkg.WithStack(e)
+	}
+
+	// user
+	var (
+		dataModel = po.NewUserByEmail(param.UserEmail, passwdHash)
+		regEmail  = po.NewUserRegEmail(param.UserEmail)
+		regPhone  = po.NewUserRegPhone(param.UserPhone)
+	)
+	s.attachUserModelByCreateUserParam(dataModel, param)
+	dataModel.UserId, err = s.idGenerator.NextID()
+	if err != nil {
+		e := errorpkg.ErrorInternalServer(err.Error())
+		return nil, errorpkg.WithStack(e)
+	}
+	regEmail.UserId = dataModel.UserId
+	regPhone.UserId = dataModel.UserId
+
+	// create
+	createParam := &po.CreateAccountParam{
+		UserModel:     dataModel,
+		RegPhoneModel: regPhone,
+		RegEmailModel: regEmail,
+	}
+	if err = s.CreateAccount(ctx, createParam); err != nil {
+		return nil, err
+	}
+	return dataModel, nil
+}
+
+func (s *accountBiz) CreateUserByEmail(ctx context.Context, param *bo.CreateUserParam) (*po.User, error) {
+	if regexpkg.IsEmail(param.UserEmail) == false {
+		e := errorv1.ErrorS103InvalidEmail("无效的邮箱")
+		return nil, errorpkg.WithStack(e)
+	}
+	// passwd
+	passwdParam := &bo.PasswordParam{
+		Password:        param.Password,
+		PasswordConfirm: param.Password,
+	}
+	passwdHash, err := passwdParam.ValidateAndEncrypt()
+	if err != nil {
+		return nil, err
+	}
+
+	// exist?
+	_, isNotFound, err := s.userRegEmailDataRepo.QueryOneByUserEmail(ctx, param.UserEmail)
+	if err != nil {
+		return nil, err
+	}
+	if !isNotFound {
+		e := errorv1.ErrorS103UserExist("用户已存在")
+		return nil, errorpkg.WithStack(e)
+	}
+
+	// user
+	var (
+		dataModel = po.NewUserByEmail(param.UserEmail, passwdHash)
+		regModel  = po.NewUserRegEmail(param.UserEmail)
+	)
+	s.attachUserModelByCreateUserParam(dataModel, param)
+	dataModel.UserId, err = s.idGenerator.NextID()
+	if err != nil {
+		e := errorpkg.ErrorInternalServer(err.Error())
+		return nil, errorpkg.WithStack(e)
+	}
+	regModel.UserId = dataModel.UserId
+
+	// create
+	createParam := &po.CreateAccountParam{
+		UserModel:     dataModel,
+		RegPhoneModel: nil,
+		RegEmailModel: regModel,
+	}
+	if err = s.CreateAccount(ctx, createParam); err != nil {
+		return nil, err
+	}
+	return dataModel, nil
+}
+
+func (s *accountBiz) CreateUserByPhone(ctx context.Context, param *bo.CreateUserParam) (*po.User, error) {
+	if regexpkg.IsPhone(param.UserPhone) == false {
+		e := errorv1.ErrorS103InvalidPhone("无效的手机号")
+		return nil, errorpkg.WithStack(e)
+	}
+	// passwd
+	passwdParam := &bo.PasswordParam{
+		Password:        param.Password,
+		PasswordConfirm: param.Password,
+	}
+	passwdHash, err := passwdParam.ValidateAndEncrypt()
+	if err != nil {
+		return nil, err
+	}
+
+	// exist?
+	_, isNotFound, err := s.userRegPhoneDataRepo.QueryOneByUserPhone(ctx, param.UserPhone)
+	if err != nil {
+		return nil, err
+	}
+	if !isNotFound {
+		e := errorv1.ErrorS103UserExist("用户已存在")
+		return nil, errorpkg.WithStack(e)
+	}
+
+	// user
+	var (
+		dataModel = po.NewUserByPhone(param.UserPhone, passwdHash)
+		regModel  = po.NewUserRegPhone(param.UserPhone)
+	)
+	s.attachUserModelByCreateUserParam(dataModel, param)
+	dataModel.UserId, err = s.idGenerator.NextID()
+	if err != nil {
+		e := errorpkg.ErrorInternalServer(err.Error())
+		return nil, errorpkg.WithStack(e)
+	}
+	regModel.UserId = dataModel.UserId
+
+	// create
+	createParam := &po.CreateAccountParam{
+		UserModel:     dataModel,
+		RegPhoneModel: regModel,
+		RegEmailModel: nil,
+	}
+	if err = s.CreateAccount(ctx, createParam); err != nil {
+		return nil, err
+	}
+	return dataModel, nil
+}
+
+func (s *accountBiz) attachUserModelByCreateUserParam(dataModel *po.User, param *bo.CreateUserParam) {
+	dataModel.UserPhone = param.UserPhone
+	dataModel.UserEmail = param.UserEmail
+	dataModel.UserNickname = param.UserNickname
+	dataModel.UserAvatar = param.UserAvatar
+	dataModel.UserGender = param.UserGender
+	dataModel.UserStatus = param.UserStatus
+}
+
+func (s *accountBiz) CreateAccount(ctx context.Context, param *po.CreateAccountParam) (err error) {
+	// 事务
+	tx := s.userDataRepo.NewTransaction(ctx)
+	defer func() {
+		commitErr := tx.CommitAndErrRollback(ctx, err)
+		if commitErr != nil {
+			s.log.WithContext(ctx).Errorw(
+				"mgs", "CreateAccount tx.CommitAndErrRollback failed!",
+				"err", commitErr,
+			)
+		}
+	}()
+	err = s.userDataRepo.CreateWithTransaction(ctx, tx, param.UserModel)
+	if err != nil {
+		return err
+	}
+	if param.RegPhoneModel != nil {
+		err = s.userRegPhoneDataRepo.CreateWithTransaction(ctx, tx, param.RegPhoneModel)
+		if err != nil {
+			return err
+		}
+	}
+	if param.RegEmailModel != nil {
+		err = s.userRegEmailDataRepo.CreateWithTransaction(ctx, tx, param.RegEmailModel)
+		if err != nil {
+			return err
+		}
+	}
+	return err
 }
