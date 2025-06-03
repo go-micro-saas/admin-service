@@ -64,6 +64,21 @@ func (s *accountBiz) GetUsersByUidList(ctx context.Context, uidList []uint64) ([
 	return userModels, nil
 }
 
+func (s *accountBiz) List(ctx context.Context, param *bo.UserListParam) ([]*po.User, int64, error) {
+	queryParam := &po.QueryUserParam{
+		UidList:      param.UidList,
+		ContactPhone: param.ContactPhone,
+		ContactEmail: param.ContactEmail,
+
+		PaginatorArgs: param.PaginatorArgs,
+	}
+	dataModels, counter, err := s.userDataRepo.ListUsers(ctx, queryParam, param.PaginatorArgs)
+	if err != nil {
+		return dataModels, counter, err
+	}
+	return dataModels, counter, err
+}
+
 func (s *accountBiz) CreateUser(ctx context.Context, param *bo.CreateUserParam) (*po.User, error) {
 	if regexpkg.IsPhone(param.UserPhone) == false {
 		e := errorv1.ErrorS103InvalidPhone("无效的手机号")

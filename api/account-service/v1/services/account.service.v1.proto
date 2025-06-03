@@ -29,9 +29,16 @@ service SrvAccountV1 {
     };
   }
   // 账户-获取用户信息列表
-  rpc GetUserInfoList(resourcev1.GetUserListReq) returns (resourcev1.GetUserListResp) {
+  rpc GetUserInfoList(resourcev1.GetUserInfoListReq) returns (resourcev1.GetUserInfoListResp) {
     option (google.api.http) = {
       post: "/api/v1/account/user/info-list"
+      body: "*"
+    };
+  }
+  // 账户-获取用户列表
+  rpc GetUserList(resourcev1.UserListReq) returns (resourcev1.UserListResp) {
+    option (google.api.http) = {
+      post: "/api/v1/account/user/list"
       body: "*"
     };
   }

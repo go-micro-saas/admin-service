@@ -7,6 +7,8 @@ import (
 	servicev1 "github.com/go-micro-saas/account-service/api/account-service/v1/services"
 	bizrepos "github.com/go-micro-saas/account-service/app/account-service/internal/biz/repo"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/service/dto"
+	gormpkg "github.com/ikaiguang/go-srv-kit/data/gorm"
+	pagepkg "github.com/ikaiguang/go-srv-kit/kit/page"
 )
 
 type accountService struct {
@@ -44,13 +46,37 @@ func (s *accountService) GetUserInfo(ctx context.Context, req *resourcev1.GetUse
 	}, nil
 }
 
-func (s *accountService) GetUserInfoList(ctx context.Context, req *resourcev1.GetUserListReq) (*resourcev1.GetUserListResp, error) {
+func (s *accountService) GetUserInfoList(ctx context.Context, req *resourcev1.GetUserInfoListReq) (*resourcev1.GetUserInfoListResp, error) {
 	dataModels, err := s.userBizRepo.GetUsersByUidList(ctx, req.UserIds)
 	if err != nil {
 		return nil, err
 	}
-	return &resourcev1.GetUserListResp{
+	return &resourcev1.GetUserInfoListResp{
 		Data: dto.AccountDto.ToPbAccountInfoList(dataModels),
+	}, nil
+}
+
+func (s *accountService) GetUserList(ctx context.Context, req *resourcev1.UserListReq) (*resourcev1.UserListResp, error) {
+	// paging args
+	pageRequest, pageOption := pagepkg.ParsePageRequest(req.PageRequest)
+
+	// list
+	param := dto.AccountDto.ToBoUserListParam(req)
+	param.PaginatorArgs = &gormpkg.PaginatorArgs{
+		PageRequest: pageRequest,
+		PageOption:  pageOption,
+	}
+	dataModels, dataCount, err := s.userBizRepo.List(ctx, param)
+	if err != nil {
+		return nil, err
+	}
+
+	// paging result
+	return &resourcev1.UserListResp{
+		Data: &resourcev1.UserListRespData{
+			List:     dto.AccountDto.ToPbUserList(dataModels),
+			PageInfo: pagepkg.CalcPageResponse(pageRequest, uint32(dataCount)),
+		},
 	}, nil
 }
 

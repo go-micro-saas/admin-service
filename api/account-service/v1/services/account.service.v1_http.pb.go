@@ -25,6 +25,7 @@ const OperationSrvAccountV1CreateUserByEmail = "/saas.api.account.servicev1.SrvA
 const OperationSrvAccountV1CreateUserByPhone = "/saas.api.account.servicev1.SrvAccountV1/CreateUserByPhone"
 const OperationSrvAccountV1GetUserInfo = "/saas.api.account.servicev1.SrvAccountV1/GetUserInfo"
 const OperationSrvAccountV1GetUserInfoList = "/saas.api.account.servicev1.SrvAccountV1/GetUserInfoList"
+const OperationSrvAccountV1GetUserList = "/saas.api.account.servicev1.SrvAccountV1/GetUserList"
 const OperationSrvAccountV1Ping = "/saas.api.account.servicev1.SrvAccountV1/Ping"
 
 type SrvAccountV1HTTPServer interface {
@@ -37,7 +38,9 @@ type SrvAccountV1HTTPServer interface {
 	// GetUserInfo 账户-获取用户信息
 	GetUserInfo(context.Context, *resources.GetUserInfoReq) (*resources.GetUserInfoResp, error)
 	// GetUserInfoList 账户-获取用户信息列表
-	GetUserInfoList(context.Context, *resources.GetUserListReq) (*resources.GetUserListResp, error)
+	GetUserInfoList(context.Context, *resources.GetUserInfoListReq) (*resources.GetUserInfoListResp, error)
+	// GetUserList 账户-获取用户列表
+	GetUserList(context.Context, *resources.UserListReq) (*resources.UserListResp, error)
 	// Ping 账户-Ping测试
 	Ping(context.Context, *resources.PingReq) (*resources.PingResp, error)
 }
@@ -47,6 +50,7 @@ func RegisterSrvAccountV1HTTPServer(s *http.Server, srv SrvAccountV1HTTPServer) 
 	r.GET("/api/v1/account/user/ping", _SrvAccountV1_Ping0_HTTP_Handler(srv))
 	r.GET("/api/v1/account/user/info", _SrvAccountV1_GetUserInfo0_HTTP_Handler(srv))
 	r.POST("/api/v1/account/user/info-list", _SrvAccountV1_GetUserInfoList0_HTTP_Handler(srv))
+	r.POST("/api/v1/account/user/list", _SrvAccountV1_GetUserList0_HTTP_Handler(srv))
 	r.POST("/api/v1/account/user/create", _SrvAccountV1_CreateUser0_HTTP_Handler(srv))
 	r.POST("/api/v1/account/user/create-by-phone", _SrvAccountV1_CreateUserByPhone0_HTTP_Handler(srv))
 	r.POST("/api/v1/account/user/create-by-email", _SrvAccountV1_CreateUserByEmail0_HTTP_Handler(srv))
@@ -92,7 +96,7 @@ func _SrvAccountV1_GetUserInfo0_HTTP_Handler(srv SrvAccountV1HTTPServer) func(ct
 
 func _SrvAccountV1_GetUserInfoList0_HTTP_Handler(srv SrvAccountV1HTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in resources.GetUserListReq
+		var in resources.GetUserInfoListReq
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
@@ -101,13 +105,35 @@ func _SrvAccountV1_GetUserInfoList0_HTTP_Handler(srv SrvAccountV1HTTPServer) fun
 		}
 		http.SetOperation(ctx, OperationSrvAccountV1GetUserInfoList)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetUserInfoList(ctx, req.(*resources.GetUserListReq))
+			return srv.GetUserInfoList(ctx, req.(*resources.GetUserInfoListReq))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*resources.GetUserListResp)
+		reply := out.(*resources.GetUserInfoListResp)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _SrvAccountV1_GetUserList0_HTTP_Handler(srv SrvAccountV1HTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in resources.UserListReq
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationSrvAccountV1GetUserList)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetUserList(ctx, req.(*resources.UserListReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*resources.UserListResp)
 		return ctx.Result(200, reply)
 	}
 }
@@ -183,7 +209,8 @@ type SrvAccountV1HTTPClient interface {
 	CreateUserByEmail(ctx context.Context, req *resources.CreateUserByEmailReq, opts ...http.CallOption) (rsp *resources.CreateUserResp, err error)
 	CreateUserByPhone(ctx context.Context, req *resources.CreateUserByPhoneReq, opts ...http.CallOption) (rsp *resources.CreateUserResp, err error)
 	GetUserInfo(ctx context.Context, req *resources.GetUserInfoReq, opts ...http.CallOption) (rsp *resources.GetUserInfoResp, err error)
-	GetUserInfoList(ctx context.Context, req *resources.GetUserListReq, opts ...http.CallOption) (rsp *resources.GetUserListResp, err error)
+	GetUserInfoList(ctx context.Context, req *resources.GetUserInfoListReq, opts ...http.CallOption) (rsp *resources.GetUserInfoListResp, err error)
+	GetUserList(ctx context.Context, req *resources.UserListReq, opts ...http.CallOption) (rsp *resources.UserListResp, err error)
 	Ping(ctx context.Context, req *resources.PingReq, opts ...http.CallOption) (rsp *resources.PingResp, err error)
 }
 
@@ -247,11 +274,24 @@ func (c *SrvAccountV1HTTPClientImpl) GetUserInfo(ctx context.Context, in *resour
 	return &out, nil
 }
 
-func (c *SrvAccountV1HTTPClientImpl) GetUserInfoList(ctx context.Context, in *resources.GetUserListReq, opts ...http.CallOption) (*resources.GetUserListResp, error) {
-	var out resources.GetUserListResp
+func (c *SrvAccountV1HTTPClientImpl) GetUserInfoList(ctx context.Context, in *resources.GetUserInfoListReq, opts ...http.CallOption) (*resources.GetUserInfoListResp, error) {
+	var out resources.GetUserInfoListResp
 	pattern := "/api/v1/account/user/info-list"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationSrvAccountV1GetUserInfoList))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+func (c *SrvAccountV1HTTPClientImpl) GetUserList(ctx context.Context, in *resources.UserListReq, opts ...http.CallOption) (*resources.UserListResp, error) {
+	var out resources.UserListResp
+	pattern := "/api/v1/account/user/list"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationSrvAccountV1GetUserList))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

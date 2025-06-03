@@ -32,6 +32,14 @@ func (s *accountDto) ToPbLoginRespData(userModel *po.User, tokenResp *bo.SignTok
 	return res
 }
 
+func (s *accountDto) ToPbUserList(dataModels []*po.User) []*resourcev1.User {
+	res := make([]*resourcev1.User, 0, len(dataModels))
+	for _, model := range dataModels {
+		res = append(res, s.ToPbUser(model))
+	}
+	return res
+}
+
 func (s *accountDto) ToPbUser(dataModel *po.User) *resourcev1.User {
 	newDataModel := &resourcev1.User{
 		Id:          dataModel.Id,                                 // ID
@@ -203,6 +211,15 @@ func (s *accountDto) ToBoCreateUserParam3(req *resourcev1.CreateUserByPhoneReq) 
 		UserGender:   req.UserGender,
 		UserStatus:   req.UserStatus,
 		Password:     req.Password,
+	}
+	return res
+}
+
+func (s *accountDto) ToBoUserListParam(req *resourcev1.UserListReq) *bo.UserListParam {
+	res := &bo.UserListParam{
+		UidList:      req.UserIds,
+		ContactPhone: req.ContactPhone,
+		ContactEmail: req.ContactEmail,
 	}
 	return res
 }

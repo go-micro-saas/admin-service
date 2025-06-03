@@ -23,6 +23,7 @@ const (
 	SrvAccountV1_Ping_FullMethodName              = "/saas.api.account.servicev1.SrvAccountV1/Ping"
 	SrvAccountV1_GetUserInfo_FullMethodName       = "/saas.api.account.servicev1.SrvAccountV1/GetUserInfo"
 	SrvAccountV1_GetUserInfoList_FullMethodName   = "/saas.api.account.servicev1.SrvAccountV1/GetUserInfoList"
+	SrvAccountV1_GetUserList_FullMethodName       = "/saas.api.account.servicev1.SrvAccountV1/GetUserList"
 	SrvAccountV1_CreateUser_FullMethodName        = "/saas.api.account.servicev1.SrvAccountV1/CreateUser"
 	SrvAccountV1_CreateUserByPhone_FullMethodName = "/saas.api.account.servicev1.SrvAccountV1/CreateUserByPhone"
 	SrvAccountV1_CreateUserByEmail_FullMethodName = "/saas.api.account.servicev1.SrvAccountV1/CreateUserByEmail"
@@ -39,7 +40,9 @@ type SrvAccountV1Client interface {
 	// 账户-获取用户信息
 	GetUserInfo(ctx context.Context, in *resources.GetUserInfoReq, opts ...grpc.CallOption) (*resources.GetUserInfoResp, error)
 	// 账户-获取用户信息列表
-	GetUserInfoList(ctx context.Context, in *resources.GetUserListReq, opts ...grpc.CallOption) (*resources.GetUserListResp, error)
+	GetUserInfoList(ctx context.Context, in *resources.GetUserInfoListReq, opts ...grpc.CallOption) (*resources.GetUserInfoListResp, error)
+	// 账户-获取用户列表
+	GetUserList(ctx context.Context, in *resources.UserListReq, opts ...grpc.CallOption) (*resources.UserListResp, error)
 	// 账户-创建用户
 	CreateUser(ctx context.Context, in *resources.CreateUserReq, opts ...grpc.CallOption) (*resources.CreateUserResp, error)
 	// 账户-创建用户by手机
@@ -76,10 +79,20 @@ func (c *srvAccountV1Client) GetUserInfo(ctx context.Context, in *resources.GetU
 	return out, nil
 }
 
-func (c *srvAccountV1Client) GetUserInfoList(ctx context.Context, in *resources.GetUserListReq, opts ...grpc.CallOption) (*resources.GetUserListResp, error) {
+func (c *srvAccountV1Client) GetUserInfoList(ctx context.Context, in *resources.GetUserInfoListReq, opts ...grpc.CallOption) (*resources.GetUserInfoListResp, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(resources.GetUserListResp)
+	out := new(resources.GetUserInfoListResp)
 	err := c.cc.Invoke(ctx, SrvAccountV1_GetUserInfoList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *srvAccountV1Client) GetUserList(ctx context.Context, in *resources.UserListReq, opts ...grpc.CallOption) (*resources.UserListResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(resources.UserListResp)
+	err := c.cc.Invoke(ctx, SrvAccountV1_GetUserList_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +140,9 @@ type SrvAccountV1Server interface {
 	// 账户-获取用户信息
 	GetUserInfo(context.Context, *resources.GetUserInfoReq) (*resources.GetUserInfoResp, error)
 	// 账户-获取用户信息列表
-	GetUserInfoList(context.Context, *resources.GetUserListReq) (*resources.GetUserListResp, error)
+	GetUserInfoList(context.Context, *resources.GetUserInfoListReq) (*resources.GetUserInfoListResp, error)
+	// 账户-获取用户列表
+	GetUserList(context.Context, *resources.UserListReq) (*resources.UserListResp, error)
 	// 账户-创建用户
 	CreateUser(context.Context, *resources.CreateUserReq) (*resources.CreateUserResp, error)
 	// 账户-创建用户by手机
@@ -150,8 +165,11 @@ func (UnimplementedSrvAccountV1Server) Ping(context.Context, *resources.PingReq)
 func (UnimplementedSrvAccountV1Server) GetUserInfo(context.Context, *resources.GetUserInfoReq) (*resources.GetUserInfoResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserInfo not implemented")
 }
-func (UnimplementedSrvAccountV1Server) GetUserInfoList(context.Context, *resources.GetUserListReq) (*resources.GetUserListResp, error) {
+func (UnimplementedSrvAccountV1Server) GetUserInfoList(context.Context, *resources.GetUserInfoListReq) (*resources.GetUserInfoListResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserInfoList not implemented")
+}
+func (UnimplementedSrvAccountV1Server) GetUserList(context.Context, *resources.UserListReq) (*resources.UserListResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserList not implemented")
 }
 func (UnimplementedSrvAccountV1Server) CreateUser(context.Context, *resources.CreateUserReq) (*resources.CreateUserResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
@@ -220,7 +238,7 @@ func _SrvAccountV1_GetUserInfo_Handler(srv interface{}, ctx context.Context, dec
 }
 
 func _SrvAccountV1_GetUserInfoList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(resources.GetUserListReq)
+	in := new(resources.GetUserInfoListReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -232,7 +250,25 @@ func _SrvAccountV1_GetUserInfoList_Handler(srv interface{}, ctx context.Context,
 		FullMethod: SrvAccountV1_GetUserInfoList_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SrvAccountV1Server).GetUserInfoList(ctx, req.(*resources.GetUserListReq))
+		return srv.(SrvAccountV1Server).GetUserInfoList(ctx, req.(*resources.GetUserInfoListReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SrvAccountV1_GetUserList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(resources.UserListReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SrvAccountV1Server).GetUserList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SrvAccountV1_GetUserList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SrvAccountV1Server).GetUserList(ctx, req.(*resources.UserListReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -309,6 +345,10 @@ var SrvAccountV1_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUserInfoList",
 			Handler:    _SrvAccountV1_GetUserInfoList_Handler,
+		},
+		{
+			MethodName: "GetUserList",
+			Handler:    _SrvAccountV1_GetUserList_Handler,
 		},
 		{
 			MethodName: "CreateUser",
