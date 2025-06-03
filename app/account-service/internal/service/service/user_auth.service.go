@@ -282,7 +282,7 @@ func (s *userAuth) SubscribeSendEmailCodeEvent(ctx context.Context, req *resourc
 	}, nil
 }
 
-func (s *userAuth) StopSendEmailCodeEvent(ctx context.Context, req *resourcev1.StopSendEmailCodeEventReq) (*resourcev1.StopSendEmailCodeEventResp, error) {
+func (s *userAuth) StopSendEmailCodedEvent(ctx context.Context, req *resourcev1.StopSendEmailCodeEventReq) (*resourcev1.StopSendEmailCodeEventResp, error) {
 	err := s.sendEmailCodeEventRepo.Close(ctx)
 	if err != nil {
 		s.log.WithContext(ctx).Errorw("msg", "run StopSendEmailCodeEvent failed!", "err", err)

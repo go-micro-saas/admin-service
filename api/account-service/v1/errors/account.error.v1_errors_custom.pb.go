@@ -26,6 +26,8 @@ var ERROR_http_code = map[string]int{
 	"S103_PASSWORD_NOT_MATCH_RULE":    400,
 	"S103_PASSWORD_INCORRECT":         400,
 	"S103_VERIFY_CODE_INCORRECT":      400,
+	"S103_USER_PHONE_EXIST":           400,
+	"S103_USER_EMAIL_EXIST":           400,
 }
 
 func (x ERROR) HTTPCode() int {
@@ -151,5 +153,19 @@ func DefaultErrorS103PasswordIncorrect() *errors.Error {
 func DefaultErrorS103VerifyCodeIncorrect() *errors.Error {
 	e := errors.New(400, ERROR_S103_VERIFY_CODE_INCORRECT.String(), "验证码不正确")
 	e.Metadata = map[string]string{"reason": strconv.Itoa(int(ERROR_S103_VERIFY_CODE_INCORRECT.Number()))}
+	return e
+}
+
+// 用户手机已存在
+func DefaultErrorS103UserPhoneExist() *errors.Error {
+	e := errors.New(400, ERROR_S103_USER_PHONE_EXIST.String(), "用户手机已存在")
+	e.Metadata = map[string]string{"reason": strconv.Itoa(int(ERROR_S103_USER_PHONE_EXIST.Number()))}
+	return e
+}
+
+// 用户邮箱已存在
+func DefaultErrorS103UserEmailExist() *errors.Error {
+	e := errors.New(400, ERROR_S103_USER_EMAIL_EXIST.String(), "用户邮箱已存在")
+	e.Metadata = map[string]string{"reason": strconv.Itoa(int(ERROR_S103_USER_EMAIL_EXIST.Number()))}
 	return e
 }

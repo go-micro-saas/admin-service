@@ -31,4 +31,6 @@ enum ERROR {
   S103_PASSWORD_NOT_MATCH_RULE    = 103000014 [(errors.code) = 400];  // 密码不符合规则
   S103_PASSWORD_INCORRECT         = 103000015 [(errors.code) = 400];  // 密码不正确
   S103_VERIFY_CODE_INCORRECT      = 103000016 [(errors.code) = 400];  // 验证码不正确
+  S103_USER_PHONE_EXIST           = 103000017 [(errors.code) = 400];  // 用户手机已存在
+  S103_USER_EMAIL_EXIST           = 103000018 [(errors.code) = 400];  // 用户邮箱已存在
 }

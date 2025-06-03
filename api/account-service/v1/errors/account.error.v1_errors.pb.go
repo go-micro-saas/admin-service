@@ -283,3 +283,35 @@ func ErrorS103VerifyCodeIncorrect(format string, args ...interface{}) *errors.Er
 	e.Metadata = map[string]string{"reason": strconv.Itoa(int(ERROR_S103_VERIFY_CODE_INCORRECT.Number()))}
 	return e
 }
+
+// 用户手机已存在
+func IsS103UserPhoneExist(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ERROR_S103_USER_PHONE_EXIST.String() && e.Code == 400
+}
+
+// 用户手机已存在
+func ErrorS103UserPhoneExist(format string, args ...interface{}) *errors.Error {
+	e := errors.New(400, ERROR_S103_USER_PHONE_EXIST.String(), fmt.Sprintf(format, args...))
+	e.Metadata = map[string]string{"reason": strconv.Itoa(int(ERROR_S103_USER_PHONE_EXIST.Number()))}
+	return e
+}
+
+// 用户邮箱已存在
+func IsS103UserEmailExist(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ERROR_S103_USER_EMAIL_EXIST.String() && e.Code == 400
+}
+
+// 用户邮箱已存在
+func ErrorS103UserEmailExist(format string, args ...interface{}) *errors.Error {
+	e := errors.New(400, ERROR_S103_USER_EMAIL_EXIST.String(), fmt.Sprintf(format, args...))
+	e.Metadata = map[string]string{"reason": strconv.Itoa(int(ERROR_S103_USER_EMAIL_EXIST.Number()))}
+	return e
+}

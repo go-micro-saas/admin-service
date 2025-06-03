@@ -89,7 +89,7 @@ func (s *accountBiz) CreateUser(ctx context.Context, param *bo.CreateUserParam) 
 		return nil, err
 	}
 	if !isNotFound {
-		e := errorv1.ErrorS103UserExist("用户已存在")
+		e := errorv1.ErrorS103UserEmailExist("用户已存在")
 		return nil, errorpkg.WithStack(e)
 	}
 	// exist phone?
@@ -98,7 +98,7 @@ func (s *accountBiz) CreateUser(ctx context.Context, param *bo.CreateUserParam) 
 		return nil, err
 	}
 	if !isNotFound {
-		e := errorv1.ErrorS103UserExist("用户已存在")
+		e := errorv1.ErrorS103UserPhoneExist("用户已存在")
 		return nil, errorpkg.WithStack(e)
 	}
 
@@ -150,7 +150,7 @@ func (s *accountBiz) CreateUserByEmail(ctx context.Context, param *bo.CreateUser
 		return nil, err
 	}
 	if !isNotFound {
-		e := errorv1.ErrorS103UserExist("用户已存在")
+		e := errorv1.ErrorS103UserEmailExist("用户已存在")
 		return nil, errorpkg.WithStack(e)
 	}
 
@@ -200,7 +200,7 @@ func (s *accountBiz) CreateUserByPhone(ctx context.Context, param *bo.CreateUser
 		return nil, err
 	}
 	if !isNotFound {
-		e := errorv1.ErrorS103UserExist("用户已存在")
+		e := errorv1.ErrorS103UserPhoneExist("用户已存在")
 		return nil, errorpkg.WithStack(e)
 	}
 
