@@ -20,6 +20,8 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
+const OperationSrvAccountV1CreateOrGetUserByEmail = "/saas.api.account.servicev1.SrvAccountV1/CreateOrGetUserByEmail"
+const OperationSrvAccountV1CreateOrGetUserByPhone = "/saas.api.account.servicev1.SrvAccountV1/CreateOrGetUserByPhone"
 const OperationSrvAccountV1CreateUser = "/saas.api.account.servicev1.SrvAccountV1/CreateUser"
 const OperationSrvAccountV1CreateUserByEmail = "/saas.api.account.servicev1.SrvAccountV1/CreateUserByEmail"
 const OperationSrvAccountV1CreateUserByPhone = "/saas.api.account.servicev1.SrvAccountV1/CreateUserByPhone"
@@ -29,6 +31,10 @@ const OperationSrvAccountV1GetUserList = "/saas.api.account.servicev1.SrvAccount
 const OperationSrvAccountV1Ping = "/saas.api.account.servicev1.SrvAccountV1/Ping"
 
 type SrvAccountV1HTTPServer interface {
+	// CreateOrGetUserByEmail 账户-创建or获取用户by邮箱
+	CreateOrGetUserByEmail(context.Context, *resources.CreateUserByEmailReq) (*resources.CreateOrGetUserResp, error)
+	// CreateOrGetUserByPhone 账户-创建or获取用户by手机
+	CreateOrGetUserByPhone(context.Context, *resources.CreateUserByPhoneReq) (*resources.CreateOrGetUserResp, error)
 	// CreateUser 账户-创建用户
 	CreateUser(context.Context, *resources.CreateUserReq) (*resources.CreateUserResp, error)
 	// CreateUserByEmail 账户-创建用户by邮箱
@@ -54,6 +60,8 @@ func RegisterSrvAccountV1HTTPServer(s *http.Server, srv SrvAccountV1HTTPServer) 
 	r.POST("/api/v1/account/user/create", _SrvAccountV1_CreateUser0_HTTP_Handler(srv))
 	r.POST("/api/v1/account/user/create-by-phone", _SrvAccountV1_CreateUserByPhone0_HTTP_Handler(srv))
 	r.POST("/api/v1/account/user/create-by-email", _SrvAccountV1_CreateUserByEmail0_HTTP_Handler(srv))
+	r.POST("/api/v1/account/user/create-or-get-by-phone", _SrvAccountV1_CreateOrGetUserByPhone0_HTTP_Handler(srv))
+	r.POST("/api/v1/account/user/create-or-get-by-email", _SrvAccountV1_CreateOrGetUserByEmail0_HTTP_Handler(srv))
 }
 
 func _SrvAccountV1_Ping0_HTTP_Handler(srv SrvAccountV1HTTPServer) func(ctx http.Context) error {
@@ -204,7 +212,53 @@ func _SrvAccountV1_CreateUserByEmail0_HTTP_Handler(srv SrvAccountV1HTTPServer) f
 	}
 }
 
+func _SrvAccountV1_CreateOrGetUserByPhone0_HTTP_Handler(srv SrvAccountV1HTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in resources.CreateUserByPhoneReq
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationSrvAccountV1CreateOrGetUserByPhone)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.CreateOrGetUserByPhone(ctx, req.(*resources.CreateUserByPhoneReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*resources.CreateOrGetUserResp)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _SrvAccountV1_CreateOrGetUserByEmail0_HTTP_Handler(srv SrvAccountV1HTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in resources.CreateUserByEmailReq
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationSrvAccountV1CreateOrGetUserByEmail)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.CreateOrGetUserByEmail(ctx, req.(*resources.CreateUserByEmailReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*resources.CreateOrGetUserResp)
+		return ctx.Result(200, reply)
+	}
+}
+
 type SrvAccountV1HTTPClient interface {
+	CreateOrGetUserByEmail(ctx context.Context, req *resources.CreateUserByEmailReq, opts ...http.CallOption) (rsp *resources.CreateOrGetUserResp, err error)
+	CreateOrGetUserByPhone(ctx context.Context, req *resources.CreateUserByPhoneReq, opts ...http.CallOption) (rsp *resources.CreateOrGetUserResp, err error)
 	CreateUser(ctx context.Context, req *resources.CreateUserReq, opts ...http.CallOption) (rsp *resources.CreateUserResp, err error)
 	CreateUserByEmail(ctx context.Context, req *resources.CreateUserByEmailReq, opts ...http.CallOption) (rsp *resources.CreateUserResp, err error)
 	CreateUserByPhone(ctx context.Context, req *resources.CreateUserByPhoneReq, opts ...http.CallOption) (rsp *resources.CreateUserResp, err error)
@@ -220,6 +274,32 @@ type SrvAccountV1HTTPClientImpl struct {
 
 func NewSrvAccountV1HTTPClient(client *http.Client) SrvAccountV1HTTPClient {
 	return &SrvAccountV1HTTPClientImpl{client}
+}
+
+func (c *SrvAccountV1HTTPClientImpl) CreateOrGetUserByEmail(ctx context.Context, in *resources.CreateUserByEmailReq, opts ...http.CallOption) (*resources.CreateOrGetUserResp, error) {
+	var out resources.CreateOrGetUserResp
+	pattern := "/api/v1/account/user/create-or-get-by-email"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationSrvAccountV1CreateOrGetUserByEmail))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
+}
+
+func (c *SrvAccountV1HTTPClientImpl) CreateOrGetUserByPhone(ctx context.Context, in *resources.CreateUserByPhoneReq, opts ...http.CallOption) (*resources.CreateOrGetUserResp, error) {
+	var out resources.CreateOrGetUserResp
+	pattern := "/api/v1/account/user/create-or-get-by-phone"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationSrvAccountV1CreateOrGetUserByPhone))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
 }
 
 func (c *SrvAccountV1HTTPClientImpl) CreateUser(ctx context.Context, in *resources.CreateUserReq, opts ...http.CallOption) (*resources.CreateUserResp, error) {

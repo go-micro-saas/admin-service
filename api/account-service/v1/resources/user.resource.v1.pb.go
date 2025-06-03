@@ -1135,6 +1135,140 @@ func (x *CreateUserResp) GetData() *AccountInfo {
 	return nil
 }
 
+type CreateOrGetUserResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Code     int32                    `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Reason   string                   `protobuf:"bytes,2,opt,name=reason,proto3" json:"reason,omitempty"`
+	Message  string                   `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
+	Metadata map[string]string        `protobuf:"bytes,4,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	Data     *CreateOrGetUserRespData `protobuf:"bytes,100,opt,name=data,proto3" json:"data,omitempty"`
+}
+
+func (x *CreateOrGetUserResp) Reset() {
+	*x = CreateOrGetUserResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_account_service_v1_resources_user_resource_v1_proto_msgTypes[14]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CreateOrGetUserResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateOrGetUserResp) ProtoMessage() {}
+
+func (x *CreateOrGetUserResp) ProtoReflect() protoreflect.Message {
+	mi := &file_api_account_service_v1_resources_user_resource_v1_proto_msgTypes[14]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateOrGetUserResp.ProtoReflect.Descriptor instead.
+func (*CreateOrGetUserResp) Descriptor() ([]byte, []int) {
+	return file_api_account_service_v1_resources_user_resource_v1_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *CreateOrGetUserResp) GetCode() int32 {
+	if x != nil {
+		return x.Code
+	}
+	return 0
+}
+
+func (x *CreateOrGetUserResp) GetReason() string {
+	if x != nil {
+		return x.Reason
+	}
+	return ""
+}
+
+func (x *CreateOrGetUserResp) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *CreateOrGetUserResp) GetMetadata() map[string]string {
+	if x != nil {
+		return x.Metadata
+	}
+	return nil
+}
+
+func (x *CreateOrGetUserResp) GetData() *CreateOrGetUserRespData {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+type CreateOrGetUserRespData struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Data     *AccountInfo `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
+	IsCreate bool         `protobuf:"varint,2,opt,name=is_create,json=isCreate,proto3" json:"is_create,omitempty"`
+}
+
+func (x *CreateOrGetUserRespData) Reset() {
+	*x = CreateOrGetUserRespData{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_account_service_v1_resources_user_resource_v1_proto_msgTypes[15]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CreateOrGetUserRespData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateOrGetUserRespData) ProtoMessage() {}
+
+func (x *CreateOrGetUserRespData) ProtoReflect() protoreflect.Message {
+	mi := &file_api_account_service_v1_resources_user_resource_v1_proto_msgTypes[15]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateOrGetUserRespData.ProtoReflect.Descriptor instead.
+func (*CreateOrGetUserRespData) Descriptor() ([]byte, []int) {
+	return file_api_account_service_v1_resources_user_resource_v1_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *CreateOrGetUserRespData) GetData() *AccountInfo {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+func (x *CreateOrGetUserRespData) GetIsCreate() bool {
+	if x != nil {
+		return x.IsCreate
+	}
+	return false
+}
+
 var File_api_account_service_v1_resources_user_resource_v1_proto protoreflect.FileDescriptor
 
 var file_api_account_service_v1_resources_user_resource_v1_proto_rawDesc = []byte{
@@ -1394,17 +1528,44 @@ var file_api_account_service_v1_resources_user_resource_v1_proto_rawDesc = []byt
 	0x1a, 0x3b, 0x0a, 0x0d, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x45, 0x6e, 0x74, 0x72,
 	0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03,
 	0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x42, 0x8f, 0x01,
-	0x0a, 0x1b, 0x73, 0x61, 0x61, 0x73, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x61, 0x63, 0x63, 0x6f, 0x75,
-	0x6e, 0x74, 0x2e, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x76, 0x31, 0x42, 0x18, 0x53,
-	0x61, 0x61, 0x73, 0x41, 0x70, 0x69, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x52, 0x65, 0x73,
-	0x6f, 0x75, 0x72, 0x63, 0x65, 0x56, 0x31, 0x50, 0x01, 0x5a, 0x54, 0x67, 0x69, 0x74, 0x68, 0x75,
-	0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x67, 0x6f, 0x2d, 0x6d, 0x69, 0x63, 0x72, 0x6f, 0x2d, 0x73,
-	0x61, 0x61, 0x73, 0x2f, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x2d, 0x73, 0x65, 0x72, 0x76,
-	0x69, 0x63, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x2d,
-	0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2f, 0x76, 0x31, 0x2f, 0x72, 0x65, 0x73, 0x6f, 0x75,
-	0x72, 0x63, 0x65, 0x73, 0x3b, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x76, 0x31, 0x62,
-	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0xbe, 0x02,
+	0x0a, 0x13, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x4f, 0x72, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65,
+	0x72, 0x52, 0x65, 0x73, 0x70, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x05, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x72, 0x65, 0x61,
+	0x73, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x72, 0x65, 0x61, 0x73, 0x6f,
+	0x6e, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x03, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x5a, 0x0a, 0x08, 0x6d,
+	0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x3e, 0x2e,
+	0x73, 0x61, 0x61, 0x73, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74,
+	0x2e, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x76, 0x31, 0x2e, 0x43, 0x72, 0x65, 0x61,
+	0x74, 0x65, 0x4f, 0x72, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x2e,
+	0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x08, 0x6d,
+	0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x12, 0x48, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x61, 0x18,
+	0x64, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x34, 0x2e, 0x73, 0x61, 0x61, 0x73, 0x2e, 0x61, 0x70, 0x69,
+	0x2e, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x2e, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63,
+	0x65, 0x76, 0x31, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x4f, 0x72, 0x47, 0x65, 0x74, 0x55,
+	0x73, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x44, 0x61, 0x74, 0x61, 0x52, 0x04, 0x64, 0x61, 0x74,
+	0x61, 0x1a, 0x3b, 0x0a, 0x0d, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x45, 0x6e, 0x74,
+	0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0x74,
+	0x0a, 0x17, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x4f, 0x72, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65,
+	0x72, 0x52, 0x65, 0x73, 0x70, 0x44, 0x61, 0x74, 0x61, 0x12, 0x3c, 0x0a, 0x04, 0x64, 0x61, 0x74,
+	0x61, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x28, 0x2e, 0x73, 0x61, 0x61, 0x73, 0x2e, 0x61,
+	0x70, 0x69, 0x2e, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x2e, 0x72, 0x65, 0x73, 0x6f, 0x75,
+	0x72, 0x63, 0x65, 0x76, 0x31, 0x2e, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x49, 0x6e, 0x66,
+	0x6f, 0x52, 0x04, 0x64, 0x61, 0x74, 0x61, 0x12, 0x1b, 0x0a, 0x09, 0x69, 0x73, 0x5f, 0x63, 0x72,
+	0x65, 0x61, 0x74, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x08, 0x52, 0x08, 0x69, 0x73, 0x43, 0x72,
+	0x65, 0x61, 0x74, 0x65, 0x42, 0x8f, 0x01, 0x0a, 0x1b, 0x73, 0x61, 0x61, 0x73, 0x2e, 0x61, 0x70,
+	0x69, 0x2e, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x2e, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72,
+	0x63, 0x65, 0x76, 0x31, 0x42, 0x18, 0x53, 0x61, 0x61, 0x73, 0x41, 0x70, 0x69, 0x41, 0x63, 0x63,
+	0x6f, 0x75, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x56, 0x31, 0x50, 0x01,
+	0x5a, 0x54, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x67, 0x6f, 0x2d,
+	0x6d, 0x69, 0x63, 0x72, 0x6f, 0x2d, 0x73, 0x61, 0x61, 0x73, 0x2f, 0x61, 0x63, 0x63, 0x6f, 0x75,
+	0x6e, 0x74, 0x2d, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x61,
+	0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x2d, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2f, 0x76,
+	0x31, 0x2f, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x73, 0x3b, 0x72, 0x65, 0x73, 0x6f,
+	0x75, 0x72, 0x63, 0x65, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1419,7 +1580,7 @@ func file_api_account_service_v1_resources_user_resource_v1_proto_rawDescGZIP() 
 	return file_api_account_service_v1_resources_user_resource_v1_proto_rawDescData
 }
 
-var file_api_account_service_v1_resources_user_resource_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
+var file_api_account_service_v1_resources_user_resource_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
 var file_api_account_service_v1_resources_user_resource_v1_proto_goTypes = []any{
 	(*User)(nil),                         // 0: saas.api.account.resourcev1.User
 	(*GetUserInfoReq)(nil),               // 1: saas.api.account.resourcev1.GetUserInfoReq
@@ -1435,44 +1596,50 @@ var file_api_account_service_v1_resources_user_resource_v1_proto_goTypes = []any
 	(*CreateUserByEmailReq)(nil),         // 11: saas.api.account.resourcev1.CreateUserByEmailReq
 	(*CreateUserByPhoneReq)(nil),         // 12: saas.api.account.resourcev1.CreateUserByPhoneReq
 	(*CreateUserResp)(nil),               // 13: saas.api.account.resourcev1.CreateUserResp
-	nil,                                  // 14: saas.api.account.resourcev1.GetUserInfoResp.MetadataEntry
-	nil,                                  // 15: saas.api.account.resourcev1.GetUserInfoListResp.MetadataEntry
-	nil,                                  // 16: saas.api.account.resourcev1.UserListResp.MetadataEntry
-	nil,                                  // 17: saas.api.account.resourcev1.CreateUserResp.MetadataEntry
-	(enums.UserGenderEnum_UserGender)(0), // 18: saas.api.account.enumv1.UserGenderEnum.UserGender
-	(enums.UserStatusEnum_UserStatus)(0), // 19: saas.api.account.enumv1.UserStatusEnum.UserStatus
-	(enums.UserRegisterTypeEnum_UserRegisterType)(0), // 20: saas.api.account.enumv1.UserRegisterTypeEnum.UserRegisterType
-	(*page.PageRequest)(nil),                         // 21: kit.page.pagepkg.PageRequest
-	(*page.PageResponse)(nil),                        // 22: kit.page.pagepkg.PageResponse
+	(*CreateOrGetUserResp)(nil),          // 14: saas.api.account.resourcev1.CreateOrGetUserResp
+	(*CreateOrGetUserRespData)(nil),      // 15: saas.api.account.resourcev1.CreateOrGetUserRespData
+	nil,                                  // 16: saas.api.account.resourcev1.GetUserInfoResp.MetadataEntry
+	nil,                                  // 17: saas.api.account.resourcev1.GetUserInfoListResp.MetadataEntry
+	nil,                                  // 18: saas.api.account.resourcev1.UserListResp.MetadataEntry
+	nil,                                  // 19: saas.api.account.resourcev1.CreateUserResp.MetadataEntry
+	nil,                                  // 20: saas.api.account.resourcev1.CreateOrGetUserResp.MetadataEntry
+	(enums.UserGenderEnum_UserGender)(0), // 21: saas.api.account.enumv1.UserGenderEnum.UserGender
+	(enums.UserStatusEnum_UserStatus)(0), // 22: saas.api.account.enumv1.UserStatusEnum.UserStatus
+	(enums.UserRegisterTypeEnum_UserRegisterType)(0), // 23: saas.api.account.enumv1.UserRegisterTypeEnum.UserRegisterType
+	(*page.PageRequest)(nil),                         // 24: kit.page.pagepkg.PageRequest
+	(*page.PageResponse)(nil),                        // 25: kit.page.pagepkg.PageResponse
 }
 var file_api_account_service_v1_resources_user_resource_v1_proto_depIdxs = []int32{
-	18, // 0: saas.api.account.resourcev1.User.user_gender:type_name -> saas.api.account.enumv1.UserGenderEnum.UserGender
-	19, // 1: saas.api.account.resourcev1.User.user_status:type_name -> saas.api.account.enumv1.UserStatusEnum.UserStatus
-	14, // 2: saas.api.account.resourcev1.GetUserInfoResp.metadata:type_name -> saas.api.account.resourcev1.GetUserInfoResp.MetadataEntry
+	21, // 0: saas.api.account.resourcev1.User.user_gender:type_name -> saas.api.account.enumv1.UserGenderEnum.UserGender
+	22, // 1: saas.api.account.resourcev1.User.user_status:type_name -> saas.api.account.enumv1.UserStatusEnum.UserStatus
+	16, // 2: saas.api.account.resourcev1.GetUserInfoResp.metadata:type_name -> saas.api.account.resourcev1.GetUserInfoResp.MetadataEntry
 	3,  // 3: saas.api.account.resourcev1.GetUserInfoResp.data:type_name -> saas.api.account.resourcev1.AccountInfo
-	18, // 4: saas.api.account.resourcev1.AccountInfo.user_gender:type_name -> saas.api.account.enumv1.UserGenderEnum.UserGender
-	19, // 5: saas.api.account.resourcev1.AccountInfo.user_status:type_name -> saas.api.account.enumv1.UserStatusEnum.UserStatus
-	20, // 6: saas.api.account.resourcev1.AccountInfo.register_type:type_name -> saas.api.account.enumv1.UserRegisterTypeEnum.UserRegisterType
-	15, // 7: saas.api.account.resourcev1.GetUserInfoListResp.metadata:type_name -> saas.api.account.resourcev1.GetUserInfoListResp.MetadataEntry
+	21, // 4: saas.api.account.resourcev1.AccountInfo.user_gender:type_name -> saas.api.account.enumv1.UserGenderEnum.UserGender
+	22, // 5: saas.api.account.resourcev1.AccountInfo.user_status:type_name -> saas.api.account.enumv1.UserStatusEnum.UserStatus
+	23, // 6: saas.api.account.resourcev1.AccountInfo.register_type:type_name -> saas.api.account.enumv1.UserRegisterTypeEnum.UserRegisterType
+	17, // 7: saas.api.account.resourcev1.GetUserInfoListResp.metadata:type_name -> saas.api.account.resourcev1.GetUserInfoListResp.MetadataEntry
 	3,  // 8: saas.api.account.resourcev1.GetUserInfoListResp.data:type_name -> saas.api.account.resourcev1.AccountInfo
-	21, // 9: saas.api.account.resourcev1.UserListReq.page_request:type_name -> kit.page.pagepkg.PageRequest
-	16, // 10: saas.api.account.resourcev1.UserListResp.metadata:type_name -> saas.api.account.resourcev1.UserListResp.MetadataEntry
+	24, // 9: saas.api.account.resourcev1.UserListReq.page_request:type_name -> kit.page.pagepkg.PageRequest
+	18, // 10: saas.api.account.resourcev1.UserListResp.metadata:type_name -> saas.api.account.resourcev1.UserListResp.MetadataEntry
 	8,  // 11: saas.api.account.resourcev1.UserListResp.data:type_name -> saas.api.account.resourcev1.UserListRespData
 	0,  // 12: saas.api.account.resourcev1.UserListRespData.list:type_name -> saas.api.account.resourcev1.User
-	22, // 13: saas.api.account.resourcev1.UserListRespData.page_info:type_name -> kit.page.pagepkg.PageResponse
-	18, // 14: saas.api.account.resourcev1.CreateUserReq.user_gender:type_name -> saas.api.account.enumv1.UserGenderEnum.UserGender
-	19, // 15: saas.api.account.resourcev1.CreateUserReq.user_status:type_name -> saas.api.account.enumv1.UserStatusEnum.UserStatus
-	18, // 16: saas.api.account.resourcev1.CreateUserByEmailReq.user_gender:type_name -> saas.api.account.enumv1.UserGenderEnum.UserGender
-	19, // 17: saas.api.account.resourcev1.CreateUserByEmailReq.user_status:type_name -> saas.api.account.enumv1.UserStatusEnum.UserStatus
-	18, // 18: saas.api.account.resourcev1.CreateUserByPhoneReq.user_gender:type_name -> saas.api.account.enumv1.UserGenderEnum.UserGender
-	19, // 19: saas.api.account.resourcev1.CreateUserByPhoneReq.user_status:type_name -> saas.api.account.enumv1.UserStatusEnum.UserStatus
-	17, // 20: saas.api.account.resourcev1.CreateUserResp.metadata:type_name -> saas.api.account.resourcev1.CreateUserResp.MetadataEntry
+	25, // 13: saas.api.account.resourcev1.UserListRespData.page_info:type_name -> kit.page.pagepkg.PageResponse
+	21, // 14: saas.api.account.resourcev1.CreateUserReq.user_gender:type_name -> saas.api.account.enumv1.UserGenderEnum.UserGender
+	22, // 15: saas.api.account.resourcev1.CreateUserReq.user_status:type_name -> saas.api.account.enumv1.UserStatusEnum.UserStatus
+	21, // 16: saas.api.account.resourcev1.CreateUserByEmailReq.user_gender:type_name -> saas.api.account.enumv1.UserGenderEnum.UserGender
+	22, // 17: saas.api.account.resourcev1.CreateUserByEmailReq.user_status:type_name -> saas.api.account.enumv1.UserStatusEnum.UserStatus
+	21, // 18: saas.api.account.resourcev1.CreateUserByPhoneReq.user_gender:type_name -> saas.api.account.enumv1.UserGenderEnum.UserGender
+	22, // 19: saas.api.account.resourcev1.CreateUserByPhoneReq.user_status:type_name -> saas.api.account.enumv1.UserStatusEnum.UserStatus
+	19, // 20: saas.api.account.resourcev1.CreateUserResp.metadata:type_name -> saas.api.account.resourcev1.CreateUserResp.MetadataEntry
 	3,  // 21: saas.api.account.resourcev1.CreateUserResp.data:type_name -> saas.api.account.resourcev1.AccountInfo
-	22, // [22:22] is the sub-list for method output_type
-	22, // [22:22] is the sub-list for method input_type
-	22, // [22:22] is the sub-list for extension type_name
-	22, // [22:22] is the sub-list for extension extendee
-	0,  // [0:22] is the sub-list for field type_name
+	20, // 22: saas.api.account.resourcev1.CreateOrGetUserResp.metadata:type_name -> saas.api.account.resourcev1.CreateOrGetUserResp.MetadataEntry
+	15, // 23: saas.api.account.resourcev1.CreateOrGetUserResp.data:type_name -> saas.api.account.resourcev1.CreateOrGetUserRespData
+	3,  // 24: saas.api.account.resourcev1.CreateOrGetUserRespData.data:type_name -> saas.api.account.resourcev1.AccountInfo
+	25, // [25:25] is the sub-list for method output_type
+	25, // [25:25] is the sub-list for method input_type
+	25, // [25:25] is the sub-list for extension type_name
+	25, // [25:25] is the sub-list for extension extendee
+	0,  // [0:25] is the sub-list for field type_name
 }
 
 func init() { file_api_account_service_v1_resources_user_resource_v1_proto_init() }
@@ -1649,6 +1816,30 @@ func file_api_account_service_v1_resources_user_resource_v1_proto_init() {
 				return nil
 			}
 		}
+		file_api_account_service_v1_resources_user_resource_v1_proto_msgTypes[14].Exporter = func(v any, i int) any {
+			switch v := v.(*CreateOrGetUserResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_account_service_v1_resources_user_resource_v1_proto_msgTypes[15].Exporter = func(v any, i int) any {
+			switch v := v.(*CreateOrGetUserRespData); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -1656,7 +1847,7 @@ func file_api_account_service_v1_resources_user_resource_v1_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_api_account_service_v1_resources_user_resource_v1_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   18,
+			NumMessages:   21,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -2061,3 +2061,275 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = CreateUserRespValidationError{}
+
+// Validate checks the field values on CreateOrGetUserResp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CreateOrGetUserResp) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CreateOrGetUserResp with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CreateOrGetUserRespMultiError, or nil if none found.
+func (m *CreateOrGetUserResp) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CreateOrGetUserResp) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Code
+
+	// no validation rules for Reason
+
+	// no validation rules for Message
+
+	// no validation rules for Metadata
+
+	if all {
+		switch v := interface{}(m.GetData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CreateOrGetUserRespValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CreateOrGetUserRespValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CreateOrGetUserRespValidationError{
+				field:  "Data",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return CreateOrGetUserRespMultiError(errors)
+	}
+
+	return nil
+}
+
+// CreateOrGetUserRespMultiError is an error wrapping multiple validation
+// errors returned by CreateOrGetUserResp.ValidateAll() if the designated
+// constraints aren't met.
+type CreateOrGetUserRespMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CreateOrGetUserRespMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CreateOrGetUserRespMultiError) AllErrors() []error { return m }
+
+// CreateOrGetUserRespValidationError is the validation error returned by
+// CreateOrGetUserResp.Validate if the designated constraints aren't met.
+type CreateOrGetUserRespValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateOrGetUserRespValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateOrGetUserRespValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateOrGetUserRespValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateOrGetUserRespValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateOrGetUserRespValidationError) ErrorName() string {
+	return "CreateOrGetUserRespValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CreateOrGetUserRespValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateOrGetUserResp.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateOrGetUserRespValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateOrGetUserRespValidationError{}
+
+// Validate checks the field values on CreateOrGetUserRespData with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CreateOrGetUserRespData) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CreateOrGetUserRespData with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CreateOrGetUserRespDataMultiError, or nil if none found.
+func (m *CreateOrGetUserRespData) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CreateOrGetUserRespData) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetData()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CreateOrGetUserRespDataValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CreateOrGetUserRespDataValidationError{
+					field:  "Data",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetData()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CreateOrGetUserRespDataValidationError{
+				field:  "Data",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for IsCreate
+
+	if len(errors) > 0 {
+		return CreateOrGetUserRespDataMultiError(errors)
+	}
+
+	return nil
+}
+
+// CreateOrGetUserRespDataMultiError is an error wrapping multiple validation
+// errors returned by CreateOrGetUserRespData.ValidateAll() if the designated
+// constraints aren't met.
+type CreateOrGetUserRespDataMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CreateOrGetUserRespDataMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CreateOrGetUserRespDataMultiError) AllErrors() []error { return m }
+
+// CreateOrGetUserRespDataValidationError is the validation error returned by
+// CreateOrGetUserRespData.Validate if the designated constraints aren't met.
+type CreateOrGetUserRespDataValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateOrGetUserRespDataValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateOrGetUserRespDataValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateOrGetUserRespDataValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateOrGetUserRespDataValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateOrGetUserRespDataValidationError) ErrorName() string {
+	return "CreateOrGetUserRespDataValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CreateOrGetUserRespDataValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateOrGetUserRespData.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateOrGetUserRespDataValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateOrGetUserRespDataValidationError{}

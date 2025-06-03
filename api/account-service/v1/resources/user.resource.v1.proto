@@ -141,3 +141,16 @@ message CreateUserResp {
 
   AccountInfo data = 100;
 }
+
+message CreateOrGetUserResp {
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  CreateOrGetUserRespData data = 100;
+}
+message CreateOrGetUserRespData {
+  AccountInfo data = 1;
+  bool is_create   = 2;
+}

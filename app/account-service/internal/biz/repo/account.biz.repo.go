@@ -12,5 +12,7 @@ type UserBizRepo interface {
 	List(ctx context.Context, param *bo.UserListParam) ([]*po.User, int64, error)
 	CreateUser(ctx context.Context, param *bo.CreateUserParam) (*po.User, error)
 	CreateUserByEmail(ctx context.Context, param *bo.CreateUserParam) (*po.User, error)
+	CreateOrGetUserByEmail(ctx context.Context, param *bo.CreateUserParam) (dataModel *po.User, isCreate bool, err error)
 	CreateUserByPhone(ctx context.Context, param *bo.CreateUserParam) (*po.User, error)
+	CreateOrGetUserByPhone(ctx context.Context, param *bo.CreateUserParam) (dataModel *po.User, isCreate bool, err error)
 }

@@ -144,11 +144,43 @@ func (s *accountBiz) CreateUser(ctx context.Context, param *bo.CreateUserParam) 
 	return dataModel, nil
 }
 
+func (s *accountBiz) CreateOrGetUserByEmail(ctx context.Context, param *bo.CreateUserParam) (*po.User, bool, error) {
+	return s.createUserByEmail(ctx, param, true)
+}
+
 func (s *accountBiz) CreateUserByEmail(ctx context.Context, param *bo.CreateUserParam) (*po.User, error) {
+	dataModel, _, err := s.createUserByEmail(ctx, param, false)
+	if err != nil {
+		return nil, err
+	}
+	return dataModel, nil
+}
+
+func (s *accountBiz) createUserByEmail(ctx context.Context, param *bo.CreateUserParam, isCreateOrGet bool) (*po.User, bool, error) {
+	var isCreate bool
 	if regexpkg.IsEmail(param.UserEmail) == false {
 		e := errorv1.ErrorS103InvalidEmail("无效的邮箱")
-		return nil, errorpkg.WithStack(e)
+		return nil, isCreate, errorpkg.WithStack(e)
 	}
+
+	// exist?
+	existModel, isNotFound, err := s.userRegEmailDataRepo.QueryOneByUserEmail(ctx, param.UserEmail)
+	if err != nil {
+		return nil, isCreate, err
+	}
+	if !isNotFound {
+		if isCreateOrGet {
+			existUser, err := s.GetUserByUid(ctx, existModel.UserId)
+			if err != nil {
+				return nil, isCreate, err
+			}
+			return existUser, isCreate, nil
+		}
+		e := errorv1.ErrorS103UserEmailExist("用户已存在")
+		return nil, isCreate, errorpkg.WithStack(e)
+	}
+	isCreate = true
+
 	// passwd
 	passwdParam := &bo.PasswordParam{
 		Password:        param.Password,
@@ -156,17 +188,7 @@ func (s *accountBiz) CreateUserByEmail(ctx context.Context, param *bo.CreateUser
 	}
 	passwdHash, err := passwdParam.ValidateAndEncrypt()
 	if err != nil {
-		return nil, err
-	}
-
-	// exist?
-	_, isNotFound, err := s.userRegEmailDataRepo.QueryOneByUserEmail(ctx, param.UserEmail)
-	if err != nil {
-		return nil, err
-	}
-	if !isNotFound {
-		e := errorv1.ErrorS103UserEmailExist("用户已存在")
-		return nil, errorpkg.WithStack(e)
+		return nil, isCreate, err
 	}
 
 	// user
@@ -178,7 +200,7 @@ func (s *accountBiz) CreateUserByEmail(ctx context.Context, param *bo.CreateUser
 	dataModel.UserId, err = s.idGenerator.NextID()
 	if err != nil {
 		e := errorpkg.ErrorInternalServer(err.Error())
-		return nil, errorpkg.WithStack(e)
+		return nil, isCreate, errorpkg.WithStack(e)
 	}
 	regModel.UserId = dataModel.UserId
 
@@ -189,16 +211,48 @@ func (s *accountBiz) CreateUserByEmail(ctx context.Context, param *bo.CreateUser
 		RegEmailModel: regModel,
 	}
 	if err = s.CreateAccount(ctx, createParam); err != nil {
+		return nil, isCreate, err
+	}
+	return dataModel, isCreate, nil
+}
+
+func (s *accountBiz) CreateOrGetUserByPhone(ctx context.Context, param *bo.CreateUserParam) (*po.User, bool, error) {
+	return s.createUserByPhone(ctx, param, true)
+}
+
+func (s *accountBiz) CreateUserByPhone(ctx context.Context, param *bo.CreateUserParam) (*po.User, error) {
+	dataModel, _, err := s.createUserByPhone(ctx, param, false)
+	if err != nil {
 		return nil, err
 	}
 	return dataModel, nil
 }
 
-func (s *accountBiz) CreateUserByPhone(ctx context.Context, param *bo.CreateUserParam) (*po.User, error) {
+func (s *accountBiz) createUserByPhone(ctx context.Context, param *bo.CreateUserParam, isCreateOrGet bool) (*po.User, bool, error) {
+	var isCreate bool
 	if regexpkg.IsPhone(param.UserPhone) == false {
 		e := errorv1.ErrorS103InvalidPhone("无效的手机号")
-		return nil, errorpkg.WithStack(e)
+		return nil, isCreate, errorpkg.WithStack(e)
 	}
+
+	// exist?
+	existModel, isNotFound, err := s.userRegPhoneDataRepo.QueryOneByUserPhone(ctx, param.UserPhone)
+	if err != nil {
+		return nil, isCreate, err
+	}
+	if !isNotFound {
+		if isCreateOrGet {
+			existUser, err := s.GetUserByUid(ctx, existModel.UserId)
+			if err != nil {
+				return nil, isCreate, err
+			}
+			return existUser, isCreate, nil
+		}
+		e := errorv1.ErrorS103UserPhoneExist("用户已存在")
+		return nil, isCreate, errorpkg.WithStack(e)
+	}
+	isCreate = true
+
 	// passwd
 	passwdParam := &bo.PasswordParam{
 		Password:        param.Password,
@@ -206,17 +260,7 @@ func (s *accountBiz) CreateUserByPhone(ctx context.Context, param *bo.CreateUser
 	}
 	passwdHash, err := passwdParam.ValidateAndEncrypt()
 	if err != nil {
-		return nil, err
-	}
-
-	// exist?
-	_, isNotFound, err := s.userRegPhoneDataRepo.QueryOneByUserPhone(ctx, param.UserPhone)
-	if err != nil {
-		return nil, err
-	}
-	if !isNotFound {
-		e := errorv1.ErrorS103UserPhoneExist("用户已存在")
-		return nil, errorpkg.WithStack(e)
+		return nil, isCreate, err
 	}
 
 	// user
@@ -228,7 +272,7 @@ func (s *accountBiz) CreateUserByPhone(ctx context.Context, param *bo.CreateUser
 	dataModel.UserId, err = s.idGenerator.NextID()
 	if err != nil {
 		e := errorpkg.ErrorInternalServer(err.Error())
-		return nil, errorpkg.WithStack(e)
+		return nil, isCreate, errorpkg.WithStack(e)
 	}
 	regModel.UserId = dataModel.UserId
 
@@ -239,9 +283,9 @@ func (s *accountBiz) CreateUserByPhone(ctx context.Context, param *bo.CreateUser
 		RegEmailModel: nil,
 	}
 	if err = s.CreateAccount(ctx, createParam); err != nil {
-		return nil, err
+		return nil, isCreate, err
 	}
-	return dataModel, nil
+	return dataModel, isCreate, nil
 }
 
 func (s *accountBiz) attachUserModelByCreateUserParam(dataModel *po.User, param *bo.CreateUserParam) {

@@ -63,4 +63,18 @@ service SrvAccountV1 {
       body: "*"
     };
   }
+  // 账户-创建or获取用户by手机
+  rpc CreateOrGetUserByPhone(resourcev1.CreateUserByPhoneReq) returns (resourcev1.CreateOrGetUserResp) {
+    option (google.api.http) = {
+      post: "/api/v1/account/user/create-or-get-by-phone"
+      body: "*"
+    };
+  }
+  // 账户-创建or获取用户by邮箱
+  rpc CreateOrGetUserByEmail(resourcev1.CreateUserByEmailReq) returns (resourcev1.CreateOrGetUserResp) {
+    option (google.api.http) = {
+      post: "/api/v1/account/user/create-or-get-by-email"
+      body: "*"
+    };
+  }
 }

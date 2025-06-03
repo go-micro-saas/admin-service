@@ -112,3 +112,31 @@ func (s *accountService) CreateUserByEmail(ctx context.Context, req *resourcev1.
 		Data: dto.AccountDto.ToPbAccountInfo(userModel),
 	}, nil
 }
+
+func (s *accountService) CreateOrGetUserByEmail(ctx context.Context, req *resourcev1.CreateUserByEmailReq) (*resourcev1.CreateOrGetUserResp, error) {
+	param := dto.AccountDto.ToBoCreateUserParam2(req)
+	userModel, isCreate, err := s.userBizRepo.CreateOrGetUserByEmail(ctx, param)
+	if err != nil {
+		return nil, err
+	}
+	return &resourcev1.CreateOrGetUserResp{
+		Data: &resourcev1.CreateOrGetUserRespData{
+			Data:     dto.AccountDto.ToPbAccountInfo(userModel),
+			IsCreate: isCreate,
+		},
+	}, nil
+}
+
+func (s *accountService) CreateOrGetUserByPhone(ctx context.Context, req *resourcev1.CreateUserByPhoneReq) (*resourcev1.CreateOrGetUserResp, error) {
+	param := dto.AccountDto.ToBoCreateUserParam3(req)
+	userModel, isCreate, err := s.userBizRepo.CreateOrGetUserByPhone(ctx, param)
+	if err != nil {
+		return nil, err
+	}
+	return &resourcev1.CreateOrGetUserResp{
+		Data: &resourcev1.CreateOrGetUserRespData{
+			Data:     dto.AccountDto.ToPbAccountInfo(userModel),
+			IsCreate: isCreate,
+		},
+	}, nil
+}

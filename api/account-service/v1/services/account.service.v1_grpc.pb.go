@@ -20,13 +20,15 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SrvAccountV1_Ping_FullMethodName              = "/saas.api.account.servicev1.SrvAccountV1/Ping"
-	SrvAccountV1_GetUserInfo_FullMethodName       = "/saas.api.account.servicev1.SrvAccountV1/GetUserInfo"
-	SrvAccountV1_GetUserInfoList_FullMethodName   = "/saas.api.account.servicev1.SrvAccountV1/GetUserInfoList"
-	SrvAccountV1_GetUserList_FullMethodName       = "/saas.api.account.servicev1.SrvAccountV1/GetUserList"
-	SrvAccountV1_CreateUser_FullMethodName        = "/saas.api.account.servicev1.SrvAccountV1/CreateUser"
-	SrvAccountV1_CreateUserByPhone_FullMethodName = "/saas.api.account.servicev1.SrvAccountV1/CreateUserByPhone"
-	SrvAccountV1_CreateUserByEmail_FullMethodName = "/saas.api.account.servicev1.SrvAccountV1/CreateUserByEmail"
+	SrvAccountV1_Ping_FullMethodName                   = "/saas.api.account.servicev1.SrvAccountV1/Ping"
+	SrvAccountV1_GetUserInfo_FullMethodName            = "/saas.api.account.servicev1.SrvAccountV1/GetUserInfo"
+	SrvAccountV1_GetUserInfoList_FullMethodName        = "/saas.api.account.servicev1.SrvAccountV1/GetUserInfoList"
+	SrvAccountV1_GetUserList_FullMethodName            = "/saas.api.account.servicev1.SrvAccountV1/GetUserList"
+	SrvAccountV1_CreateUser_FullMethodName             = "/saas.api.account.servicev1.SrvAccountV1/CreateUser"
+	SrvAccountV1_CreateUserByPhone_FullMethodName      = "/saas.api.account.servicev1.SrvAccountV1/CreateUserByPhone"
+	SrvAccountV1_CreateUserByEmail_FullMethodName      = "/saas.api.account.servicev1.SrvAccountV1/CreateUserByEmail"
+	SrvAccountV1_CreateOrGetUserByPhone_FullMethodName = "/saas.api.account.servicev1.SrvAccountV1/CreateOrGetUserByPhone"
+	SrvAccountV1_CreateOrGetUserByEmail_FullMethodName = "/saas.api.account.servicev1.SrvAccountV1/CreateOrGetUserByEmail"
 )
 
 // SrvAccountV1Client is the client API for SrvAccountV1 service.
@@ -49,6 +51,10 @@ type SrvAccountV1Client interface {
 	CreateUserByPhone(ctx context.Context, in *resources.CreateUserByPhoneReq, opts ...grpc.CallOption) (*resources.CreateUserResp, error)
 	// 账户-创建用户by邮箱
 	CreateUserByEmail(ctx context.Context, in *resources.CreateUserByEmailReq, opts ...grpc.CallOption) (*resources.CreateUserResp, error)
+	// 账户-创建or获取用户by手机
+	CreateOrGetUserByPhone(ctx context.Context, in *resources.CreateUserByPhoneReq, opts ...grpc.CallOption) (*resources.CreateOrGetUserResp, error)
+	// 账户-创建or获取用户by邮箱
+	CreateOrGetUserByEmail(ctx context.Context, in *resources.CreateUserByEmailReq, opts ...grpc.CallOption) (*resources.CreateOrGetUserResp, error)
 }
 
 type srvAccountV1Client struct {
@@ -129,6 +135,26 @@ func (c *srvAccountV1Client) CreateUserByEmail(ctx context.Context, in *resource
 	return out, nil
 }
 
+func (c *srvAccountV1Client) CreateOrGetUserByPhone(ctx context.Context, in *resources.CreateUserByPhoneReq, opts ...grpc.CallOption) (*resources.CreateOrGetUserResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(resources.CreateOrGetUserResp)
+	err := c.cc.Invoke(ctx, SrvAccountV1_CreateOrGetUserByPhone_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *srvAccountV1Client) CreateOrGetUserByEmail(ctx context.Context, in *resources.CreateUserByEmailReq, opts ...grpc.CallOption) (*resources.CreateOrGetUserResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(resources.CreateOrGetUserResp)
+	err := c.cc.Invoke(ctx, SrvAccountV1_CreateOrGetUserByEmail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SrvAccountV1Server is the server API for SrvAccountV1 service.
 // All implementations must embed UnimplementedSrvAccountV1Server
 // for forward compatibility.
@@ -149,6 +175,10 @@ type SrvAccountV1Server interface {
 	CreateUserByPhone(context.Context, *resources.CreateUserByPhoneReq) (*resources.CreateUserResp, error)
 	// 账户-创建用户by邮箱
 	CreateUserByEmail(context.Context, *resources.CreateUserByEmailReq) (*resources.CreateUserResp, error)
+	// 账户-创建or获取用户by手机
+	CreateOrGetUserByPhone(context.Context, *resources.CreateUserByPhoneReq) (*resources.CreateOrGetUserResp, error)
+	// 账户-创建or获取用户by邮箱
+	CreateOrGetUserByEmail(context.Context, *resources.CreateUserByEmailReq) (*resources.CreateOrGetUserResp, error)
 	mustEmbedUnimplementedSrvAccountV1Server()
 }
 
@@ -179,6 +209,12 @@ func (UnimplementedSrvAccountV1Server) CreateUserByPhone(context.Context, *resou
 }
 func (UnimplementedSrvAccountV1Server) CreateUserByEmail(context.Context, *resources.CreateUserByEmailReq) (*resources.CreateUserResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUserByEmail not implemented")
+}
+func (UnimplementedSrvAccountV1Server) CreateOrGetUserByPhone(context.Context, *resources.CreateUserByPhoneReq) (*resources.CreateOrGetUserResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateOrGetUserByPhone not implemented")
+}
+func (UnimplementedSrvAccountV1Server) CreateOrGetUserByEmail(context.Context, *resources.CreateUserByEmailReq) (*resources.CreateOrGetUserResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateOrGetUserByEmail not implemented")
 }
 func (UnimplementedSrvAccountV1Server) mustEmbedUnimplementedSrvAccountV1Server() {}
 func (UnimplementedSrvAccountV1Server) testEmbeddedByValue()                      {}
@@ -327,6 +363,42 @@ func _SrvAccountV1_CreateUserByEmail_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SrvAccountV1_CreateOrGetUserByPhone_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(resources.CreateUserByPhoneReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SrvAccountV1Server).CreateOrGetUserByPhone(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SrvAccountV1_CreateOrGetUserByPhone_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SrvAccountV1Server).CreateOrGetUserByPhone(ctx, req.(*resources.CreateUserByPhoneReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SrvAccountV1_CreateOrGetUserByEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(resources.CreateUserByEmailReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SrvAccountV1Server).CreateOrGetUserByEmail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SrvAccountV1_CreateOrGetUserByEmail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SrvAccountV1Server).CreateOrGetUserByEmail(ctx, req.(*resources.CreateUserByEmailReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SrvAccountV1_ServiceDesc is the grpc.ServiceDesc for SrvAccountV1 service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -361,6 +433,14 @@ var SrvAccountV1_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateUserByEmail",
 			Handler:    _SrvAccountV1_CreateUserByEmail_Handler,
+		},
+		{
+			MethodName: "CreateOrGetUserByPhone",
+			Handler:    _SrvAccountV1_CreateOrGetUserByPhone_Handler,
+		},
+		{
+			MethodName: "CreateOrGetUserByEmail",
+			Handler:    _SrvAccountV1_CreateOrGetUserByEmail_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
