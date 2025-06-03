@@ -445,6 +445,10 @@ func (m *AccountInfo) validate(all bool) error {
 
 	// no validation rules for UserStatus
 
+	// no validation rules for RegisterType
+
+	// no validation rules for DisableTime
+
 	if len(errors) > 0 {
 		return AccountInfoMultiError(errors)
 	}
@@ -544,9 +548,9 @@ func (m *GetUserListReq) validate(all bool) error {
 
 	var errors []error
 
-	if len(m.GetUserId()) < 1 {
+	if len(m.GetUserIds()) < 1 {
 		err := GetUserListReqValidationError{
-			field:  "UserId",
+			field:  "UserIds",
 			reason: "value must contain at least 1 item(s)",
 		}
 		if !all {

@@ -143,3 +143,27 @@ func (s *accountDto) ToBoLoginByEmailParam(req *resourcev1.LoginByEmailReq) *bo.
 	}
 	return res
 }
+
+func (s *accountDto) ToPbAccountInfoList(dataModels []*po.User) []*resourcev1.AccountInfo {
+	var res = make([]*resourcev1.AccountInfo, 0, len(dataModels))
+	for i := range dataModels {
+		res = append(res, s.ToPbAccountInfo(dataModels[i]))
+	}
+	return res
+}
+
+func (s *accountDto) ToPbAccountInfo(dataModel *po.User) *resourcev1.AccountInfo {
+	newDataModel := &resourcev1.AccountInfo{
+		UserId:       dataModel.UserId,                             // uid
+		CreatedTime:  dataModel.CreatedTime.Format(timepkg.YmdHms), // 创建时间
+		UserPhone:    dataModel.UserPhone,                          //
+		UserEmail:    dataModel.UserEmail,                          // 邮箱
+		UserNickname: dataModel.UserNickname,                       // 昵称
+		UserAvatar:   dataModel.UserAvatar,                         // 头像
+		UserGender:   dataModel.UserGender,                         // 性别
+		UserStatus:   dataModel.UserStatus,                         // 状态
+		RegisterType: dataModel.RegisterType,                       // 注册类型
+		DisableTime:  dataModel.DisableTime,                        // 禁用时间
+	}
+	return newDataModel
+}

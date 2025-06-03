@@ -58,18 +58,20 @@ message GetUserInfoResp {
   AccountInfo data = 100;
 }
 message AccountInfo {
-  string created_time                          = 2;   // 创建时间
-  uint64 user_id                               = 5;   // uid
-  string user_phone                            = 6;   // 手机
-  string user_email                            = 7;   // 邮箱
-  string user_nickname                         = 8;   // 昵称
-  string user_avatar                           = 9;   // 头像
-  enumv1.UserGenderEnum.UserGender user_gender = 10;  // 性别；0：INIT，1：MALE，2：FEMALE，3：SECRET
-  enumv1.UserStatusEnum.UserStatus user_status = 12;  // 状态；0：INIT，1：ENABLE，2：DISABLE，3：WHITELIST，4：BLACKLIST，5：DELETED
+  string created_time                                        = 2;   // 创建时间
+  uint64 user_id                                             = 5;   // uid
+  string user_phone                                          = 6;   // 手机
+  string user_email                                          = 7;   // 邮箱
+  string user_nickname                                       = 8;   // 昵称
+  string user_avatar                                         = 9;   // 头像
+  enumv1.UserGenderEnum.UserGender user_gender               = 10;  // 性别；0：INIT，1：MALE，2：FEMALE，3：SECRET
+  enumv1.UserStatusEnum.UserStatus user_status               = 11;  // 状态；0：INIT，1：ENABLE，2：DISABLE，3：WHITELIST，4：BLACKLIST，5：DELETED
+  enumv1.UserRegisterTypeEnum.UserRegisterType register_type = 12;  // 注册类型；0：INIT，1：EMAIL，2：MOBILE，3：。。。参考ENUM定义
+  uint64 disable_time                                        = 13;  // 禁用时间
 }
 
 message GetUserListReq {
-  repeated uint64 user_id = 1 [(validate.rules).repeated = { min_items: 1 }];
+  repeated uint64 user_ids = 1 [(validate.rules).repeated = { min_items: 1 }];
 }
 message GetUserListResp {
   int32 code                   = 1;

@@ -39,10 +39,12 @@ func exportServices(launcherManager setuputil.LauncherManager, hs *http.Server, 
 		// biz
 		biz.NewUserAuthBiz,
 		biz.NewSendEmailCodeBiz,
+		biz.NewAccountBiz,
 		// event
 		events.NewSendEmailCodeEventRepo,
 		// service
 		service.NewUserAuthService,
+		service.NewAccountService,
 		// register services
 		service.RegisterServices,
 	))

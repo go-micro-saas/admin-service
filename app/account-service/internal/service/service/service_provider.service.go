@@ -18,6 +18,7 @@ import (
 func RegisterServices(
 	hs *http.Server, gs *grpc.Server,
 	userAuthV1Service servicev1.SrvUserAuthV1Server,
+	accountService servicev1.SrvAccountV1Server,
 ) (cleanuputil.CleanupManager, error) {
 	// 先进后出
 	var cleanupManager = cleanuputil.NewCleanupManager()
@@ -25,6 +26,7 @@ func RegisterServices(
 	if gs != nil {
 		stdlog.Println("|*** REGISTER_ROUTER：GRPC: userAuthV1Service")
 		servicev1.RegisterSrvUserAuthV1Server(gs, userAuthV1Service)
+		servicev1.RegisterSrvAccountV1Server(gs, accountService)
 
 		//cleanupManager.Append(cleanup)
 	}
@@ -33,6 +35,7 @@ func RegisterServices(
 	if hs != nil {
 		stdlog.Println("|*** REGISTER_ROUTER：HTTP: userAuthV1Service")
 		servicev1.RegisterSrvUserAuthV1HTTPServer(hs, userAuthV1Service)
+		servicev1.RegisterSrvAccountV1HTTPServer(hs, accountService)
 
 		// special
 		//RegisterSpecialRouters(hs, homeService, websocketService)

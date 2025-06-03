@@ -269,6 +269,23 @@ func (s *userDataRepo) QueryOneByUserId(ctx context.Context, userId uint64) (dat
 	return
 }
 
+func (s *userDataRepo) QueryByUserIdList(ctx context.Context, uidList []uint64) ([]*po.User, error) {
+	var dataModels []*po.User
+	if len(uidList) == 0 {
+		return nil, nil
+	}
+	err := s.dbConn.WithContext(ctx).
+		Table(s.UserSchema.TableName()).
+		Where(schemas.FieldUserId+" in (?)", uidList).
+		Find(&dataModels).Error
+	if err != nil {
+		e := errorpkg.ErrorInternalServer("")
+		err = errorpkg.Wrap(e, err)
+		return nil, err
+	}
+	return dataModels, nil
+}
+
 // =============== query all : 查全部 ===============
 
 // queryAllByConditions query all by conditions
