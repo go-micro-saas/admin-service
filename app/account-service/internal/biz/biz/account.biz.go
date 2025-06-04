@@ -289,12 +289,20 @@ func (s *accountBiz) createUserByPhone(ctx context.Context, param *bo.CreateUser
 }
 
 func (s *accountBiz) attachUserModelByCreateUserParam(dataModel *po.User, param *bo.CreateUserParam) {
-	dataModel.UserPhone = param.UserPhone
-	dataModel.UserEmail = param.UserEmail
-	dataModel.UserNickname = param.UserNickname
-	dataModel.UserAvatar = param.UserAvatar
 	dataModel.UserGender = param.UserGender
 	dataModel.UserStatus = param.UserStatus
+	if param.UserPhone != "" {
+		dataModel.UserPhone = param.UserPhone
+	}
+	if param.UserEmail != "" {
+		dataModel.UserEmail = param.UserEmail
+	}
+	if param.UserNickname != "" {
+		dataModel.UserNickname = param.UserNickname
+	}
+	if param.UserAvatar != "" {
+		dataModel.UserAvatar = param.UserAvatar
+	}
 }
 
 func (s *accountBiz) CreateAccount(ctx context.Context, param *po.CreateAccountParam) (err error) {
