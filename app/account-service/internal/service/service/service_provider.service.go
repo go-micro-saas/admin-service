@@ -19,6 +19,7 @@ func RegisterServices(
 	hs *http.Server, gs *grpc.Server,
 	userAuthV1Service servicev1.SrvUserAuthV1Server,
 	accountService servicev1.SrvAccountV1Server,
+	accountEventService servicev1.SrvAccountEventV1Server,
 ) (cleanuputil.CleanupManager, error) {
 	// 先进后出
 	var cleanupManager = cleanuputil.NewCleanupManager()
@@ -45,13 +46,13 @@ func RegisterServices(
 
 	// event
 	stdlog.Println("|*** REGISTER_EVENT：SUBSCRIBE : SendEmailCodeEvent")
-	_, err := userAuthV1Service.SubscribeSendEmailCodeEvent(context.Background(), &resourcev1.SubscribeSendEmailCodeEventReq{})
+	_, err := accountEventService.SubscribeSendEmailCodeEvent(context.Background(), &resourcev1.SubscribeSendEmailCodeEventReq{})
 	if err != nil {
 		return nil, err
 	}
 	cleanupManager.Append(func() {
 		logpkg.Infow("msg", "StopSendEmailCodedEvent ...")
-		_, err := userAuthV1Service.StopSendEmailCodedEvent(context.Background(), &resourcev1.StopSendEmailCodeEventReq{})
+		_, err := accountEventService.StopSendEmailCodedEvent(context.Background(), &resourcev1.StopSendEmailCodeEventReq{})
 		if err != nil {
 			logpkg.Warnw("msg", "StopSendEmailCodedEvent failed", "err", err)
 		}

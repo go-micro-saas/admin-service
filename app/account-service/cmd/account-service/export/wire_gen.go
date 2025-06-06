@@ -55,6 +55,16 @@ func exportServices(launcherManager setuputil.LauncherManager, hs *http.Server, 
 	userRegPhoneDataRepo := data.NewUserRegPhoneDataRepo(logger, db)
 	userVerifyCodeDataRepo := data.NewUserVerifyCodeRepo(db)
 	userAuthBizRepo := biz.NewUserAuthBiz(logger, authRepo, snowflake, userDataRepo, userRegEmailDataRepo, userRegPhoneDataRepo, userVerifyCodeDataRepo)
+	connectionWrapper, err := setuputil.GetRabbitmqConn(launcherManager)
+	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
+	userEventHistoryRepo := data.NewUserEventHistoryRepo(logger, db)
+	sendEmailCodeEventRepo := events.NewSendEmailCodeEventRepo(logger, connectionWrapper, userEventHistoryRepo)
+	srvUserAuthV1Server := service.NewUserAuthService(logger, userAuthBizRepo, sendEmailCodeEventRepo)
+	userBizRepo := biz.NewAccountBiz(logger, snowflake, userDataRepo, userRegEmailDataRepo, userRegPhoneDataRepo, userVerifyCodeDataRepo)
+	srvAccountV1Server := service.NewAccountService(logger, userBizRepo)
 	sendEmailCodeConfig, err := dto.ToBoSendEmailCodeConfig(serviceConfig)
 	if err != nil {
 		cleanup()
@@ -65,18 +75,8 @@ func exportServices(launcherManager setuputil.LauncherManager, hs *http.Server, 
 		cleanup()
 		return nil, nil, err
 	}
-	connectionWrapper, err := setuputil.GetRabbitmqConn(launcherManager)
-	if err != nil {
-		cleanup2()
-		cleanup()
-		return nil, nil, err
-	}
-	userEventHistoryRepo := data.NewUserEventHistoryRepo(logger, db)
-	sendEmailCodeEventRepo := events.NewSendEmailCodeEventRepo(logger, connectionWrapper, userEventHistoryRepo)
-	srvUserAuthV1Server := service.NewUserAuthService(logger, userAuthBizRepo, sendEmailCodeBizRepo, sendEmailCodeEventRepo)
-	userBizRepo := biz.NewAccountBiz(logger, snowflake, userDataRepo, userRegEmailDataRepo, userRegPhoneDataRepo, userVerifyCodeDataRepo)
-	srvAccountV1Server := service.NewAccountService(logger, userBizRepo)
-	cleanupManager, err := service.RegisterServices(hs, gs, srvUserAuthV1Server, srvAccountV1Server)
+	srvAccountEventV1Server := service.NewAccountEventService(logger, sendEmailCodeBizRepo, sendEmailCodeEventRepo)
+	cleanupManager, err := service.RegisterServices(hs, gs, srvUserAuthV1Server, srvAccountV1Server, srvAccountEventV1Server)
 	if err != nil {
 		cleanup2()
 		cleanup()

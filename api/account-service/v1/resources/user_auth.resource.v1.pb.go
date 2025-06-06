@@ -2137,334 +2137,6 @@ func (*ChangeGenderRespData) Descriptor() ([]byte, []int) {
 	return file_api_account_service_v1_resources_user_auth_resource_v1_proto_rawDescGZIP(), []int{35}
 }
 
-type SubscribeSendEmailCodeEventReq struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-}
-
-func (x *SubscribeSendEmailCodeEventReq) Reset() {
-	*x = SubscribeSendEmailCodeEventReq{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[36]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *SubscribeSendEmailCodeEventReq) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SubscribeSendEmailCodeEventReq) ProtoMessage() {}
-
-func (x *SubscribeSendEmailCodeEventReq) ProtoReflect() protoreflect.Message {
-	mi := &file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[36]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SubscribeSendEmailCodeEventReq.ProtoReflect.Descriptor instead.
-func (*SubscribeSendEmailCodeEventReq) Descriptor() ([]byte, []int) {
-	return file_api_account_service_v1_resources_user_auth_resource_v1_proto_rawDescGZIP(), []int{36}
-}
-
-type SubscribeSendEmailCodeEventResp struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Code     int32                                `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
-	Reason   string                               `protobuf:"bytes,2,opt,name=reason,proto3" json:"reason,omitempty"`
-	Message  string                               `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
-	Metadata map[string]string                    `protobuf:"bytes,4,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
-	Data     *SubscribeSendEmailCodeEventRespData `protobuf:"bytes,100,opt,name=data,proto3" json:"data,omitempty"`
-}
-
-func (x *SubscribeSendEmailCodeEventResp) Reset() {
-	*x = SubscribeSendEmailCodeEventResp{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[37]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *SubscribeSendEmailCodeEventResp) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SubscribeSendEmailCodeEventResp) ProtoMessage() {}
-
-func (x *SubscribeSendEmailCodeEventResp) ProtoReflect() protoreflect.Message {
-	mi := &file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[37]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SubscribeSendEmailCodeEventResp.ProtoReflect.Descriptor instead.
-func (*SubscribeSendEmailCodeEventResp) Descriptor() ([]byte, []int) {
-	return file_api_account_service_v1_resources_user_auth_resource_v1_proto_rawDescGZIP(), []int{37}
-}
-
-func (x *SubscribeSendEmailCodeEventResp) GetCode() int32 {
-	if x != nil {
-		return x.Code
-	}
-	return 0
-}
-
-func (x *SubscribeSendEmailCodeEventResp) GetReason() string {
-	if x != nil {
-		return x.Reason
-	}
-	return ""
-}
-
-func (x *SubscribeSendEmailCodeEventResp) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
-
-func (x *SubscribeSendEmailCodeEventResp) GetMetadata() map[string]string {
-	if x != nil {
-		return x.Metadata
-	}
-	return nil
-}
-
-func (x *SubscribeSendEmailCodeEventResp) GetData() *SubscribeSendEmailCodeEventRespData {
-	if x != nil {
-		return x.Data
-	}
-	return nil
-}
-
-type SubscribeSendEmailCodeEventRespData struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	ConsumerCounter int64 `protobuf:"varint,1,opt,name=consumer_counter,json=consumerCounter,proto3" json:"consumer_counter,omitempty"`
-}
-
-func (x *SubscribeSendEmailCodeEventRespData) Reset() {
-	*x = SubscribeSendEmailCodeEventRespData{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[38]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *SubscribeSendEmailCodeEventRespData) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SubscribeSendEmailCodeEventRespData) ProtoMessage() {}
-
-func (x *SubscribeSendEmailCodeEventRespData) ProtoReflect() protoreflect.Message {
-	mi := &file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[38]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SubscribeSendEmailCodeEventRespData.ProtoReflect.Descriptor instead.
-func (*SubscribeSendEmailCodeEventRespData) Descriptor() ([]byte, []int) {
-	return file_api_account_service_v1_resources_user_auth_resource_v1_proto_rawDescGZIP(), []int{38}
-}
-
-func (x *SubscribeSendEmailCodeEventRespData) GetConsumerCounter() int64 {
-	if x != nil {
-		return x.ConsumerCounter
-	}
-	return 0
-}
-
-type StopSendEmailCodeEventReq struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-}
-
-func (x *StopSendEmailCodeEventReq) Reset() {
-	*x = StopSendEmailCodeEventReq{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[39]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *StopSendEmailCodeEventReq) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*StopSendEmailCodeEventReq) ProtoMessage() {}
-
-func (x *StopSendEmailCodeEventReq) ProtoReflect() protoreflect.Message {
-	mi := &file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[39]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use StopSendEmailCodeEventReq.ProtoReflect.Descriptor instead.
-func (*StopSendEmailCodeEventReq) Descriptor() ([]byte, []int) {
-	return file_api_account_service_v1_resources_user_auth_resource_v1_proto_rawDescGZIP(), []int{39}
-}
-
-type StopSendEmailCodeEventResp struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Code     int32                           `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
-	Reason   string                          `protobuf:"bytes,2,opt,name=reason,proto3" json:"reason,omitempty"`
-	Message  string                          `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
-	Metadata map[string]string               `protobuf:"bytes,4,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
-	Data     *StopSendEmailCodeEventRespData `protobuf:"bytes,100,opt,name=data,proto3" json:"data,omitempty"`
-}
-
-func (x *StopSendEmailCodeEventResp) Reset() {
-	*x = StopSendEmailCodeEventResp{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[40]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *StopSendEmailCodeEventResp) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*StopSendEmailCodeEventResp) ProtoMessage() {}
-
-func (x *StopSendEmailCodeEventResp) ProtoReflect() protoreflect.Message {
-	mi := &file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[40]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use StopSendEmailCodeEventResp.ProtoReflect.Descriptor instead.
-func (*StopSendEmailCodeEventResp) Descriptor() ([]byte, []int) {
-	return file_api_account_service_v1_resources_user_auth_resource_v1_proto_rawDescGZIP(), []int{40}
-}
-
-func (x *StopSendEmailCodeEventResp) GetCode() int32 {
-	if x != nil {
-		return x.Code
-	}
-	return 0
-}
-
-func (x *StopSendEmailCodeEventResp) GetReason() string {
-	if x != nil {
-		return x.Reason
-	}
-	return ""
-}
-
-func (x *StopSendEmailCodeEventResp) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
-
-func (x *StopSendEmailCodeEventResp) GetMetadata() map[string]string {
-	if x != nil {
-		return x.Metadata
-	}
-	return nil
-}
-
-func (x *StopSendEmailCodeEventResp) GetData() *StopSendEmailCodeEventRespData {
-	if x != nil {
-		return x.Data
-	}
-	return nil
-}
-
-type StopSendEmailCodeEventRespData struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	ConsumerCounter int64 `protobuf:"varint,1,opt,name=consumer_counter,json=consumerCounter,proto3" json:"consumer_counter,omitempty"`
-}
-
-func (x *StopSendEmailCodeEventRespData) Reset() {
-	*x = StopSendEmailCodeEventRespData{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[41]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *StopSendEmailCodeEventRespData) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*StopSendEmailCodeEventRespData) ProtoMessage() {}
-
-func (x *StopSendEmailCodeEventRespData) ProtoReflect() protoreflect.Message {
-	mi := &file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[41]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use StopSendEmailCodeEventRespData.ProtoReflect.Descriptor instead.
-func (*StopSendEmailCodeEventRespData) Descriptor() ([]byte, []int) {
-	return file_api_account_service_v1_resources_user_auth_resource_v1_proto_rawDescGZIP(), []int{41}
-}
-
-func (x *StopSendEmailCodeEventRespData) GetConsumerCounter() int64 {
-	if x != nil {
-		return x.ConsumerCounter
-	}
-	return 0
-}
-
 var File_api_account_service_v1_resources_user_auth_resource_v1_proto protoreflect.FileDescriptor
 
 var file_api_account_service_v1_resources_user_auth_resource_v1_proto_rawDesc = []byte{
@@ -2803,74 +2475,16 @@ var file_api_account_service_v1_resources_user_auth_resource_v1_proto_rawDesc = 
 	0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
 	0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0x16, 0x0a, 0x14, 0x43,
 	0x68, 0x61, 0x6e, 0x67, 0x65, 0x47, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x44,
-	0x61, 0x74, 0x61, 0x22, 0x20, 0x0a, 0x1e, 0x53, 0x75, 0x62, 0x73, 0x63, 0x72, 0x69, 0x62, 0x65,
-	0x53, 0x65, 0x6e, 0x64, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x43, 0x6f, 0x64, 0x65, 0x45, 0x76, 0x65,
-	0x6e, 0x74, 0x52, 0x65, 0x71, 0x22, 0xe2, 0x02, 0x0a, 0x1f, 0x53, 0x75, 0x62, 0x73, 0x63, 0x72,
-	0x69, 0x62, 0x65, 0x53, 0x65, 0x6e, 0x64, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x43, 0x6f, 0x64, 0x65,
-	0x45, 0x76, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64,
-	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x12, 0x16, 0x0a,
-	0x06, 0x72, 0x65, 0x61, 0x73, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x72,
-	0x65, 0x61, 0x73, 0x6f, 0x6e, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
-	0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12,
-	0x66, 0x0a, 0x08, 0x6d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x18, 0x04, 0x20, 0x03, 0x28,
-	0x0b, 0x32, 0x4a, 0x2e, 0x73, 0x61, 0x61, 0x73, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x61, 0x63, 0x63,
-	0x6f, 0x75, 0x6e, 0x74, 0x2e, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x76, 0x31, 0x2e,
-	0x53, 0x75, 0x62, 0x73, 0x63, 0x72, 0x69, 0x62, 0x65, 0x53, 0x65, 0x6e, 0x64, 0x45, 0x6d, 0x61,
-	0x69, 0x6c, 0x43, 0x6f, 0x64, 0x65, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x2e,
-	0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x08, 0x6d,
-	0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x12, 0x54, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x61, 0x18,
-	0x64, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x40, 0x2e, 0x73, 0x61, 0x61, 0x73, 0x2e, 0x61, 0x70, 0x69,
+	0x61, 0x74, 0x61, 0x42, 0x8f, 0x01, 0x0a, 0x1b, 0x73, 0x61, 0x61, 0x73, 0x2e, 0x61, 0x70, 0x69,
 	0x2e, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x2e, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63,
-	0x65, 0x76, 0x31, 0x2e, 0x53, 0x75, 0x62, 0x73, 0x63, 0x72, 0x69, 0x62, 0x65, 0x53, 0x65, 0x6e,
-	0x64, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x43, 0x6f, 0x64, 0x65, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x52,
-	0x65, 0x73, 0x70, 0x44, 0x61, 0x74, 0x61, 0x52, 0x04, 0x64, 0x61, 0x74, 0x61, 0x1a, 0x3b, 0x0a,
-	0x0d, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10,
-	0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79,
-	0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0x50, 0x0a, 0x23, 0x53, 0x75,
-	0x62, 0x73, 0x63, 0x72, 0x69, 0x62, 0x65, 0x53, 0x65, 0x6e, 0x64, 0x45, 0x6d, 0x61, 0x69, 0x6c,
-	0x43, 0x6f, 0x64, 0x65, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x44, 0x61, 0x74,
-	0x61, 0x12, 0x29, 0x0a, 0x10, 0x63, 0x6f, 0x6e, 0x73, 0x75, 0x6d, 0x65, 0x72, 0x5f, 0x63, 0x6f,
-	0x75, 0x6e, 0x74, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0f, 0x63, 0x6f, 0x6e,
-	0x73, 0x75, 0x6d, 0x65, 0x72, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x65, 0x72, 0x22, 0x1b, 0x0a, 0x19,
-	0x53, 0x74, 0x6f, 0x70, 0x53, 0x65, 0x6e, 0x64, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x43, 0x6f, 0x64,
-	0x65, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x71, 0x22, 0xd3, 0x02, 0x0a, 0x1a, 0x53, 0x74,
-	0x6f, 0x70, 0x53, 0x65, 0x6e, 0x64, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x43, 0x6f, 0x64, 0x65, 0x45,
-	0x76, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x12, 0x16, 0x0a, 0x06,
-	0x72, 0x65, 0x61, 0x73, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x72, 0x65,
-	0x61, 0x73, 0x6f, 0x6e, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18,
-	0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x61,
-	0x0a, 0x08, 0x6d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b,
-	0x32, 0x45, 0x2e, 0x73, 0x61, 0x61, 0x73, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x61, 0x63, 0x63, 0x6f,
-	0x75, 0x6e, 0x74, 0x2e, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x76, 0x31, 0x2e, 0x53,
-	0x74, 0x6f, 0x70, 0x53, 0x65, 0x6e, 0x64, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x43, 0x6f, 0x64, 0x65,
-	0x45, 0x76, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x2e, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61,
-	0x74, 0x61, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x08, 0x6d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74,
-	0x61, 0x12, 0x4f, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x61, 0x18, 0x64, 0x20, 0x01, 0x28, 0x0b, 0x32,
-	0x3b, 0x2e, 0x73, 0x61, 0x61, 0x73, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x61, 0x63, 0x63, 0x6f, 0x75,
-	0x6e, 0x74, 0x2e, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x76, 0x31, 0x2e, 0x53, 0x74,
-	0x6f, 0x70, 0x53, 0x65, 0x6e, 0x64, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x43, 0x6f, 0x64, 0x65, 0x45,
-	0x76, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x44, 0x61, 0x74, 0x61, 0x52, 0x04, 0x64, 0x61,
-	0x74, 0x61, 0x1a, 0x3b, 0x0a, 0x0d, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0x45, 0x6e,
-	0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22,
-	0x4b, 0x0a, 0x1e, 0x53, 0x74, 0x6f, 0x70, 0x53, 0x65, 0x6e, 0x64, 0x45, 0x6d, 0x61, 0x69, 0x6c,
-	0x43, 0x6f, 0x64, 0x65, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x44, 0x61, 0x74,
-	0x61, 0x12, 0x29, 0x0a, 0x10, 0x63, 0x6f, 0x6e, 0x73, 0x75, 0x6d, 0x65, 0x72, 0x5f, 0x63, 0x6f,
-	0x75, 0x6e, 0x74, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0f, 0x63, 0x6f, 0x6e,
-	0x73, 0x75, 0x6d, 0x65, 0x72, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x65, 0x72, 0x42, 0x8f, 0x01, 0x0a,
-	0x1b, 0x73, 0x61, 0x61, 0x73, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e,
-	0x74, 0x2e, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x76, 0x31, 0x42, 0x18, 0x53, 0x61,
-	0x61, 0x73, 0x41, 0x70, 0x69, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x6f,
-	0x75, 0x72, 0x63, 0x65, 0x56, 0x31, 0x50, 0x01, 0x5a, 0x54, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62,
-	0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x67, 0x6f, 0x2d, 0x6d, 0x69, 0x63, 0x72, 0x6f, 0x2d, 0x73, 0x61,
-	0x61, 0x73, 0x2f, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x2d, 0x73, 0x65, 0x72, 0x76, 0x69,
-	0x63, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x2d, 0x73,
-	0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2f, 0x76, 0x31, 0x2f, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72,
-	0x63, 0x65, 0x73, 0x3b, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x76, 0x31, 0x62, 0x06,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x76, 0x31, 0x42, 0x18, 0x53, 0x61, 0x61, 0x73, 0x41, 0x70, 0x69, 0x41, 0x63, 0x63, 0x6f,
+	0x75, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x56, 0x31, 0x50, 0x01, 0x5a,
+	0x54, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x67, 0x6f, 0x2d, 0x6d,
+	0x69, 0x63, 0x72, 0x6f, 0x2d, 0x73, 0x61, 0x61, 0x73, 0x2f, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e,
+	0x74, 0x2d, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x61, 0x63,
+	0x63, 0x6f, 0x75, 0x6e, 0x74, 0x2d, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2f, 0x76, 0x31,
+	0x2f, 0x72, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x73, 0x3b, 0x72, 0x65, 0x73, 0x6f, 0x75,
+	0x72, 0x63, 0x65, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -2885,93 +2499,81 @@ func file_api_account_service_v1_resources_user_auth_resource_v1_proto_rawDescGZ
 	return file_api_account_service_v1_resources_user_auth_resource_v1_proto_rawDescData
 }
 
-var file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 53)
+var file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 45)
 var file_api_account_service_v1_resources_user_auth_resource_v1_proto_goTypes = []any{
-	(*PingReq)(nil),                             // 0: saas.api.account.resourcev1.PingReq
-	(*PingResp)(nil),                            // 1: saas.api.account.resourcev1.PingResp
-	(*PingRespData)(nil),                        // 2: saas.api.account.resourcev1.PingRespData
-	(*UserInfo)(nil),                            // 3: saas.api.account.resourcev1.UserInfo
-	(*LoginOrSignupByPhoneReq)(nil),             // 4: saas.api.account.resourcev1.LoginOrSignupByPhoneReq
-	(*LoginOrSignupByEmailReq)(nil),             // 5: saas.api.account.resourcev1.LoginOrSignupByEmailReq
-	(*SendEmailVerifyCodeReq)(nil),              // 6: saas.api.account.resourcev1.SendEmailVerifyCodeReq
-	(*SendPhoneVerifyCodeReq)(nil),              // 7: saas.api.account.resourcev1.SendPhoneVerifyCodeReq
-	(*SendVerifyCodeResp)(nil),                  // 8: saas.api.account.resourcev1.SendVerifyCodeResp
-	(*SendVerifyCodeRespData)(nil),              // 9: saas.api.account.resourcev1.SendVerifyCodeRespData
-	(*SignupByPhoneReq)(nil),                    // 10: saas.api.account.resourcev1.SignupByPhoneReq
-	(*SignupByEmailReq)(nil),                    // 11: saas.api.account.resourcev1.SignupByEmailReq
-	(*LoginByPhoneReq)(nil),                     // 12: saas.api.account.resourcev1.LoginByPhoneReq
-	(*LoginByEmailReq)(nil),                     // 13: saas.api.account.resourcev1.LoginByEmailReq
-	(*LoginByOpenApiReq)(nil),                   // 14: saas.api.account.resourcev1.LoginByOpenApiReq
-	(*LoginResp)(nil),                           // 15: saas.api.account.resourcev1.LoginResp
-	(*LoginRespData)(nil),                       // 16: saas.api.account.resourcev1.LoginRespData
-	(*RefreshTokenReq)(nil),                     // 17: saas.api.account.resourcev1.RefreshTokenReq
-	(*ChangePasswordReq)(nil),                   // 18: saas.api.account.resourcev1.ChangePasswordReq
-	(*ChangePasswordResp)(nil),                  // 19: saas.api.account.resourcev1.ChangePasswordResp
-	(*ChangePasswordRespData)(nil),              // 20: saas.api.account.resourcev1.ChangePasswordRespData
-	(*ChangeAvatarReq)(nil),                     // 21: saas.api.account.resourcev1.ChangeAvatarReq
-	(*ChangeAvatarResp)(nil),                    // 22: saas.api.account.resourcev1.ChangeAvatarResp
-	(*ChangeAvatarRespData)(nil),                // 23: saas.api.account.resourcev1.ChangeAvatarRespData
-	(*ChangePhoneReq)(nil),                      // 24: saas.api.account.resourcev1.ChangePhoneReq
-	(*ChangePhoneResp)(nil),                     // 25: saas.api.account.resourcev1.ChangePhoneResp
-	(*ChangePhoneRespData)(nil),                 // 26: saas.api.account.resourcev1.ChangePhoneRespData
-	(*ChangeEmailReq)(nil),                      // 27: saas.api.account.resourcev1.ChangeEmailReq
-	(*ChangeEmailResp)(nil),                     // 28: saas.api.account.resourcev1.ChangeEmailResp
-	(*ChangeEmailRespData)(nil),                 // 29: saas.api.account.resourcev1.ChangeEmailRespData
-	(*ChangeNicknameReq)(nil),                   // 30: saas.api.account.resourcev1.ChangeNicknameReq
-	(*ChangeNicknameResp)(nil),                  // 31: saas.api.account.resourcev1.ChangeNicknameResp
-	(*ChangeNicknameRespData)(nil),              // 32: saas.api.account.resourcev1.ChangeNicknameRespData
-	(*ChangeGenderReq)(nil),                     // 33: saas.api.account.resourcev1.ChangeGenderReq
-	(*ChangeGenderResp)(nil),                    // 34: saas.api.account.resourcev1.ChangeGenderResp
-	(*ChangeGenderRespData)(nil),                // 35: saas.api.account.resourcev1.ChangeGenderRespData
-	(*SubscribeSendEmailCodeEventReq)(nil),      // 36: saas.api.account.resourcev1.SubscribeSendEmailCodeEventReq
-	(*SubscribeSendEmailCodeEventResp)(nil),     // 37: saas.api.account.resourcev1.SubscribeSendEmailCodeEventResp
-	(*SubscribeSendEmailCodeEventRespData)(nil), // 38: saas.api.account.resourcev1.SubscribeSendEmailCodeEventRespData
-	(*StopSendEmailCodeEventReq)(nil),           // 39: saas.api.account.resourcev1.StopSendEmailCodeEventReq
-	(*StopSendEmailCodeEventResp)(nil),          // 40: saas.api.account.resourcev1.StopSendEmailCodeEventResp
-	(*StopSendEmailCodeEventRespData)(nil),      // 41: saas.api.account.resourcev1.StopSendEmailCodeEventRespData
-	nil,                                         // 42: saas.api.account.resourcev1.PingResp.MetadataEntry
-	nil,                                         // 43: saas.api.account.resourcev1.SendVerifyCodeResp.MetadataEntry
-	nil,                                         // 44: saas.api.account.resourcev1.LoginResp.MetadataEntry
-	nil,                                         // 45: saas.api.account.resourcev1.ChangePasswordResp.MetadataEntry
-	nil,                                         // 46: saas.api.account.resourcev1.ChangeAvatarResp.MetadataEntry
-	nil,                                         // 47: saas.api.account.resourcev1.ChangePhoneResp.MetadataEntry
-	nil,                                         // 48: saas.api.account.resourcev1.ChangeEmailResp.MetadataEntry
-	nil,                                         // 49: saas.api.account.resourcev1.ChangeNicknameResp.MetadataEntry
-	nil,                                         // 50: saas.api.account.resourcev1.ChangeGenderResp.MetadataEntry
-	nil,                                         // 51: saas.api.account.resourcev1.SubscribeSendEmailCodeEventResp.MetadataEntry
-	nil,                                         // 52: saas.api.account.resourcev1.StopSendEmailCodeEventResp.MetadataEntry
-	(enums.UserGenderEnum_UserGender)(0),        // 53: saas.api.account.enumv1.UserGenderEnum.UserGender
+	(*PingReq)(nil),                      // 0: saas.api.account.resourcev1.PingReq
+	(*PingResp)(nil),                     // 1: saas.api.account.resourcev1.PingResp
+	(*PingRespData)(nil),                 // 2: saas.api.account.resourcev1.PingRespData
+	(*UserInfo)(nil),                     // 3: saas.api.account.resourcev1.UserInfo
+	(*LoginOrSignupByPhoneReq)(nil),      // 4: saas.api.account.resourcev1.LoginOrSignupByPhoneReq
+	(*LoginOrSignupByEmailReq)(nil),      // 5: saas.api.account.resourcev1.LoginOrSignupByEmailReq
+	(*SendEmailVerifyCodeReq)(nil),       // 6: saas.api.account.resourcev1.SendEmailVerifyCodeReq
+	(*SendPhoneVerifyCodeReq)(nil),       // 7: saas.api.account.resourcev1.SendPhoneVerifyCodeReq
+	(*SendVerifyCodeResp)(nil),           // 8: saas.api.account.resourcev1.SendVerifyCodeResp
+	(*SendVerifyCodeRespData)(nil),       // 9: saas.api.account.resourcev1.SendVerifyCodeRespData
+	(*SignupByPhoneReq)(nil),             // 10: saas.api.account.resourcev1.SignupByPhoneReq
+	(*SignupByEmailReq)(nil),             // 11: saas.api.account.resourcev1.SignupByEmailReq
+	(*LoginByPhoneReq)(nil),              // 12: saas.api.account.resourcev1.LoginByPhoneReq
+	(*LoginByEmailReq)(nil),              // 13: saas.api.account.resourcev1.LoginByEmailReq
+	(*LoginByOpenApiReq)(nil),            // 14: saas.api.account.resourcev1.LoginByOpenApiReq
+	(*LoginResp)(nil),                    // 15: saas.api.account.resourcev1.LoginResp
+	(*LoginRespData)(nil),                // 16: saas.api.account.resourcev1.LoginRespData
+	(*RefreshTokenReq)(nil),              // 17: saas.api.account.resourcev1.RefreshTokenReq
+	(*ChangePasswordReq)(nil),            // 18: saas.api.account.resourcev1.ChangePasswordReq
+	(*ChangePasswordResp)(nil),           // 19: saas.api.account.resourcev1.ChangePasswordResp
+	(*ChangePasswordRespData)(nil),       // 20: saas.api.account.resourcev1.ChangePasswordRespData
+	(*ChangeAvatarReq)(nil),              // 21: saas.api.account.resourcev1.ChangeAvatarReq
+	(*ChangeAvatarResp)(nil),             // 22: saas.api.account.resourcev1.ChangeAvatarResp
+	(*ChangeAvatarRespData)(nil),         // 23: saas.api.account.resourcev1.ChangeAvatarRespData
+	(*ChangePhoneReq)(nil),               // 24: saas.api.account.resourcev1.ChangePhoneReq
+	(*ChangePhoneResp)(nil),              // 25: saas.api.account.resourcev1.ChangePhoneResp
+	(*ChangePhoneRespData)(nil),          // 26: saas.api.account.resourcev1.ChangePhoneRespData
+	(*ChangeEmailReq)(nil),               // 27: saas.api.account.resourcev1.ChangeEmailReq
+	(*ChangeEmailResp)(nil),              // 28: saas.api.account.resourcev1.ChangeEmailResp
+	(*ChangeEmailRespData)(nil),          // 29: saas.api.account.resourcev1.ChangeEmailRespData
+	(*ChangeNicknameReq)(nil),            // 30: saas.api.account.resourcev1.ChangeNicknameReq
+	(*ChangeNicknameResp)(nil),           // 31: saas.api.account.resourcev1.ChangeNicknameResp
+	(*ChangeNicknameRespData)(nil),       // 32: saas.api.account.resourcev1.ChangeNicknameRespData
+	(*ChangeGenderReq)(nil),              // 33: saas.api.account.resourcev1.ChangeGenderReq
+	(*ChangeGenderResp)(nil),             // 34: saas.api.account.resourcev1.ChangeGenderResp
+	(*ChangeGenderRespData)(nil),         // 35: saas.api.account.resourcev1.ChangeGenderRespData
+	nil,                                  // 36: saas.api.account.resourcev1.PingResp.MetadataEntry
+	nil,                                  // 37: saas.api.account.resourcev1.SendVerifyCodeResp.MetadataEntry
+	nil,                                  // 38: saas.api.account.resourcev1.LoginResp.MetadataEntry
+	nil,                                  // 39: saas.api.account.resourcev1.ChangePasswordResp.MetadataEntry
+	nil,                                  // 40: saas.api.account.resourcev1.ChangeAvatarResp.MetadataEntry
+	nil,                                  // 41: saas.api.account.resourcev1.ChangePhoneResp.MetadataEntry
+	nil,                                  // 42: saas.api.account.resourcev1.ChangeEmailResp.MetadataEntry
+	nil,                                  // 43: saas.api.account.resourcev1.ChangeNicknameResp.MetadataEntry
+	nil,                                  // 44: saas.api.account.resourcev1.ChangeGenderResp.MetadataEntry
+	(enums.UserGenderEnum_UserGender)(0), // 45: saas.api.account.enumv1.UserGenderEnum.UserGender
 }
 var file_api_account_service_v1_resources_user_auth_resource_v1_proto_depIdxs = []int32{
-	42, // 0: saas.api.account.resourcev1.PingResp.metadata:type_name -> saas.api.account.resourcev1.PingResp.MetadataEntry
+	36, // 0: saas.api.account.resourcev1.PingResp.metadata:type_name -> saas.api.account.resourcev1.PingResp.MetadataEntry
 	2,  // 1: saas.api.account.resourcev1.PingResp.data:type_name -> saas.api.account.resourcev1.PingRespData
-	43, // 2: saas.api.account.resourcev1.SendVerifyCodeResp.metadata:type_name -> saas.api.account.resourcev1.SendVerifyCodeResp.MetadataEntry
+	37, // 2: saas.api.account.resourcev1.SendVerifyCodeResp.metadata:type_name -> saas.api.account.resourcev1.SendVerifyCodeResp.MetadataEntry
 	9,  // 3: saas.api.account.resourcev1.SendVerifyCodeResp.data:type_name -> saas.api.account.resourcev1.SendVerifyCodeRespData
-	44, // 4: saas.api.account.resourcev1.LoginResp.metadata:type_name -> saas.api.account.resourcev1.LoginResp.MetadataEntry
+	38, // 4: saas.api.account.resourcev1.LoginResp.metadata:type_name -> saas.api.account.resourcev1.LoginResp.MetadataEntry
 	16, // 5: saas.api.account.resourcev1.LoginResp.data:type_name -> saas.api.account.resourcev1.LoginRespData
 	3,  // 6: saas.api.account.resourcev1.LoginRespData.user_info:type_name -> saas.api.account.resourcev1.UserInfo
-	45, // 7: saas.api.account.resourcev1.ChangePasswordResp.metadata:type_name -> saas.api.account.resourcev1.ChangePasswordResp.MetadataEntry
+	39, // 7: saas.api.account.resourcev1.ChangePasswordResp.metadata:type_name -> saas.api.account.resourcev1.ChangePasswordResp.MetadataEntry
 	20, // 8: saas.api.account.resourcev1.ChangePasswordResp.data:type_name -> saas.api.account.resourcev1.ChangePasswordRespData
-	46, // 9: saas.api.account.resourcev1.ChangeAvatarResp.metadata:type_name -> saas.api.account.resourcev1.ChangeAvatarResp.MetadataEntry
+	40, // 9: saas.api.account.resourcev1.ChangeAvatarResp.metadata:type_name -> saas.api.account.resourcev1.ChangeAvatarResp.MetadataEntry
 	23, // 10: saas.api.account.resourcev1.ChangeAvatarResp.data:type_name -> saas.api.account.resourcev1.ChangeAvatarRespData
-	47, // 11: saas.api.account.resourcev1.ChangePhoneResp.metadata:type_name -> saas.api.account.resourcev1.ChangePhoneResp.MetadataEntry
+	41, // 11: saas.api.account.resourcev1.ChangePhoneResp.metadata:type_name -> saas.api.account.resourcev1.ChangePhoneResp.MetadataEntry
 	26, // 12: saas.api.account.resourcev1.ChangePhoneResp.data:type_name -> saas.api.account.resourcev1.ChangePhoneRespData
-	48, // 13: saas.api.account.resourcev1.ChangeEmailResp.metadata:type_name -> saas.api.account.resourcev1.ChangeEmailResp.MetadataEntry
+	42, // 13: saas.api.account.resourcev1.ChangeEmailResp.metadata:type_name -> saas.api.account.resourcev1.ChangeEmailResp.MetadataEntry
 	29, // 14: saas.api.account.resourcev1.ChangeEmailResp.data:type_name -> saas.api.account.resourcev1.ChangeEmailRespData
-	49, // 15: saas.api.account.resourcev1.ChangeNicknameResp.metadata:type_name -> saas.api.account.resourcev1.ChangeNicknameResp.MetadataEntry
+	43, // 15: saas.api.account.resourcev1.ChangeNicknameResp.metadata:type_name -> saas.api.account.resourcev1.ChangeNicknameResp.MetadataEntry
 	32, // 16: saas.api.account.resourcev1.ChangeNicknameResp.data:type_name -> saas.api.account.resourcev1.ChangeNicknameRespData
-	53, // 17: saas.api.account.resourcev1.ChangeGenderReq.user_gender:type_name -> saas.api.account.enumv1.UserGenderEnum.UserGender
-	50, // 18: saas.api.account.resourcev1.ChangeGenderResp.metadata:type_name -> saas.api.account.resourcev1.ChangeGenderResp.MetadataEntry
+	45, // 17: saas.api.account.resourcev1.ChangeGenderReq.user_gender:type_name -> saas.api.account.enumv1.UserGenderEnum.UserGender
+	44, // 18: saas.api.account.resourcev1.ChangeGenderResp.metadata:type_name -> saas.api.account.resourcev1.ChangeGenderResp.MetadataEntry
 	35, // 19: saas.api.account.resourcev1.ChangeGenderResp.data:type_name -> saas.api.account.resourcev1.ChangeGenderRespData
-	51, // 20: saas.api.account.resourcev1.SubscribeSendEmailCodeEventResp.metadata:type_name -> saas.api.account.resourcev1.SubscribeSendEmailCodeEventResp.MetadataEntry
-	38, // 21: saas.api.account.resourcev1.SubscribeSendEmailCodeEventResp.data:type_name -> saas.api.account.resourcev1.SubscribeSendEmailCodeEventRespData
-	52, // 22: saas.api.account.resourcev1.StopSendEmailCodeEventResp.metadata:type_name -> saas.api.account.resourcev1.StopSendEmailCodeEventResp.MetadataEntry
-	41, // 23: saas.api.account.resourcev1.StopSendEmailCodeEventResp.data:type_name -> saas.api.account.resourcev1.StopSendEmailCodeEventRespData
-	24, // [24:24] is the sub-list for method output_type
-	24, // [24:24] is the sub-list for method input_type
-	24, // [24:24] is the sub-list for extension type_name
-	24, // [24:24] is the sub-list for extension extendee
-	0,  // [0:24] is the sub-list for field type_name
+	20, // [20:20] is the sub-list for method output_type
+	20, // [20:20] is the sub-list for method input_type
+	20, // [20:20] is the sub-list for extension type_name
+	20, // [20:20] is the sub-list for extension extendee
+	0,  // [0:20] is the sub-list for field type_name
 }
 
 func init() { file_api_account_service_v1_resources_user_auth_resource_v1_proto_init() }
@@ -3412,78 +3014,6 @@ func file_api_account_service_v1_resources_user_auth_resource_v1_proto_init() {
 				return nil
 			}
 		}
-		file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[36].Exporter = func(v any, i int) any {
-			switch v := v.(*SubscribeSendEmailCodeEventReq); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[37].Exporter = func(v any, i int) any {
-			switch v := v.(*SubscribeSendEmailCodeEventResp); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[38].Exporter = func(v any, i int) any {
-			switch v := v.(*SubscribeSendEmailCodeEventRespData); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[39].Exporter = func(v any, i int) any {
-			switch v := v.(*StopSendEmailCodeEventReq); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[40].Exporter = func(v any, i int) any {
-			switch v := v.(*StopSendEmailCodeEventResp); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_api_account_service_v1_resources_user_auth_resource_v1_proto_msgTypes[41].Exporter = func(v any, i int) any {
-			switch v := v.(*StopSendEmailCodeEventRespData); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -3491,7 +3021,7 @@ func file_api_account_service_v1_resources_user_auth_resource_v1_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_api_account_service_v1_resources_user_auth_resource_v1_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   53,
+			NumMessages:   45,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

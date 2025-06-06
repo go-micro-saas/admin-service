@@ -45,6 +45,7 @@ func exportServices(launcherManager setuputil.LauncherManager, hs *http.Server, 
 		// service
 		service.NewUserAuthService,
 		service.NewAccountService,
+		service.NewAccountEventService,
 		// register services
 		service.RegisterServices,
 	))

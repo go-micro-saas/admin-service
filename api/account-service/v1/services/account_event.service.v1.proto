@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package saas.api.account.servicev1;
+
+// 多语言特定包名，用于源代码引用
+option go_package           = "github.com/go-micro-saas/account-service/api/account-service/v1/services;servicev1";
+option java_multiple_files  = true;
+option java_package         = "saas.api.account.servicev1";
+option java_outer_classname = "SaasApiAccountServiceV1";
+
+import "google/api/annotations.proto";
+import "api/account-service/v1/resources/user_auth.resource.v1.proto";
+import "api/account-service/v1/resources/account_event.resource.v1.proto";
+
+// SrvAccountEventV1 User service
+service SrvAccountEventV1 {
+  // 身份验证-Ping测试
+  rpc Ping(resourcev1.PingReq) returns (resourcev1.PingResp) {
+    option (google.api.http) = {
+      get: "/api/v1/account/event/ping"
+      // body:"*" // WARN: GET xxx body should not be declared.
+    };
+  }
+  // 身份验证 - 订阅发送邮件验证码事件
+  rpc SubscribeSendEmailCodeEvent(resourcev1.SubscribeSendEmailCodeEventReq) returns (resourcev1.SubscribeSendEmailCodeEventResp) {
+  }
+  // 身份验证 - 停止发送邮件验证码事件
+  rpc StopSendEmailCodedEvent(resourcev1.StopSendEmailCodeEventReq) returns (resourcev1.StopSendEmailCodeEventResp) {
+  }
+}

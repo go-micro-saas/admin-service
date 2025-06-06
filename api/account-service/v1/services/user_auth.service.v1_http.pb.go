@@ -83,7 +83,7 @@ type SrvUserAuthV1HTTPServer interface {
 
 func RegisterSrvUserAuthV1HTTPServer(s *http.Server, srv SrvUserAuthV1HTTPServer) {
 	r := s.Route("/")
-	r.GET("/api/v1/account/auth/ping", _SrvUserAuthV1_Ping1_HTTP_Handler(srv))
+	r.GET("/api/v1/account/auth/ping", _SrvUserAuthV1_Ping2_HTTP_Handler(srv))
 	r.POST("/api/v1/account/auth/send-phone-signup-code", _SrvUserAuthV1_SendPhoneSignupCode0_HTTP_Handler(srv))
 	r.POST("/api/v1/account/auth/send-email-signup-code", _SrvUserAuthV1_SendEmailSignupCode0_HTTP_Handler(srv))
 	r.POST("/api/v1/account/auth/signup-by-email", _SrvUserAuthV1_SignupByEmail0_HTTP_Handler(srv))
@@ -104,7 +104,7 @@ func RegisterSrvUserAuthV1HTTPServer(s *http.Server, srv SrvUserAuthV1HTTPServer
 	r.POST("/api/v1/account/auth/send-phone-change-code", _SrvUserAuthV1_SendPhoneChangeCode0_HTTP_Handler(srv))
 }
 
-func _SrvUserAuthV1_Ping1_HTTP_Handler(srv SrvUserAuthV1HTTPServer) func(ctx http.Context) error {
+func _SrvUserAuthV1_Ping2_HTTP_Handler(srv SrvUserAuthV1HTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in resources.PingReq
 		if err := ctx.BindQuery(&in); err != nil {
