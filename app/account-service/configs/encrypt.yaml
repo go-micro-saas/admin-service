@@ -9,3 +9,6 @@ encrypt:
   token_encrypt:
     sign_key: h2XYA4njsfEZ3U8zSVTFLmRCrgbvaoG7
     refresh_key: daYTyz6RnNAjqOW3VKFrh0gxkuoLmXlJ
+    access_token_expire: 172800s
+    refresh_token_expire: 604800s
+    previous_token_expire: 60s
