@@ -1,7 +1,7 @@
-package po
+package global
 
 const (
-	KeyPrefix = "as_"
+	KeyPrefix = "acc_s_"
 )
 
 func Key(k string) string {

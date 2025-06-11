@@ -42,10 +42,6 @@ func (s *UserVerifyCode) CanVerification() bool {
 	}
 }
 
-func NewVerifyCode() string {
-	return randompkg.Numeric(4)
-}
-
 // NewUserVerifyCode default UserVerifyCode
 func NewUserVerifyCode(code string) *UserVerifyCode {
 	var (
@@ -63,6 +59,17 @@ func NewUserVerifyCode(code string) *UserVerifyCode {
 		CancelTime:    0,
 	}
 	return dataModel
+}
+
+func NewVerifyCode() string {
+	return randompkg.Numeric(4)
+}
+
+type VerifyCodeParam struct {
+	VerifyAccount string                                   `json:"verify_account"` // 用户标识；手机、邮箱、。。。
+	VerifyType    enumv1.UserVerifyTypeEnum_UserVerifyType `json:"verify_type"`    // 验证类型
+	VerifyCode    string                                   `json:"verify_code"`    // 验证码
+	TTL           time.Duration                            `json:"ttl"`            // 过期时间
 }
 
 type GetVerifyCodeParam struct {
@@ -86,4 +93,10 @@ func (s *GetVerifyCodeParam) WhereConditions(dbConn *gorm.DB) *gorm.DB {
 		dbConn = dbConn.Where(schemas.FieldCreatedTime+" > ?", s.GTCreateTime)
 	}
 	return dbConn
+}
+
+type SendEmailCodeParam struct {
+	VerifyAccount string                                   `json:"verify_account"` // 用户标识；手机、邮箱、。。。
+	VerifyType    enumv1.UserVerifyTypeEnum_UserVerifyType `json:"verify_type"`    // 验证类型
+	VerifyCode    string                                   `json:"verify_code"`    // 验证码
 }

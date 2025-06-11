@@ -8,6 +8,7 @@ import (
 	enumv1 "github.com/go-micro-saas/account-service/api/account-service/v1/enums"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/biz/bo"
 	bizrepos "github.com/go-micro-saas/account-service/app/account-service/internal/biz/repo"
+	"github.com/go-micro-saas/account-service/app/account-service/internal/data/global"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/data/po"
 	datarepos "github.com/go-micro-saas/account-service/app/account-service/internal/data/repo"
 	rabbitmqpkg "github.com/ikaiguang/go-srv-kit/data/rabbitmq"
@@ -48,7 +49,7 @@ func NewSendEmailCodeEventRepo(
 		log:              logHelper,
 		mqConn:           mqConn,
 		eventHistoryRepo: eventHistoryRepo,
-		topic:            po.Key(SendEmailCodeEventTopic),
+		topic:            global.Key(SendEmailCodeEventTopic),
 		closing:          make(chan struct{}),
 	}
 }

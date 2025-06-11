@@ -28,6 +28,7 @@ type userAuthBiz struct {
 	userRegEmailDataRepo   datarepos.UserRegEmailDataRepo
 	userRegPhoneDataRepo   datarepos.UserRegPhoneDataRepo
 	userVerifyCodeDataRepo datarepos.UserVerifyCodeDataRepo
+	verifyCodeCacheRepo    datarepos.VerifyCodeCacheRepo
 }
 
 // NewUserAuthBiz ...
