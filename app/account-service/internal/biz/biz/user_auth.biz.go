@@ -66,7 +66,7 @@ func (s *userAuthBiz) LoginByEmail(ctx context.Context, in *bo.LoginByEmailParam
 	if !in.SkipVerifyCode {
 		verifyParam := &bo.ConfirmVerifyCodeParam{
 			VerifyAccount: in.Email,
-			VerifyType:    enumv1.UserVerifyTypeEnum_SIGNUP_BY_EMAIL,
+			VerifyType:    enumv1.UserVerifyTypeEnum_LOGIN_BY_EMAIL,
 			VerifyCode:    in.Code,
 		}
 		err := s.ConfirmVerifyCode(ctx, verifyParam)
@@ -92,7 +92,7 @@ func (s *userAuthBiz) LoginByPhone(ctx context.Context, in *bo.LoginByPhoneParam
 	if !in.SkipVerifyCode {
 		verifyParam := &bo.ConfirmVerifyCodeParam{
 			VerifyAccount: in.Phone,
-			VerifyType:    enumv1.UserVerifyTypeEnum_SIGNUP_BY_PHONE,
+			VerifyType:    enumv1.UserVerifyTypeEnum_LOGIN_BY_PHONE,
 			VerifyCode:    in.Code,
 		}
 		err := s.ConfirmVerifyCode(ctx, verifyParam)

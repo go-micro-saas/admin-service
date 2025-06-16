@@ -102,36 +102,6 @@ func (s *userAuth) RefreshToken(ctx context.Context, in *resourcev1.RefreshToken
 	return out, nil
 }
 
-func (s *userAuth) SendPhoneSignupCode(ctx context.Context, req *resourcev1.SendPhoneVerifyCodeReq) (*resourcev1.SendVerifyCodeResp, error) {
-	_, isExist, err := s.userAuthBizRepo.IsExistRegisterPhone(ctx, req.Phone)
-	if err != nil {
-		return nil, err
-	}
-	if isExist {
-		return nil, errorpkg.WithStack(errorv1.DefaultErrorS103UserExist())
-	}
-
-	// send
-	param := dto.AccountDto.ToBoSendVerifyCodeParam(req)
-	param.VerifyType = enumv1.UserVerifyTypeEnum_SIGNUP_BY_PHONE
-	return s.sendPhoneCode(ctx, param)
-}
-
-func (s *userAuth) SendEmailSignupCode(ctx context.Context, req *resourcev1.SendEmailVerifyCodeReq) (*resourcev1.SendVerifyCodeResp, error) {
-	_, isExist, err := s.userAuthBizRepo.IsExistRegisterEmail(ctx, req.Email)
-	if err != nil {
-		return nil, err
-	}
-	if isExist {
-		return nil, errorpkg.WithStack(errorv1.DefaultErrorS103UserExist())
-	}
-
-	// send
-	param := dto.AccountDto.ToBoSendVerifyCodeParam2(req)
-	param.VerifyType = enumv1.UserVerifyTypeEnum_SIGNUP_BY_EMAIL
-	return s.sendEmailCode(ctx, param)
-}
-
 // SignupByEmail 身份验证-Email注册
 func (s *userAuth) SignupByEmail(ctx context.Context, req *resourcev1.SignupByEmailReq) (*resourcev1.LoginResp, error) {
 	param := dto.AccountDto.ToBoSignupByEmailParam(req)
@@ -163,7 +133,7 @@ func (s *userAuth) SignupByPhone(ctx context.Context, req *resourcev1.SignupByPh
 func (s *userAuth) LoginOrSignupByPhone(ctx context.Context, req *resourcev1.LoginOrSignupByPhoneReq) (*resourcev1.LoginResp, error) {
 	verifyParam := &bo.ConfirmVerifyCodeParam{
 		VerifyAccount: req.Phone,
-		VerifyType:    enumv1.UserVerifyTypeEnum_SIGNUP_BY_PHONE,
+		VerifyType:    enumv1.UserVerifyTypeEnum_SIGNUP_OR_LOGIN_BY_PHONE,
 		VerifyCode:    req.Code,
 	}
 	err := s.userAuthBizRepo.ConfirmVerifyCode(ctx, verifyParam)
@@ -202,7 +172,7 @@ func (s *userAuth) LoginOrSignupByPhone(ctx context.Context, req *resourcev1.Log
 func (s *userAuth) LoginOrSignupByEmail(ctx context.Context, req *resourcev1.LoginOrSignupByEmailReq) (*resourcev1.LoginResp, error) {
 	verifyParam := &bo.ConfirmVerifyCodeParam{
 		VerifyAccount: req.Email,
-		VerifyType:    enumv1.UserVerifyTypeEnum_SIGNUP_BY_EMAIL,
+		VerifyType:    enumv1.UserVerifyTypeEnum_SIGNUP_OR_LOGIN_BY_EMAIL,
 		VerifyCode:    req.Code,
 	}
 	err := s.userAuthBizRepo.ConfirmVerifyCode(ctx, verifyParam)
@@ -255,6 +225,50 @@ func (s *userAuth) loginByUserID(ctx context.Context, userID uint64) (*resourcev
 
 func (s *userAuth) LoginByOpenApi(ctx context.Context, req *resourcev1.LoginByOpenApiReq) (*resourcev1.LoginResp, error) {
 	return s.UnimplementedSrvUserAuthV1Server.LoginByOpenApi(ctx, req)
+}
+
+func (s *userAuth) SendPhoneSignupOrLoginCode(ctx context.Context, req *resourcev1.SendPhoneVerifyCodeReq) (*resourcev1.SendVerifyCodeResp, error) {
+	// send
+	param := dto.AccountDto.ToBoSendVerifyCodeParam(req)
+	param.VerifyType = enumv1.UserVerifyTypeEnum_SIGNUP_OR_LOGIN_BY_PHONE
+	return s.sendPhoneCode(ctx, param)
+}
+
+func (s *userAuth) SendEmailSignupOrLoginCode(ctx context.Context, req *resourcev1.SendEmailVerifyCodeReq) (*resourcev1.SendVerifyCodeResp, error) {
+	// send
+	param := dto.AccountDto.ToBoSendVerifyCodeParam2(req)
+	param.VerifyType = enumv1.UserVerifyTypeEnum_SIGNUP_OR_LOGIN_BY_EMAIL
+	return s.sendEmailCode(ctx, param)
+}
+
+func (s *userAuth) SendPhoneSignupCode(ctx context.Context, req *resourcev1.SendPhoneVerifyCodeReq) (*resourcev1.SendVerifyCodeResp, error) {
+	_, isExist, err := s.userAuthBizRepo.IsExistRegisterPhone(ctx, req.Phone)
+	if err != nil {
+		return nil, err
+	}
+	if isExist {
+		return nil, errorpkg.WithStack(errorv1.DefaultErrorS103UserExist())
+	}
+
+	// send
+	param := dto.AccountDto.ToBoSendVerifyCodeParam(req)
+	param.VerifyType = enumv1.UserVerifyTypeEnum_SIGNUP_BY_PHONE
+	return s.sendPhoneCode(ctx, param)
+}
+
+func (s *userAuth) SendEmailSignupCode(ctx context.Context, req *resourcev1.SendEmailVerifyCodeReq) (*resourcev1.SendVerifyCodeResp, error) {
+	_, isExist, err := s.userAuthBizRepo.IsExistRegisterEmail(ctx, req.Email)
+	if err != nil {
+		return nil, err
+	}
+	if isExist {
+		return nil, errorpkg.WithStack(errorv1.DefaultErrorS103UserExist())
+	}
+
+	// send
+	param := dto.AccountDto.ToBoSendVerifyCodeParam2(req)
+	param.VerifyType = enumv1.UserVerifyTypeEnum_SIGNUP_BY_EMAIL
+	return s.sendEmailCode(ctx, param)
 }
 
 func (s *userAuth) sendEmailCode(ctx context.Context, param *bo.SendVerifyCodeParam) (*resourcev1.SendVerifyCodeResp, error) {

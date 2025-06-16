@@ -20,20 +20,6 @@ service SrvUserAuthV1 {
       // body:"*" // WARN: GET xxx body should not be declared.
     };
   }
-  // 身份验证-发送手机注册码
-  rpc SendPhoneSignupCode(resourcev1.SendPhoneVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
-    option (google.api.http) = {
-      post: "/api/v1/account/auth/send-phone-signup-code"
-      body: "*"
-    };
-  }
-  // 身份验证-发送邮箱注册码
-  rpc SendEmailSignupCode(resourcev1.SendEmailVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
-    option (google.api.http) = {
-      post: "/api/v1/account/auth/send-email-signup-code"
-      body: "*"
-    };
-  }
   // 身份验证-Email注册
   rpc SignupByEmail(resourcev1.SignupByEmailReq) returns (resourcev1.LoginResp) {
     option (google.api.http) = {
@@ -91,6 +77,34 @@ service SrvUserAuthV1 {
     };
   }
 
+  // 身份验证-发送手机注册码
+  rpc SendPhoneSignupCode(resourcev1.SendPhoneVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
+    option (google.api.http) = {
+      post: "/api/v1/account/auth/send-phone-signup-code"
+      body: "*"
+    };
+  }
+  // 身份验证-发送邮箱注册码
+  rpc SendEmailSignupCode(resourcev1.SendEmailVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
+    option (google.api.http) = {
+      post: "/api/v1/account/auth/send-email-signup-code"
+      body: "*"
+    };
+  }
+  // 身份验证-发送手机注册or登录码
+  rpc SendPhoneSignupOrLoginCode(resourcev1.SendPhoneVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
+    option (google.api.http) = {
+      post: "/api/v1/account/auth/send-phone-signup-or-login-code"
+      body: "*"
+    };
+  }
+  // 身份验证-发送邮箱注册or登录码
+  rpc SendEmailSignupOrLoginCode(resourcev1.SendEmailVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
+    option (google.api.http) = {
+      post: "/api/v1/account/auth/send-email-signup-or-login-code"
+      body: "*"
+    };
+  }
   // 身份验证-发送邮箱登录码
   rpc SendEmailLoginCode(resourcev1.SendEmailVerifyCodeReq) returns (resourcev1.SendVerifyCodeResp) {
     option (google.api.http) = {

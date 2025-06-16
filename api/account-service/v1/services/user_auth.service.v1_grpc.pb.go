@@ -20,25 +20,27 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SrvUserAuthV1_Ping_FullMethodName                      = "/saas.api.account.servicev1.SrvUserAuthV1/Ping"
-	SrvUserAuthV1_SendPhoneSignupCode_FullMethodName       = "/saas.api.account.servicev1.SrvUserAuthV1/SendPhoneSignupCode"
-	SrvUserAuthV1_SendEmailSignupCode_FullMethodName       = "/saas.api.account.servicev1.SrvUserAuthV1/SendEmailSignupCode"
-	SrvUserAuthV1_SignupByEmail_FullMethodName             = "/saas.api.account.servicev1.SrvUserAuthV1/SignupByEmail"
-	SrvUserAuthV1_SignupByPhone_FullMethodName             = "/saas.api.account.servicev1.SrvUserAuthV1/SignupByPhone"
-	SrvUserAuthV1_LoginOrSignupByPhone_FullMethodName      = "/saas.api.account.servicev1.SrvUserAuthV1/LoginOrSignupByPhone"
-	SrvUserAuthV1_LoginOrSignupByEmail_FullMethodName      = "/saas.api.account.servicev1.SrvUserAuthV1/LoginOrSignupByEmail"
-	SrvUserAuthV1_RefreshToken_FullMethodName              = "/saas.api.account.servicev1.SrvUserAuthV1/RefreshToken"
-	SrvUserAuthV1_LoginByEmail_FullMethodName              = "/saas.api.account.servicev1.SrvUserAuthV1/LoginByEmail"
-	SrvUserAuthV1_LoginByPhone_FullMethodName              = "/saas.api.account.servicev1.SrvUserAuthV1/LoginByPhone"
-	SrvUserAuthV1_LoginByOpenApi_FullMethodName            = "/saas.api.account.servicev1.SrvUserAuthV1/LoginByOpenApi"
-	SrvUserAuthV1_SendEmailLoginCode_FullMethodName        = "/saas.api.account.servicev1.SrvUserAuthV1/SendEmailLoginCode"
-	SrvUserAuthV1_SendPhoneLoginCode_FullMethodName        = "/saas.api.account.servicev1.SrvUserAuthV1/SendPhoneLoginCode"
-	SrvUserAuthV1_SendEmailForgotPasswdCode_FullMethodName = "/saas.api.account.servicev1.SrvUserAuthV1/SendEmailForgotPasswdCode"
-	SrvUserAuthV1_SendPhoneForgotPasswdCode_FullMethodName = "/saas.api.account.servicev1.SrvUserAuthV1/SendPhoneForgotPasswdCode"
-	SrvUserAuthV1_SendEmailChangePasswdCode_FullMethodName = "/saas.api.account.servicev1.SrvUserAuthV1/SendEmailChangePasswdCode"
-	SrvUserAuthV1_SendPhoneChangePasswdCode_FullMethodName = "/saas.api.account.servicev1.SrvUserAuthV1/SendPhoneChangePasswdCode"
-	SrvUserAuthV1_SendEmailChangeCode_FullMethodName       = "/saas.api.account.servicev1.SrvUserAuthV1/SendEmailChangeCode"
-	SrvUserAuthV1_SendPhoneChangeCode_FullMethodName       = "/saas.api.account.servicev1.SrvUserAuthV1/SendPhoneChangeCode"
+	SrvUserAuthV1_Ping_FullMethodName                       = "/saas.api.account.servicev1.SrvUserAuthV1/Ping"
+	SrvUserAuthV1_SignupByEmail_FullMethodName              = "/saas.api.account.servicev1.SrvUserAuthV1/SignupByEmail"
+	SrvUserAuthV1_SignupByPhone_FullMethodName              = "/saas.api.account.servicev1.SrvUserAuthV1/SignupByPhone"
+	SrvUserAuthV1_LoginOrSignupByPhone_FullMethodName       = "/saas.api.account.servicev1.SrvUserAuthV1/LoginOrSignupByPhone"
+	SrvUserAuthV1_LoginOrSignupByEmail_FullMethodName       = "/saas.api.account.servicev1.SrvUserAuthV1/LoginOrSignupByEmail"
+	SrvUserAuthV1_RefreshToken_FullMethodName               = "/saas.api.account.servicev1.SrvUserAuthV1/RefreshToken"
+	SrvUserAuthV1_LoginByEmail_FullMethodName               = "/saas.api.account.servicev1.SrvUserAuthV1/LoginByEmail"
+	SrvUserAuthV1_LoginByPhone_FullMethodName               = "/saas.api.account.servicev1.SrvUserAuthV1/LoginByPhone"
+	SrvUserAuthV1_LoginByOpenApi_FullMethodName             = "/saas.api.account.servicev1.SrvUserAuthV1/LoginByOpenApi"
+	SrvUserAuthV1_SendPhoneSignupCode_FullMethodName        = "/saas.api.account.servicev1.SrvUserAuthV1/SendPhoneSignupCode"
+	SrvUserAuthV1_SendEmailSignupCode_FullMethodName        = "/saas.api.account.servicev1.SrvUserAuthV1/SendEmailSignupCode"
+	SrvUserAuthV1_SendPhoneSignupOrLoginCode_FullMethodName = "/saas.api.account.servicev1.SrvUserAuthV1/SendPhoneSignupOrLoginCode"
+	SrvUserAuthV1_SendEmailSignupOrLoginCode_FullMethodName = "/saas.api.account.servicev1.SrvUserAuthV1/SendEmailSignupOrLoginCode"
+	SrvUserAuthV1_SendEmailLoginCode_FullMethodName         = "/saas.api.account.servicev1.SrvUserAuthV1/SendEmailLoginCode"
+	SrvUserAuthV1_SendPhoneLoginCode_FullMethodName         = "/saas.api.account.servicev1.SrvUserAuthV1/SendPhoneLoginCode"
+	SrvUserAuthV1_SendEmailForgotPasswdCode_FullMethodName  = "/saas.api.account.servicev1.SrvUserAuthV1/SendEmailForgotPasswdCode"
+	SrvUserAuthV1_SendPhoneForgotPasswdCode_FullMethodName  = "/saas.api.account.servicev1.SrvUserAuthV1/SendPhoneForgotPasswdCode"
+	SrvUserAuthV1_SendEmailChangePasswdCode_FullMethodName  = "/saas.api.account.servicev1.SrvUserAuthV1/SendEmailChangePasswdCode"
+	SrvUserAuthV1_SendPhoneChangePasswdCode_FullMethodName  = "/saas.api.account.servicev1.SrvUserAuthV1/SendPhoneChangePasswdCode"
+	SrvUserAuthV1_SendEmailChangeCode_FullMethodName        = "/saas.api.account.servicev1.SrvUserAuthV1/SendEmailChangeCode"
+	SrvUserAuthV1_SendPhoneChangeCode_FullMethodName        = "/saas.api.account.servicev1.SrvUserAuthV1/SendPhoneChangeCode"
 )
 
 // SrvUserAuthV1Client is the client API for SrvUserAuthV1 service.
@@ -49,10 +51,6 @@ const (
 type SrvUserAuthV1Client interface {
 	// 身份验证-Ping测试
 	Ping(ctx context.Context, in *resources.PingReq, opts ...grpc.CallOption) (*resources.PingResp, error)
-	// 身份验证-发送手机注册码
-	SendPhoneSignupCode(ctx context.Context, in *resources.SendPhoneVerifyCodeReq, opts ...grpc.CallOption) (*resources.SendVerifyCodeResp, error)
-	// 身份验证-发送邮箱注册码
-	SendEmailSignupCode(ctx context.Context, in *resources.SendEmailVerifyCodeReq, opts ...grpc.CallOption) (*resources.SendVerifyCodeResp, error)
 	// 身份验证-Email注册
 	SignupByEmail(ctx context.Context, in *resources.SignupByEmailReq, opts ...grpc.CallOption) (*resources.LoginResp, error)
 	// 身份验证-手机注册
@@ -69,6 +67,14 @@ type SrvUserAuthV1Client interface {
 	LoginByPhone(ctx context.Context, in *resources.LoginByPhoneReq, opts ...grpc.CallOption) (*resources.LoginResp, error)
 	// 身份验证-开发平台登录
 	LoginByOpenApi(ctx context.Context, in *resources.LoginByOpenApiReq, opts ...grpc.CallOption) (*resources.LoginResp, error)
+	// 身份验证-发送手机注册码
+	SendPhoneSignupCode(ctx context.Context, in *resources.SendPhoneVerifyCodeReq, opts ...grpc.CallOption) (*resources.SendVerifyCodeResp, error)
+	// 身份验证-发送邮箱注册码
+	SendEmailSignupCode(ctx context.Context, in *resources.SendEmailVerifyCodeReq, opts ...grpc.CallOption) (*resources.SendVerifyCodeResp, error)
+	// 身份验证-发送手机注册or登录码
+	SendPhoneSignupOrLoginCode(ctx context.Context, in *resources.SendPhoneVerifyCodeReq, opts ...grpc.CallOption) (*resources.SendVerifyCodeResp, error)
+	// 身份验证-发送邮箱注册or登录码
+	SendEmailSignupOrLoginCode(ctx context.Context, in *resources.SendEmailVerifyCodeReq, opts ...grpc.CallOption) (*resources.SendVerifyCodeResp, error)
 	// 身份验证-发送邮箱登录码
 	SendEmailLoginCode(ctx context.Context, in *resources.SendEmailVerifyCodeReq, opts ...grpc.CallOption) (*resources.SendVerifyCodeResp, error)
 	// 身份验证-发送手机登录码
@@ -99,26 +105,6 @@ func (c *srvUserAuthV1Client) Ping(ctx context.Context, in *resources.PingReq, o
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(resources.PingResp)
 	err := c.cc.Invoke(ctx, SrvUserAuthV1_Ping_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *srvUserAuthV1Client) SendPhoneSignupCode(ctx context.Context, in *resources.SendPhoneVerifyCodeReq, opts ...grpc.CallOption) (*resources.SendVerifyCodeResp, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(resources.SendVerifyCodeResp)
-	err := c.cc.Invoke(ctx, SrvUserAuthV1_SendPhoneSignupCode_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *srvUserAuthV1Client) SendEmailSignupCode(ctx context.Context, in *resources.SendEmailVerifyCodeReq, opts ...grpc.CallOption) (*resources.SendVerifyCodeResp, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(resources.SendVerifyCodeResp)
-	err := c.cc.Invoke(ctx, SrvUserAuthV1_SendEmailSignupCode_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -199,6 +185,46 @@ func (c *srvUserAuthV1Client) LoginByOpenApi(ctx context.Context, in *resources.
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(resources.LoginResp)
 	err := c.cc.Invoke(ctx, SrvUserAuthV1_LoginByOpenApi_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *srvUserAuthV1Client) SendPhoneSignupCode(ctx context.Context, in *resources.SendPhoneVerifyCodeReq, opts ...grpc.CallOption) (*resources.SendVerifyCodeResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(resources.SendVerifyCodeResp)
+	err := c.cc.Invoke(ctx, SrvUserAuthV1_SendPhoneSignupCode_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *srvUserAuthV1Client) SendEmailSignupCode(ctx context.Context, in *resources.SendEmailVerifyCodeReq, opts ...grpc.CallOption) (*resources.SendVerifyCodeResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(resources.SendVerifyCodeResp)
+	err := c.cc.Invoke(ctx, SrvUserAuthV1_SendEmailSignupCode_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *srvUserAuthV1Client) SendPhoneSignupOrLoginCode(ctx context.Context, in *resources.SendPhoneVerifyCodeReq, opts ...grpc.CallOption) (*resources.SendVerifyCodeResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(resources.SendVerifyCodeResp)
+	err := c.cc.Invoke(ctx, SrvUserAuthV1_SendPhoneSignupOrLoginCode_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *srvUserAuthV1Client) SendEmailSignupOrLoginCode(ctx context.Context, in *resources.SendEmailVerifyCodeReq, opts ...grpc.CallOption) (*resources.SendVerifyCodeResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(resources.SendVerifyCodeResp)
+	err := c.cc.Invoke(ctx, SrvUserAuthV1_SendEmailSignupOrLoginCode_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -293,10 +319,6 @@ func (c *srvUserAuthV1Client) SendPhoneChangeCode(ctx context.Context, in *resou
 type SrvUserAuthV1Server interface {
 	// 身份验证-Ping测试
 	Ping(context.Context, *resources.PingReq) (*resources.PingResp, error)
-	// 身份验证-发送手机注册码
-	SendPhoneSignupCode(context.Context, *resources.SendPhoneVerifyCodeReq) (*resources.SendVerifyCodeResp, error)
-	// 身份验证-发送邮箱注册码
-	SendEmailSignupCode(context.Context, *resources.SendEmailVerifyCodeReq) (*resources.SendVerifyCodeResp, error)
 	// 身份验证-Email注册
 	SignupByEmail(context.Context, *resources.SignupByEmailReq) (*resources.LoginResp, error)
 	// 身份验证-手机注册
@@ -313,6 +335,14 @@ type SrvUserAuthV1Server interface {
 	LoginByPhone(context.Context, *resources.LoginByPhoneReq) (*resources.LoginResp, error)
 	// 身份验证-开发平台登录
 	LoginByOpenApi(context.Context, *resources.LoginByOpenApiReq) (*resources.LoginResp, error)
+	// 身份验证-发送手机注册码
+	SendPhoneSignupCode(context.Context, *resources.SendPhoneVerifyCodeReq) (*resources.SendVerifyCodeResp, error)
+	// 身份验证-发送邮箱注册码
+	SendEmailSignupCode(context.Context, *resources.SendEmailVerifyCodeReq) (*resources.SendVerifyCodeResp, error)
+	// 身份验证-发送手机注册or登录码
+	SendPhoneSignupOrLoginCode(context.Context, *resources.SendPhoneVerifyCodeReq) (*resources.SendVerifyCodeResp, error)
+	// 身份验证-发送邮箱注册or登录码
+	SendEmailSignupOrLoginCode(context.Context, *resources.SendEmailVerifyCodeReq) (*resources.SendVerifyCodeResp, error)
 	// 身份验证-发送邮箱登录码
 	SendEmailLoginCode(context.Context, *resources.SendEmailVerifyCodeReq) (*resources.SendVerifyCodeResp, error)
 	// 身份验证-发送手机登录码
@@ -342,12 +372,6 @@ type UnimplementedSrvUserAuthV1Server struct{}
 func (UnimplementedSrvUserAuthV1Server) Ping(context.Context, *resources.PingReq) (*resources.PingResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
 }
-func (UnimplementedSrvUserAuthV1Server) SendPhoneSignupCode(context.Context, *resources.SendPhoneVerifyCodeReq) (*resources.SendVerifyCodeResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SendPhoneSignupCode not implemented")
-}
-func (UnimplementedSrvUserAuthV1Server) SendEmailSignupCode(context.Context, *resources.SendEmailVerifyCodeReq) (*resources.SendVerifyCodeResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SendEmailSignupCode not implemented")
-}
 func (UnimplementedSrvUserAuthV1Server) SignupByEmail(context.Context, *resources.SignupByEmailReq) (*resources.LoginResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SignupByEmail not implemented")
 }
@@ -371,6 +395,18 @@ func (UnimplementedSrvUserAuthV1Server) LoginByPhone(context.Context, *resources
 }
 func (UnimplementedSrvUserAuthV1Server) LoginByOpenApi(context.Context, *resources.LoginByOpenApiReq) (*resources.LoginResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoginByOpenApi not implemented")
+}
+func (UnimplementedSrvUserAuthV1Server) SendPhoneSignupCode(context.Context, *resources.SendPhoneVerifyCodeReq) (*resources.SendVerifyCodeResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendPhoneSignupCode not implemented")
+}
+func (UnimplementedSrvUserAuthV1Server) SendEmailSignupCode(context.Context, *resources.SendEmailVerifyCodeReq) (*resources.SendVerifyCodeResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendEmailSignupCode not implemented")
+}
+func (UnimplementedSrvUserAuthV1Server) SendPhoneSignupOrLoginCode(context.Context, *resources.SendPhoneVerifyCodeReq) (*resources.SendVerifyCodeResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendPhoneSignupOrLoginCode not implemented")
+}
+func (UnimplementedSrvUserAuthV1Server) SendEmailSignupOrLoginCode(context.Context, *resources.SendEmailVerifyCodeReq) (*resources.SendVerifyCodeResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendEmailSignupOrLoginCode not implemented")
 }
 func (UnimplementedSrvUserAuthV1Server) SendEmailLoginCode(context.Context, *resources.SendEmailVerifyCodeReq) (*resources.SendVerifyCodeResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendEmailLoginCode not implemented")
@@ -431,42 +467,6 @@ func _SrvUserAuthV1_Ping_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SrvUserAuthV1Server).Ping(ctx, req.(*resources.PingReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _SrvUserAuthV1_SendPhoneSignupCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(resources.SendPhoneVerifyCodeReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SrvUserAuthV1Server).SendPhoneSignupCode(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SrvUserAuthV1_SendPhoneSignupCode_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SrvUserAuthV1Server).SendPhoneSignupCode(ctx, req.(*resources.SendPhoneVerifyCodeReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _SrvUserAuthV1_SendEmailSignupCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(resources.SendEmailVerifyCodeReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SrvUserAuthV1Server).SendEmailSignupCode(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SrvUserAuthV1_SendEmailSignupCode_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SrvUserAuthV1Server).SendEmailSignupCode(ctx, req.(*resources.SendEmailVerifyCodeReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -611,6 +611,78 @@ func _SrvUserAuthV1_LoginByOpenApi_Handler(srv interface{}, ctx context.Context,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SrvUserAuthV1Server).LoginByOpenApi(ctx, req.(*resources.LoginByOpenApiReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SrvUserAuthV1_SendPhoneSignupCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(resources.SendPhoneVerifyCodeReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SrvUserAuthV1Server).SendPhoneSignupCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SrvUserAuthV1_SendPhoneSignupCode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SrvUserAuthV1Server).SendPhoneSignupCode(ctx, req.(*resources.SendPhoneVerifyCodeReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SrvUserAuthV1_SendEmailSignupCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(resources.SendEmailVerifyCodeReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SrvUserAuthV1Server).SendEmailSignupCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SrvUserAuthV1_SendEmailSignupCode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SrvUserAuthV1Server).SendEmailSignupCode(ctx, req.(*resources.SendEmailVerifyCodeReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SrvUserAuthV1_SendPhoneSignupOrLoginCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(resources.SendPhoneVerifyCodeReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SrvUserAuthV1Server).SendPhoneSignupOrLoginCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SrvUserAuthV1_SendPhoneSignupOrLoginCode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SrvUserAuthV1Server).SendPhoneSignupOrLoginCode(ctx, req.(*resources.SendPhoneVerifyCodeReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SrvUserAuthV1_SendEmailSignupOrLoginCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(resources.SendEmailVerifyCodeReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SrvUserAuthV1Server).SendEmailSignupOrLoginCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SrvUserAuthV1_SendEmailSignupOrLoginCode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SrvUserAuthV1Server).SendEmailSignupOrLoginCode(ctx, req.(*resources.SendEmailVerifyCodeReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -771,14 +843,6 @@ var SrvUserAuthV1_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _SrvUserAuthV1_Ping_Handler,
 		},
 		{
-			MethodName: "SendPhoneSignupCode",
-			Handler:    _SrvUserAuthV1_SendPhoneSignupCode_Handler,
-		},
-		{
-			MethodName: "SendEmailSignupCode",
-			Handler:    _SrvUserAuthV1_SendEmailSignupCode_Handler,
-		},
-		{
 			MethodName: "SignupByEmail",
 			Handler:    _SrvUserAuthV1_SignupByEmail_Handler,
 		},
@@ -809,6 +873,22 @@ var SrvUserAuthV1_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LoginByOpenApi",
 			Handler:    _SrvUserAuthV1_LoginByOpenApi_Handler,
+		},
+		{
+			MethodName: "SendPhoneSignupCode",
+			Handler:    _SrvUserAuthV1_SendPhoneSignupCode_Handler,
+		},
+		{
+			MethodName: "SendEmailSignupCode",
+			Handler:    _SrvUserAuthV1_SendEmailSignupCode_Handler,
+		},
+		{
+			MethodName: "SendPhoneSignupOrLoginCode",
+			Handler:    _SrvUserAuthV1_SendPhoneSignupOrLoginCode_Handler,
+		},
+		{
+			MethodName: "SendEmailSignupOrLoginCode",
+			Handler:    _SrvUserAuthV1_SendEmailSignupOrLoginCode_Handler,
 		},
 		{
 			MethodName: "SendEmailLoginCode",

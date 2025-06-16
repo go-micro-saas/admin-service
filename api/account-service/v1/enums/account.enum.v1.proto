@@ -65,6 +65,9 @@ message UserVerifyTypeEnum {
     CHANGE_PASSWORD_BY_PHONE = 8;   // 修改密码
     CHANGE_PHONE             = 9;   // 更换手机
     CHANGE_EMAIL             = 10;  // 更换邮箱
+    SIGNUP_OR_LOGIN          = 11;  // 注册或登录
+    SIGNUP_OR_LOGIN_BY_EMAIL = 12;  // 邮箱注册或登录
+    SIGNUP_OR_LOGIN_BY_PHONE = 13;  // 手机注册或登录
   }
 }
 
