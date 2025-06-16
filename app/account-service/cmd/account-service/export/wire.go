@@ -9,6 +9,7 @@ import (
 	"github.com/go-micro-saas/account-service/app/account-service/internal/biz/biz"
 	events "github.com/go-micro-saas/account-service/app/account-service/internal/biz/event"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/conf"
+	"github.com/go-micro-saas/account-service/app/account-service/internal/data/cache"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/data/data"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/service/dto"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/service/service"
@@ -25,17 +26,21 @@ func exportServices(launcherManager setuputil.LauncherManager, hs *http.Server, 
 		setuputil.GetAuthManager,
 		setuputil.GetServiceAPIManager,
 		setuputil.GetRabbitmqConn,
+		setuputil.GetRedisClient,
 		// conf
+		setuputil.GetConfig,
 		conf.GetServiceConfig,
 		dto.ToBoSendEmailCodeConfig,
 		// idGenerator
 		dto.ToPbGetNodeIdReq, dto.GetNodeIDOptions, snowflakeapi.GetSingletonIDGeneratorByHTTPAPI,
+		dto.ToBoVerifyCodeConfig,
 		// data
 		data.NewUserDataRepo,
 		data.NewUserRegPhoneDataRepo,
 		data.NewUserRegEmailDataRepo,
 		data.NewUserVerifyCodeRepo,
 		data.NewUserEventHistoryRepo,
+		caches.NewVerifyCodeCache,
 		// biz
 		biz.NewUserAuthBiz,
 		biz.NewSendEmailCodeBiz,

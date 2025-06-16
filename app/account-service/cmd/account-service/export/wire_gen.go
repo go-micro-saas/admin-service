@@ -12,6 +12,7 @@ import (
 	"github.com/go-micro-saas/account-service/app/account-service/internal/biz/biz"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/biz/event"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/conf"
+	"github.com/go-micro-saas/account-service/app/account-service/internal/data/cache"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/data/data"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/service/dto"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/service/service"
@@ -45,6 +46,8 @@ func exportServices(launcherManager setuputil.LauncherManager, hs *http.Server, 
 	if err != nil {
 		return nil, nil, err
 	}
+	bootstrap := setuputil.GetConfig(launcherManager)
+	verifyCodeConfig := dto.ToBoVerifyCodeConfig(bootstrap)
 	db, err := setuputil.GetRecommendDBConn(launcherManager)
 	if err != nil {
 		cleanup()
@@ -54,7 +57,13 @@ func exportServices(launcherManager setuputil.LauncherManager, hs *http.Server, 
 	userRegEmailDataRepo := data.NewUserRegEmailDataRepo(logger, db)
 	userRegPhoneDataRepo := data.NewUserRegPhoneDataRepo(logger, db)
 	userVerifyCodeDataRepo := data.NewUserVerifyCodeRepo(db)
-	userAuthBizRepo := biz.NewUserAuthBiz(logger, authRepo, snowflake, userDataRepo, userRegEmailDataRepo, userRegPhoneDataRepo, userVerifyCodeDataRepo)
+	universalClient, err := setuputil.GetRedisClient(launcherManager)
+	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
+	verifyCodeCacheRepo := caches.NewVerifyCodeCache(logger, universalClient)
+	userAuthBizRepo := biz.NewUserAuthBiz(logger, authRepo, snowflake, verifyCodeConfig, userDataRepo, userRegEmailDataRepo, userRegPhoneDataRepo, userVerifyCodeDataRepo, verifyCodeCacheRepo)
 	connectionWrapper, err := setuputil.GetRabbitmqConn(launcherManager)
 	if err != nil {
 		cleanup()

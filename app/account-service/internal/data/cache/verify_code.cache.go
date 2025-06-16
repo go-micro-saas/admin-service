@@ -26,7 +26,7 @@ func NewVerifyCodeCache(logger log.Logger, redisCC redis.UniversalClient) datare
 }
 
 func (s *verifyCodeCache) key(param *po.VerifyCodeParam) string {
-	key := "v_code:" + param.VerifyAccount +
+	key := "verifyCode:" + param.VerifyAccount +
 		":" + strconv.FormatInt(int64(param.VerifyType), 10) +
 		":" + param.VerifyCode
 

@@ -20,9 +20,10 @@ import (
 
 // userAuthBiz ...
 type userAuthBiz struct {
-	log         *log.Helper
-	authRepo    authpkg.AuthRepo
-	idGenerator idpkg.Snowflake
+	log              *log.Helper
+	authRepo         authpkg.AuthRepo
+	idGenerator      idpkg.Snowflake
+	verifyCodeConfig *bo.VerifyCodeConfig
 
 	userDataRepo           datarepos.UserDataRepo
 	userRegEmailDataRepo   datarepos.UserRegEmailDataRepo
@@ -36,22 +37,26 @@ func NewUserAuthBiz(
 	logger log.Logger,
 	authRepo authpkg.AuthRepo,
 	idGenerator idpkg.Snowflake,
+	verifyCodeConfig *bo.VerifyCodeConfig,
 
 	userDataRepo datarepos.UserDataRepo,
 	userRegEmailDataRepo datarepos.UserRegEmailDataRepo,
 	userRegPhoneDataRepo datarepos.UserRegPhoneDataRepo,
 	userVerifyCodeDataRepo datarepos.UserVerifyCodeDataRepo,
+	verifyCodeCacheRepo datarepos.VerifyCodeCacheRepo,
 ) bizrepos.UserAuthBizRepo {
 	logHelper := log.NewHelper(log.With(logger, "module", "account-service/biz/user_auth"))
 	return &userAuthBiz{
-		log:         logHelper,
-		authRepo:    authRepo,
-		idGenerator: idGenerator,
+		log:              logHelper,
+		authRepo:         authRepo,
+		idGenerator:      idGenerator,
+		verifyCodeConfig: verifyCodeConfig,
 
 		userDataRepo:           userDataRepo,
 		userRegEmailDataRepo:   userRegEmailDataRepo,
 		userRegPhoneDataRepo:   userRegPhoneDataRepo,
 		userVerifyCodeDataRepo: userVerifyCodeDataRepo,
+		verifyCodeCacheRepo:    verifyCodeCacheRepo,
 	}
 }
 
@@ -470,13 +475,24 @@ func (s *userAuthBiz) SendVerifyCode(ctx context.Context, param *bo.SendVerifyCo
 	}
 
 	var (
-		code      = po.NewVerifyCode()
+		code      = po.NewVerifyCode(s.verifyCodeConfig.CaptchaLen)
 		dataModel = po.NewUserVerifyCode(code)
 	)
 	dataModel.VerifyAccount = param.VerifyAccount
 	dataModel.VerifyType = param.VerifyType
 
 	err := s.userVerifyCodeDataRepo.Create(ctx, dataModel)
+	if err != nil {
+		return nil, err
+	}
+
+	codeParam := &po.VerifyCodeParam{
+		VerifyAccount: dataModel.VerifyAccount,
+		VerifyType:    dataModel.VerifyType,
+		VerifyCode:    dataModel.VerifyCode,
+		TTL:           po.CheckAndGetVerifyCodeExpiredTime(s.verifyCodeConfig.CaptchaTTL),
+	}
+	err = s.verifyCodeCacheRepo.SaveCode(ctx, codeParam)
 	if err != nil {
 		return nil, err
 	}
@@ -491,9 +507,33 @@ func (s *userAuthBiz) SendVerifyCode(ctx context.Context, param *bo.SendVerifyCo
 }
 
 func (s *userAuthBiz) ConfirmVerifyCode(ctx context.Context, param *bo.ConfirmVerifyCodeParam) error {
+	return s.ConfirmVerifyCodeByRedis(ctx, param)
+	//return s.ConfirmVerifyCodeByDB(ctx, param)
+}
+
+func (s *userAuthBiz) ConfirmVerifyCodeByRedis(ctx context.Context, param *bo.ConfirmVerifyCodeParam) error {
+	verifyParam := &po.VerifyCodeParam{
+		VerifyAccount: param.VerifyAccount,
+		VerifyType:    param.VerifyType,
+		VerifyCode:    param.VerifyCode,
+		TTL:           0,
+	}
+	ok, err := s.verifyCodeCacheRepo.VerifyCode(ctx, verifyParam)
+	if err != nil {
+		return err
+	}
+	if !ok {
+		e := errorv1.ErrorS103VerifyCodeIncorrect("验证码不正确")
+		return errorpkg.WithStack(e)
+	}
+	return nil
+}
+
+func (s *userAuthBiz) ConfirmVerifyCodeByDB(ctx context.Context, param *bo.ConfirmVerifyCodeParam) error {
 	if err := param.Validate(); err != nil {
 		return nil
 	}
+	expireTTL := po.CheckAndGetVerifyCodeExpiredTime(s.verifyCodeConfig.CaptchaTTL)
 	queryParam := &po.GetVerifyCodeParam{
 		VerifyAccount: param.VerifyAccount,
 		VerifyType:    param.VerifyType,
@@ -502,13 +542,13 @@ func (s *userAuthBiz) ConfirmVerifyCode(ctx context.Context, param *bo.ConfirmVe
 			enumv1.UserVerifyStatusEnum_UNSPECIFIED,
 			enumv1.UserVerifyStatusEnum_CONFIRMING,
 		},
-		GTCreateTime: time.Now().Add(-po.DefaultVerifyCodeExpiredTime),
+		GTCreateTime: time.Now().Add(-expireTTL),
 	}
 	dataModel, isNotFound, err := s.userVerifyCodeDataRepo.QueryOneVerifyCode(ctx, queryParam)
 	if err != nil {
 		return nil
 	}
-	if isNotFound || dataModel.VerifyCode != param.VerifyCode || !dataModel.CanVerification() {
+	if isNotFound || dataModel.VerifyCode != param.VerifyCode || !dataModel.CanVerification(expireTTL) {
 		e := errorv1.ErrorS103VerifyCodeIncorrect("验证码不正确")
 		return errorpkg.WithStack(e)
 	}

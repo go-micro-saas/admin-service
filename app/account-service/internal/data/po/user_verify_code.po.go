@@ -11,7 +11,10 @@ import (
 	time "time"
 )
 
-var DefaultVerifyCodeExpiredTime = time.Minute * 10
+const (
+	DefaultVerifyCodeExpiredTime = time.Minute * 10
+	DefaultVerifyCodeLength      = 4
+)
 
 var _ = time.Time{}
 
@@ -30,8 +33,9 @@ type UserVerifyCode struct {
 	CancelTime    uint64                                       `gorm:"column:cancel_time" json:"cancel_time"`       // 取消时间
 }
 
-func (s *UserVerifyCode) CanVerification() bool {
-	if time.Since(s.CreatedTime) > DefaultVerifyCodeExpiredTime {
+func (s *UserVerifyCode) CanVerification(expireTTL time.Duration) bool {
+	expireTTL = CheckAndGetVerifyCodeExpiredTime(expireTTL)
+	if time.Since(s.CreatedTime) > expireTTL {
 		return false
 	}
 	switch s.VerifyStatus {
@@ -61,8 +65,9 @@ func NewUserVerifyCode(code string) *UserVerifyCode {
 	return dataModel
 }
 
-func NewVerifyCode() string {
-	return randompkg.Numeric(4)
+func NewVerifyCode(codeLength int) string {
+	codeLength = CheckAndGetVerifyCodeLength(codeLength)
+	return randompkg.Numeric(codeLength)
 }
 
 type VerifyCodeParam struct {
@@ -93,6 +98,21 @@ func (s *GetVerifyCodeParam) WhereConditions(dbConn *gorm.DB) *gorm.DB {
 		dbConn = dbConn.Where(schemas.FieldCreatedTime+" > ?", s.GTCreateTime)
 	}
 	return dbConn
+}
+
+func CheckAndGetVerifyCodeExpiredTime(ttl time.Duration) time.Duration {
+	if ttl > 0 {
+		return ttl
+	}
+	return DefaultVerifyCodeExpiredTime
+}
+
+func CheckAndGetVerifyCodeLength(length int) int {
+	if length > 0 {
+		return length
+	}
+	return DefaultVerifyCodeLength
+
 }
 
 type SendEmailCodeParam struct {

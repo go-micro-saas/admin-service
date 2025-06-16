@@ -4,8 +4,10 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/biz/bo"
 	"github.com/go-micro-saas/account-service/app/account-service/internal/conf"
+	"github.com/go-micro-saas/account-service/app/account-service/internal/data/po"
 	nodeidresourcev1 "github.com/go-micro-saas/service-api/api/nodeid-service/v1/resources"
 	snowflakeapi "github.com/go-micro-saas/service-api/app/snowflake-service"
+	configpb "github.com/ikaiguang/go-srv-kit/api/config"
 	emailpkg "github.com/ikaiguang/go-srv-kit/kit/email"
 	errorpkg "github.com/ikaiguang/go-srv-kit/kratos/error"
 )
@@ -67,4 +69,22 @@ func ToBoSendEmailCodeConfig(cfg *conf.ServiceConfig) (*bo.SendEmailCodeConfig, 
 		},
 	}
 	return res, nil
+}
+
+func ToBoVerifyCodeConfig(cfg *configpb.Bootstrap) *bo.VerifyCodeConfig {
+	res := &bo.VerifyCodeConfig{
+		CaptchaLen: po.DefaultVerifyCodeLength,
+		CaptchaTTL: po.DefaultVerifyCodeExpiredTime,
+	}
+	captchaConfig := cfg.GetSetting().GetCaptcha()
+	if captchaConfig == nil {
+		return res
+	}
+	if captchaConfig.GetCaptchaLen() > 0 {
+		res.CaptchaLen = int(captchaConfig.GetCaptchaLen())
+	}
+	if captchaConfig.GetCaptchaTtl().AsDuration() > 0 {
+		res.CaptchaTTL = captchaConfig.GetCaptchaTtl().AsDuration()
+	}
+	return res
 }
