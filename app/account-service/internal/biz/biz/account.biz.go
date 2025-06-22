@@ -64,7 +64,7 @@ func (s *accountBiz) GetUsersByUidList(ctx context.Context, uidList []uint64) ([
 	return userModels, nil
 }
 
-func (s *accountBiz) List(ctx context.Context, param *bo.UserListParam) ([]*po.User, int64, error) {
+func (s *accountBiz) ListUser(ctx context.Context, param *bo.UserListParam) ([]*po.User, int64, error) {
 	queryParam := &po.QueryUserParam{
 		UidList:      param.UidList,
 		ContactPhone: param.ContactPhone,

@@ -66,7 +66,7 @@ func (s *accountService) GetUserList(ctx context.Context, req *resourcev1.UserLi
 		PageRequest: pageRequest,
 		PageOption:  pageOption,
 	}
-	dataModels, dataCount, err := s.userBizRepo.List(ctx, param)
+	dataModels, dataCount, err := s.userBizRepo.ListUser(ctx, param)
 	if err != nil {
 		return nil, err
 	}
