@@ -52,7 +52,7 @@ deploy-service-config:
 	go run ./app/admin-service/cmd/store-configuration/... \
       -conf=./app/admin-service/configs \
       -source_dir ./devops/docker-deploy/service-configs \
-      -store_dir go-micro-saas/admin-service/testing/v1.0.0
+      -store_dir go-micro-saas/admin-service/testing/latest
 
 .PHONY: deploy-database-migration
 # deploy :-->: database migration
@@ -77,3 +77,19 @@ stop-docker-deploy:
 restart-docker-deploy:
 	@echo "restart-docker-deploy :-->: restart docker container"
 	docker-compose -f ./devops/docker-deploy/docker-compose.yaml restart
+
+.PHONY: dev-start
+# dev-start :-->: docker container
+dev-start:
+	@echo "dev-start :-->: deploying docker container"
+	docker-compose -f ./devops/develop/docker-compose.yaml up -d
+.PHONY: dev-stop
+# dev-stop :-->: docker container
+dev-stop:
+	@echo "dev-stop :-->: stop docker container"
+	docker-compose -f ./devops/develop/docker-compose.yaml down
+.PHONY: dev-restart
+# dev-restart :-->: docker container
+dev-restart:
+	@echo "dev-restart :-->: restart docker container"
+	docker-compose -f ./devops/develop/docker-compose.yaml restart
