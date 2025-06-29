@@ -9,16 +9,16 @@
 
 ```shell
 # general config
-go run ./app/account-service/cmd/store-configuration/... \
-  -conf=./app/account-service/configs \
+go run ./app/admin-service/cmd/store-configuration/... \
+  -conf=./app/admin-service/configs \
   -source_dir ./devops/docker-deploy/general-configs \
   -store_dir go-micro-saas/general-configs/testing
 
 # service config
-go run ./app/account-service/cmd/store-configuration/... \
-  -conf=./app/account-service/configs \
+go run ./app/admin-service/cmd/store-configuration/... \
+  -conf=./app/admin-service/configs \
   -source_dir ./devops/docker-deploy/service-configs \
-  -store_dir go-micro-saas/account-service/testing/latest
+  -store_dir go-micro-saas/admin-service/testing/latest
   
 # database migration
 make run-database-migration
@@ -27,5 +27,5 @@ make run-database-migration
 docker run -it --rm \
   --entrypoint /bin/bash \
   -v $PWD/devops/docker-deploy/configs:/myworkspace/golang/src/workspace/configs \
-  account-service:latest
+  admin-service:latest
 ```

@@ -7,8 +7,8 @@ encrypt:
     public_key:
     private_key:
   token_encrypt:
-    sign_key: KLmOU29y5xQtr8BZDlAwTPIigzXfFC6M
-    refresh_key: kc3X4uGCUqW8Fz9NeLYHgRpQ2AKyOsJj
+    sign_key: Ri13J8Itaqd4g6QMLZrDNCOoXhKjFmGy
+    refresh_key: suzckjGdAqvgaBSJYCyDWVxihOeP7KR6
     access_token_expire: 172800s
     refresh_token_expire: 604800s
     previous_token_expire: 60s

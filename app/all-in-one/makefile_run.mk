@@ -2,7 +2,7 @@
 .PHONY: run-all-in-one
 # run service :-->: run all-in-one
 run-all-in-one:
-	go run ./app/all-in-one/main.go -conf=./app/account-service/configs
+	go run ./app/all-in-one/main.go -conf=./app/admin-service/configs
 
 .PHONY: testing-all-in-one
 # testing service :-->: testing all-in-one

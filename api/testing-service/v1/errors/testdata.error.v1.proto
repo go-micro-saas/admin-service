@@ -5,7 +5,7 @@ package saas.api.testing.errorv1;
 import "errors/errors.proto";
 
 // 多语言特定包名，用于源代码引用
-option go_package           = "github.com/go-micro-saas/account-service/api/testing-service/v1/errors;errorv1";
+option go_package           = "github.com/go-micro-saas/admin-service/api/testing-service/v1/errors;errorv1";
 option java_multiple_files  = true;
 option java_package         = "saas.api.testing.errorv1";
 option java_outer_classname = "SaasApiTestingErrorV1";

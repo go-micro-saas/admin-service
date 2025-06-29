@@ -2,8 +2,8 @@ package main
 
 import (
 	"flag"
-	accountserviceexporter "github.com/go-micro-saas/account-service/app/account-service/cmd/account-service/export"
-	serviceexporter "github.com/go-micro-saas/account-service/app/testing-service/cmd/testing-service/export"
+	accountserviceexporter "github.com/go-micro-saas/admin-service/app/admin-service/cmd/admin-service/export"
+	serviceexporter "github.com/go-micro-saas/admin-service/app/testing-service/cmd/testing-service/export"
 	configutil "github.com/ikaiguang/go-srv-kit/service/config"
 	middlewareutil "github.com/ikaiguang/go-srv-kit/service/middleware"
 	serverutil "github.com/ikaiguang/go-srv-kit/service/server"
@@ -45,7 +45,7 @@ func main() {
 	whitelist = append(whitelist, pingserviceexporter.ExportAuthWhitelist()...)
 	services = append(services, pingserviceexporter.ExportServices)
 
-	// account-service
+	// admin-service
 	configOpts = append(configOpts, accountserviceexporter.ExportServiceConfig()...)
 	whitelist = append(whitelist, accountserviceexporter.ExportAuthWhitelist()...)
 	services = append(services, accountserviceexporter.ExportServices)

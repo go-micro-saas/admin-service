@@ -192,10 +192,6 @@ github.com/hashicorp/memberlist v0.5.0 h1:EtYPN8DpAURiapus508I4n9CzHs2W+8NZGbmmR
 github.com/hashicorp/memberlist v0.5.0/go.mod h1:yvyXLpo0QaGE59Y7hDTsTzDD25JYBZ4mHgHUZ8lrOI0=
 github.com/hashicorp/serf v0.10.1 h1:Z1H2J60yRKvfDYAOZLd2MU0ND4AH/WDz7xYHDWQsIPY=
 github.com/hashicorp/serf v0.10.1/go.mod h1:yL2t6BqATOLGc5HF7qbFkTfXoPIY0WZdWHfEvMqbG+4=
-github.com/ikaiguang/go-srv-kit v0.3.40 h1:CnFA7pRB/d+4cJbIgebqoCgbCh31vh7Ft9EF8aE5bGk=
-github.com/ikaiguang/go-srv-kit v0.3.40/go.mod h1:2AWg53N8MMT2NTeDbD/KTrnLBIiqfE/tc7dKNSaGGhs=
-github.com/ikaiguang/go-srv-kit v0.3.43 h1:bAxmoUQJM6wD9OVx9m4blvO8gLZxY3peawL6/In8FkA=
-github.com/ikaiguang/go-srv-kit v0.3.43/go.mod h1:2AWg53N8MMT2NTeDbD/KTrnLBIiqfE/tc7dKNSaGGhs=
 github.com/ikaiguang/go-srv-kit v0.3.44 h1:/eVAdiL5J/u62ynglMUPsofCjO2sFx2jmwQAFlgH0Ks=
 github.com/ikaiguang/go-srv-kit v0.3.44/go.mod h1:2AWg53N8MMT2NTeDbD/KTrnLBIiqfE/tc7dKNSaGGhs=
 github.com/jackc/pgpassfile v1.0.0 h1:/6Hmqy13Ss2zCq62VdNG8tM1wchn8zjSGOBJ6icpsIM=

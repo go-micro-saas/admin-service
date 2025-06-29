@@ -1,4 +1,4 @@
-module github.com/go-micro-saas/account-service
+module github.com/go-micro-saas/admin-service
 
 go 1.22
 

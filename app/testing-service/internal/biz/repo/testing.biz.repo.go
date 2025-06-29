@@ -2,7 +2,7 @@ package bizrepos
 
 import (
 	"context"
-	"github.com/go-micro-saas/account-service/app/testing-service/internal/biz/bo"
+	"github.com/go-micro-saas/admin-service/app/testing-service/internal/biz/bo"
 )
 
 type TestingBizRepo interface {

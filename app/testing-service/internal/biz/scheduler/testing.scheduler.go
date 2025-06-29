@@ -2,7 +2,7 @@ package schedulers
 
 import (
 	"github.com/go-kratos/kratos/v2/log"
-	bizrepos "github.com/go-micro-saas/account-service/app/testing-service/internal/biz/repo"
+	bizrepos "github.com/go-micro-saas/admin-service/app/testing-service/internal/biz/repo"
 )
 
 type testingScheduler struct {

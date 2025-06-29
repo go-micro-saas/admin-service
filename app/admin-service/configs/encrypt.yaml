@@ -1,0 +1,14 @@
+# encrypt 加密
+encrypt:
+  transfer_encrypt:
+    public_key:
+    private_key:
+  service_encrypt:
+    public_key:
+    private_key:
+  token_encrypt:
+    sign_key: LekxJNBVlQEcfHUCsGTigSyo8vhw24rY
+    refresh_key: N3YZc2sUGST1CVfMFAulzKXg9Bokyp7Q
+    access_token_expire: 172800s
+    refresh_token_expire: 604800s
+    previous_token_expire: 60s

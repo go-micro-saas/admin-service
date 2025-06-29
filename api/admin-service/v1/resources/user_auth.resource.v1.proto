@@ -1,0 +1,209 @@
+syntax = "proto3";
+
+package saas.api.admin.resourcev1;
+
+// 多语言特定包名，用于源代码引用
+option go_package           = "github.com/go-micro-saas/admin-service/api/admin-service/v1/resources;resourcev1";
+option java_multiple_files  = true;
+option java_package         = "saas.api.admin.resourcev1";
+option java_outer_classname = "SaasApiAdminResourceV1";
+
+import "api/admin-service/v1/enums/account.enum.v1.proto";
+import "validate/validate.proto";
+
+// PingReq ...
+message PingReq {
+  string message = 1;
+}
+
+// PingResp ...
+message PingResp {
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  PingRespData data = 100;
+}
+
+message PingRespData {
+  string message = 1;
+}
+
+// UserInfo 用户信息
+message UserInfo {
+  uint64 user_id       = 1;
+  string user_nickname = 2;
+  string user_avatar   = 3;
+}
+
+// LoginOrSignupByPhoneReq 手机登陆(自动注册)
+message LoginOrSignupByPhoneReq {
+  string phone = 1 [(validate.rules).string = { pattern: "^1[1-9]\\d{9}$" }];
+  string code  = 5 [(validate.rules).string = { max_len: 1024 }];
+}
+
+// LoginOrSignupByPhoneReq 邮箱登陆(自动注册)
+message LoginOrSignupByEmailReq {
+  string email = 1 [(validate.rules).string = { email: true }];
+  string code  = 5 [(validate.rules).string = { max_len: 1024 }];
+}
+
+message SendEmailVerifyCodeReq {
+  string email = 1 [(validate.rules).string = { email: true }];
+}
+message SendPhoneVerifyCodeReq {
+  string phone = 1 [(validate.rules).string = { pattern: "^1[1-9]\\d{9}$" }];
+}
+message SendVerifyCodeResp {
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  SendVerifyCodeRespData data = 100;
+}
+message SendVerifyCodeRespData {
+  string code = 1;
+}
+
+message SignupByPhoneReq {
+  string phone            = 1 [(validate.rules).string = { pattern: "^1[1-9]\\d{9}$" }];
+  string password         = 2 [(validate.rules).string = { pattern: "^.{6,}$" }];  // md5(密码)
+  string password_confirm = 3 [(validate.rules).string = { pattern: "^.{6,}$" }];  // md5(密码)
+  string code             = 4 [(validate.rules).string = { max_len: 1024 }];
+}
+
+message SignupByEmailReq {
+  string email            = 1 [(validate.rules).string = { email: true }];
+  string password         = 2 [(validate.rules).string = { pattern: "^.{6,}$" }];  // md5(密码)
+  string password_confirm = 3 [(validate.rules).string = { pattern: "^.{6,}$" }];  // md5(密码)
+  string code             = 4 [(validate.rules).string = { max_len: 1024 }];
+}
+
+message LoginByPhoneReq {
+  string phone    = 1 [(validate.rules).string = { pattern: "^1[1-9]\\d{9}$" }];
+  string password = 2 [(validate.rules).string = { pattern: "^.{6,}$" }];  // md5(密码)
+  string code     = 3 [(validate.rules).string = { max_len: 1024 }];
+}
+
+message LoginByEmailReq {
+  string email    = 1 [(validate.rules).string = { email: true }];
+  string password = 2 [(validate.rules).string = { pattern: "^.{6,}$" }];  // md5(密码)
+  string code     = 3 [(validate.rules).string = { max_len: 1024 }];
+}
+
+message LoginByOpenApiReq {
+  string access_id     = 1 [(validate.rules).string = { pattern: "^.{1,255}$" }];
+  string access_secret = 2 [(validate.rules).string = { pattern: "^.{1,255}$" }];
+}
+
+message LoginResp {
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  LoginRespData data = 100;
+}
+
+message LoginRespData {
+  UserInfo user_info = 1;
+
+  string access_token            = 10;
+  int64 access_token_expired_at  = 11;  // 时间戳，单位：秒
+  string refresh_token           = 12;
+  int64 refresh_token_expired_at = 13;  // 时间戳，单位：秒
+}
+
+message RefreshTokenReq {
+  string refresh_token = 1 [(validate.rules).string = { min_len: 1, max_len: 1024 }];
+}
+
+message ChangePasswordReq {
+  string old_password         = 1 [(validate.rules).string = { pattern: "^.{6,}$" }];  // md5(密码)
+  string new_password         = 2 [(validate.rules).string = { pattern: "^.{6,}$" }];  // md5(密码)
+  string new_password_confirm = 3 [(validate.rules).string = { pattern: "^.{6,}$" }];  // md5(密码)
+}
+message ChangePasswordResp {
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  ChangePasswordRespData data = 100;
+}
+message ChangePasswordRespData {
+}
+
+message ChangeAvatarReq {
+  string user_avatar = 2 [(validate.rules).string = { min_len: 1, max_len: 1024 }];
+}
+message ChangeAvatarResp {
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  ChangeAvatarRespData data = 100;
+}
+message ChangeAvatarRespData {
+}
+
+message ChangePhoneReq {
+  string phone = 1 [(validate.rules).string = { pattern: "^1[1-9]\\d{9}$" }];
+  string code  = 2 [(validate.rules).string = { max_len: 1024 }];
+}
+message ChangePhoneResp {
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  ChangePhoneRespData data = 100;
+}
+message ChangePhoneRespData {
+}
+
+message ChangeEmailReq {
+  string user_email = 1 [(validate.rules).string = { email: true }];
+  string code       = 2 [(validate.rules).string = { max_len: 1024 }];
+}
+message ChangeEmailResp {
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  ChangeEmailRespData data = 100;
+}
+message ChangeEmailRespData {
+}
+
+message ChangeNicknameReq {
+  string user_nickname = 2 [(validate.rules).string = { min_len: 1, max_len: 1024 }];
+}
+message ChangeNicknameResp {
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  ChangeNicknameRespData data = 100;
+}
+message ChangeNicknameRespData {
+}
+
+message ChangeGenderReq {
+  enumv1.UserGenderEnum.UserGender user_gender = 6 [(validate.rules).enum = { not_in: [ 0 ] }];
+}
+message ChangeGenderResp {
+  int32 code                   = 1;
+  string reason                = 2;
+  string message               = 3;
+  map<string, string> metadata = 4;
+
+  ChangeGenderRespData data = 100;
+}
+message ChangeGenderRespData {
+}

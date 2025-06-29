@@ -1,9 +1,9 @@
 package serviceexporter
 
 import (
-	testingdapi "github.com/go-micro-saas/account-service/api/testing-service"
-	"github.com/go-micro-saas/account-service/app/testing-service/cmd/database-migration/migrate"
-	"github.com/go-micro-saas/account-service/app/testing-service/internal/conf"
+	testingdapi "github.com/go-micro-saas/admin-service/api/testing-service"
+	"github.com/go-micro-saas/admin-service/app/testing-service/cmd/database-migration/migrate"
+	"github.com/go-micro-saas/admin-service/app/testing-service/internal/conf"
 	cleanuputil "github.com/ikaiguang/go-srv-kit/service/cleanup"
 	configutil "github.com/ikaiguang/go-srv-kit/service/config"
 	dbutil "github.com/ikaiguang/go-srv-kit/service/database"

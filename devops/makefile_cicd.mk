@@ -24,24 +24,24 @@ build-service-image:
 # build :-->: service image
 build:
 	@echo "build :-->: build service image"
-	#docker build -t account-service:v1.0.0 -f ./devops/Dockerfile .
+	#docker build -t admin-service:v1.0.0 -f ./devops/Dockerfile .
 	#docker pull golang:1.23.10
 	#docker pull debian:stable-20250520
 	docker build \
 		--build-arg BUILD_FROM_IMAGE=golang:1.23.10 \
 		--build-arg RUN_SERVICE_IMAGE=debian:stable-20250520 \
 		--build-arg APP_DIR=app \
-		--build-arg SERVICE_NAME=account-service \
+		--build-arg SERVICE_NAME=admin-service \
 		--build-arg VERSION=latest \
-		-t account-service:latest \
+		-t admin-service:latest \
 		-f ./devops/docker-build/Dockerfile .
 
 .PHONY: deploy-general-config
 # deploy :-->: store general config
 deploy-general-config:
 	@echo "deploy :-->: general config"
-	go run ./app/account-service/cmd/store-configuration/... \
-      -conf=./app/account-service/configs \
+	go run ./app/admin-service/cmd/store-configuration/... \
+      -conf=./app/admin-service/configs \
       -source_dir ./devops/docker-deploy/general-configs \
       -store_dir go-micro-saas/general-configs/testing
 
@@ -49,10 +49,10 @@ deploy-general-config:
 # deploy :-->: store service config
 deploy-service-config:
 	@echo "deploy :-->: service config"
-	go run ./app/account-service/cmd/store-configuration/... \
-      -conf=./app/account-service/configs \
+	go run ./app/admin-service/cmd/store-configuration/... \
+      -conf=./app/admin-service/configs \
       -source_dir ./devops/docker-deploy/service-configs \
-      -store_dir go-micro-saas/account-service/testing/latest
+      -store_dir go-micro-saas/admin-service/testing/v1.0.0
 
 .PHONY: deploy-database-migration
 # deploy :-->: database migration
@@ -77,19 +77,3 @@ stop-docker-deploy:
 restart-docker-deploy:
 	@echo "restart-docker-deploy :-->: restart docker container"
 	docker-compose -f ./devops/docker-deploy/docker-compose.yaml restart
-
-.PHONY: dev-start
-# dev-start :-->: docker container
-dev-start:
-	@echo "dev-start :-->: deploying docker container"
-	docker-compose -f ./devops/develop/docker-compose.yaml up -d
-.PHONY: dev-stop
-# dev-stop :-->: docker container
-dev-stop:
-	@echo "dev-stop :-->: stop docker container"
-	docker-compose -f ./devops/develop/docker-compose.yaml down
-.PHONY: dev-restart
-# dev-restart :-->: docker container
-dev-restart:
-	@echo "dev-restart :-->: restart docker container"
-	docker-compose -f ./devops/develop/docker-compose.yaml restart

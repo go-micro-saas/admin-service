@@ -1,10 +1,10 @@
-account_service:
+admin_service:
   snowflake:
     enable: true
     instance_id: "${app.project_name}/${app.server_name}/${app.server_env}/${app.server_version}"
-    instance_name: "account-service"
+    instance_name: "admin-service"
     metadata:
-      service: account-service
+      service: admin-service
   send_email_code:
     enable: true
     issuer: UUFFF

@@ -2,7 +2,7 @@
 ARG BUILD_FROM_IMAGE=golang:1.23.10
 ARG RUN_SERVICE_IMAGE=debian:stable-20250520
 ARG APP_DIR=app
-ARG SERVICE_NAME=account-service
+ARG SERVICE_NAME=admin-service
 ARG VERSION=v1.0.0
 
 # system arg
@@ -47,8 +47,8 @@ RUN go mod download && go mod tidy
 
 # go build -ldflags="-s -w -X 'main.Version=1.0.0' -extldflags '-static'"
 RUN go build -ldflags="-s -w -X 'main.Version=${VERSION}' -extldflags '-static'" \
-    -o ./bin/account-service \
-    ./${APP_DIR}/${SERVICE_NAME}/cmd/account-service/main.go
+    -o ./bin/admin-service \
+    ./${APP_DIR}/${SERVICE_NAME}/cmd/admin-service/main.go
 RUN go build -ldflags="-s -w -X 'main.Version=${VERSION}' -extldflags '-static'" \
     -o ./bin/database-migration \
     ./${APP_DIR}/${SERVICE_NAME}/cmd/database-migration/main.go
@@ -84,7 +84,7 @@ RUN apt-get update && \
     apt-get autoremove -y && apt-get autoclean -y && apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
 
-COPY --from=builder ${WORK_DIR}/bin/account-service ./account-service
+COPY --from=builder ${WORK_DIR}/bin/admin-service ./admin-service
 COPY --from=builder ${WORK_DIR}/bin/database-migration ./database-migration
 COPY --from=builder ${WORK_DIR}/bin/store-configuration ./store-configuration
 COPY --from=builder ${WORK_DIR}/bin/all-in-one ./all-in-one
@@ -95,6 +95,6 @@ EXPOSE 8080
 # grpc 50051 50052
 EXPOSE 50051
 
-#ENTRYPOINT ["./account-service", "-conf=./configs"]
+#ENTRYPOINT ["./admin-service", "-conf=./configs"]
 #ENTRYPOINT ["./uuid-service", "-conf=./configs"]
 ENTRYPOINT ["./all-in-one", "-conf=./configs"]

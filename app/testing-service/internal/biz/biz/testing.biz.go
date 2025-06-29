@@ -3,10 +3,10 @@ package biz
 import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-micro-saas/account-service/app/testing-service/internal/biz/bo"
-	bizrepos "github.com/go-micro-saas/account-service/app/testing-service/internal/biz/repo"
-	"github.com/go-micro-saas/account-service/app/testing-service/internal/data/po"
-	datarepos "github.com/go-micro-saas/account-service/app/testing-service/internal/data/repo"
+	"github.com/go-micro-saas/admin-service/app/testing-service/internal/biz/bo"
+	bizrepos "github.com/go-micro-saas/admin-service/app/testing-service/internal/biz/repo"
+	"github.com/go-micro-saas/admin-service/app/testing-service/internal/data/po"
+	datarepos "github.com/go-micro-saas/admin-service/app/testing-service/internal/data/repo"
 	"time"
 )
 

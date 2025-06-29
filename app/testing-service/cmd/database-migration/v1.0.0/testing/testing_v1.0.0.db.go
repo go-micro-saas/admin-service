@@ -2,7 +2,7 @@ package dbv1_0_0_testing
 
 import (
 	"context"
-	testingchemas "github.com/go-micro-saas/account-service/app/testing-service/internal/data/schema"
+	testingchemas "github.com/go-micro-saas/admin-service/app/testing-service/internal/data/schema"
 	migrationpkg "github.com/ikaiguang/go-srv-kit/data/migration"
 	errorpkg "github.com/ikaiguang/go-srv-kit/kratos/error"
 	"gorm.io/gorm"

@@ -14,7 +14,7 @@ docker build \
     --build-arg BUILD_FROM_IMAGE=${BUILD_FROM_IMAGE} \
     --build-arg RUN_SERVICE_IMAGE=${RUN_SERVICE_IMAGE} \
     --build-arg APP_DIR=app \
-    --build-arg SERVICE_NAME=account-service \
+    --build-arg SERVICE_NAME=admin-service \
     --build-arg VERSION=latest \
-    -t account-service:latest \
+    -t admin-service:latest \
     -f ${CURRENT_FILE_DIR}/Dockerfile_service_image .

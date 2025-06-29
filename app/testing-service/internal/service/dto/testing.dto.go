@@ -1,8 +1,8 @@
 package dto
 
 import (
-	resourcev1 "github.com/go-micro-saas/account-service/api/testing-service/v1/resources"
-	"github.com/go-micro-saas/account-service/app/testing-service/internal/biz/bo"
+	resourcev1 "github.com/go-micro-saas/admin-service/api/testing-service/v1/resources"
+	"github.com/go-micro-saas/admin-service/app/testing-service/internal/biz/bo"
 )
 
 var (

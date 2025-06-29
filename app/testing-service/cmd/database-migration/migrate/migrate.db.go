@@ -3,7 +3,7 @@ package dbmigrate
 import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-micro-saas/account-service/app/testing-service/cmd/database-migration/v1.0.0"
+	"github.com/go-micro-saas/admin-service/app/testing-service/cmd/database-migration/v1.0.0"
 	migrationpkg "github.com/ikaiguang/go-srv-kit/data/migration"
 	dbutil "github.com/ikaiguang/go-srv-kit/service/database"
 	"gorm.io/gorm"

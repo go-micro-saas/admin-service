@@ -81,7 +81,7 @@ generate:
 	#go mod tidy
 	#go generate ./...
 	wire ./app/testing-service/cmd/testing-service/export
-	wire ./app/account-service/cmd/account-service/export
+	wire ./app/admin-service/cmd/admin-service/export
 
 # ===== include =====
 # ===== include =====
@@ -91,13 +91,13 @@ generate:
 include api/makefile_protoc.mk
 include api/testing-service/makefile_protoc.mk
 include api/testing-service/v1/makefile_protoc.mk
-include api/account-service/makefile_protoc.mk
-include api/account-service/v1/makefile_protoc.mk
+include api/admin-service/makefile_protoc.mk
+include api/admin-service/v1/makefile_protoc.mk
 
 # run
 include app/all-in-one/makefile_run.mk
 #include app/testing-service/cmd/makefile_run.mk
-include app/account-service/cmd/makefile_run.mk
+include app/admin-service/cmd/makefile_run.mk
 
 # build
 include devops/makefile_cicd.mk

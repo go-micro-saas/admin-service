@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package saas.api.account.conf;
+
+option go_package           = "github.com/go-micro-saas/admin-service/app/admin-service/internal/conf;conf";
+option java_multiple_files  = true;
+option java_package         = "saas.api.account.conf";
+option java_outer_classname = "SaasApiAccountConf";
+
+import "validate/validate.proto";
+
+message ServiceConfig {
+  message AdminService {
+    // Snowflake nodeid for snowflake
+    message Snowflake {
+      bool enable                  = 1;
+      string instance_id           = 2 [(validate.rules).string = { min_len: 1 }];
+      string instance_name         = 3;
+      map<string, string> metadata = 4;
+    }
+    // SendEmailCode 发送邮件验证码
+    message SendEmailCode {
+      bool enable     = 1;
+      string issuer   = 2 [(validate.rules).string = { min_len: 1 }];
+      string subject  = 3 [(validate.rules).string = { min_len: 1 }];
+      string host     = 4 [(validate.rules).string = { min_len: 1 }];
+      int32 port      = 5 [(validate.rules).int32 = { gte: 1, lte: 65535 }];
+      string username = 6;
+      string password = 7;
+      string from     = 8 [(validate.rules).string = { min_len: 1 }];
+    }
+
+    Snowflake snowflake           = 1;
+    SendEmailCode send_email_code = 2;
+  }
+  AdminService admin_service = 1;
+}
