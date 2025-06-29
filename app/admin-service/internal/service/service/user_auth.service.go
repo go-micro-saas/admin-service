@@ -102,8 +102,17 @@ func (s *userAuth) RefreshToken(ctx context.Context, in *resourcev1.RefreshToken
 	return out, nil
 }
 
+func (s *userAuth) closeRegister() (*resourcev1.LoginResp, error) {
+	e := errorpkg.DefaultErrorMethodNotAllowed()
+	return nil, errorpkg.WithStack(e)
+}
+
 // SignupByEmail 身份验证-Email注册
 func (s *userAuth) SignupByEmail(ctx context.Context, req *resourcev1.SignupByEmailReq) (*resourcev1.LoginResp, error) {
+	return s.closeRegister()
+	//return s.signupByEmail(ctx, req)
+}
+func (s *userAuth) signupByEmail(ctx context.Context, req *resourcev1.SignupByEmailReq) (*resourcev1.LoginResp, error) {
 	param := dto.AccountDto.ToBoSignupByEmailParam(req)
 	userModel, signResp, err := s.userAuthBizRepo.SignupByEmail(ctx, param)
 	if err != nil {
@@ -118,6 +127,10 @@ func (s *userAuth) SignupByEmail(ctx context.Context, req *resourcev1.SignupByEm
 
 // SignupByPhone 身份验证-手机注册
 func (s *userAuth) SignupByPhone(ctx context.Context, req *resourcev1.SignupByPhoneReq) (*resourcev1.LoginResp, error) {
+	return s.closeRegister()
+	//return s.signupByPhone(ctx, req)
+}
+func (s *userAuth) signupByPhone(ctx context.Context, req *resourcev1.SignupByPhoneReq) (*resourcev1.LoginResp, error) {
 	param := dto.AccountDto.ToBoSignupByPhoneParam(req)
 	userModel, signResp, err := s.userAuthBizRepo.SignupByPhone(ctx, param)
 	if err != nil {
@@ -131,6 +144,10 @@ func (s *userAuth) SignupByPhone(ctx context.Context, req *resourcev1.SignupByPh
 }
 
 func (s *userAuth) LoginOrSignupByPhone(ctx context.Context, req *resourcev1.LoginOrSignupByPhoneReq) (*resourcev1.LoginResp, error) {
+	return s.closeRegister()
+	//return s.loginOrSignupByPhone(ctx, req)
+}
+func (s *userAuth) loginOrSignupByPhone(ctx context.Context, req *resourcev1.LoginOrSignupByPhoneReq) (*resourcev1.LoginResp, error) {
 	verifyParam := &bo.ConfirmVerifyCodeParam{
 		VerifyAccount: req.Phone,
 		VerifyType:    enumv1.UserVerifyTypeEnum_SIGNUP_OR_LOGIN_BY_PHONE,
@@ -170,6 +187,10 @@ func (s *userAuth) LoginOrSignupByPhone(ctx context.Context, req *resourcev1.Log
 }
 
 func (s *userAuth) LoginOrSignupByEmail(ctx context.Context, req *resourcev1.LoginOrSignupByEmailReq) (*resourcev1.LoginResp, error) {
+	return s.closeRegister()
+	//return s.loginOrSignupByEmail(ctx, req)
+}
+func (s *userAuth) loginOrSignupByEmail(ctx context.Context, req *resourcev1.LoginOrSignupByEmailReq) (*resourcev1.LoginResp, error) {
 	verifyParam := &bo.ConfirmVerifyCodeParam{
 		VerifyAccount: req.Email,
 		VerifyType:    enumv1.UserVerifyTypeEnum_SIGNUP_OR_LOGIN_BY_EMAIL,
